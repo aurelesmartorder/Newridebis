@@ -1,9 +1,9 @@
 /newridebis/config.js https://famous-starburst-2555e3.netlify.app/config.js 200
-/.netlify/functions/coach-chat https://famous-starburst-2555e3.netlify.app/.netlify/functions/coach-chat 200
-/.netlify/functions/realtime-token https://famous-starburst-2555e3.netlify.app/.netlify/functions/realtime-token 200
-/.netlify/functions/transcribe-audio https://famous-starburst-2555e3.netlify.app/.netlify/functions/transcribe-audio 200
-/.netlify/functions/analyze-video-session https://famous-starburst-2555e3.netlify.app/.netlify/functions/analyze-video-session 200
-/.netlify/functions/describe-photo https://famous-starburst-2555e3.netlify.app/.netlify/functions/describe-photo 200
-/.netlify/functions/text-to-speech https://famous-starburst-2555e3.netlify.app/.netlify/functions/text-to-speech 200
-/.netlify/functions/send-report https://famous-starburst-2555e3.netlify.app/.netlify/functions/send-report 200
+/api/coach-chat https://famous-starburst-2555e3.netlify.app/.netlify/functions/coach-chat 200
+/api/realtime-token https://famous-starburst-2555e3.netlify.app/.netlify/functions/realtime-token 200
+/api/transcribe-audio https://famous-starburst-2555e3.netlify.app/.netlify/functions/transcribe-audio 200
+/api/analyze-video-session https://famous-starburst-2555e3.netlify.app/.netlify/functions/analyze-video-session 200
+/api/describe-photo https://famous-starburst-2555e3.netlify.app/.netlify/functions/describe-photo 200
+/api/text-to-speech https://famous-starburst-2555e3.netlify.app/.netlify/functions/text-to-speech 200
+/api/send-report https://famous-starburst-2555e3.netlify.app/.netlify/functions/send-report 200
 /* /index.html 200
