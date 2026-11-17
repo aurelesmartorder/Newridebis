@@ -858,6 +858,7 @@ async function logoutUser(){
   try{ await sbClient.auth.signOut(); }catch(e){}
   CURRENT_USER = null;
   S.sport = null; S.currentSessionId = null; S.chatHistory = [];
+  S.coachingState = null; S.coachingPersistenceError = null;
   S.realPosts = []; S.savedRoutes = []; S.realEvents = []; S.coaches = [];
   S.friends = []; S.friendRequestsReceived = []; S.friendRequestsSent = [];
   S.avatarUrl = null; S.userLat = null; S.userLng = null;
@@ -1615,14 +1616,27 @@ function ensureCoachingState(){
 // de sa valeur des qu'on fermait le navigateur.
 async function loadCoachingState(){
   if(!CURRENT_USER || !S.sport){ return; }
+  const requestedUserId = CURRENT_USER.id;
+  const requestedSport = S.sport;
   try{
     const { data, error } = await sbClient.from('coaching_states')
-      .select('state').eq('user_id', CURRENT_USER.id).eq('sport', S.sport).maybeSingle();
-    if(error || !data || !data.state){ S.coachingState = freshCoachingState(); return; }
+      .select('state').eq('user_id', requestedUserId).eq('sport', requestedSport).maybeSingle();
+    if(CURRENT_USER?.id !== requestedUserId || S.sport !== requestedSport) return;
+    if(error){
+      console.warn('Coaching state indisponible ; l’état local est conservé', error);
+      S.coachingPersistenceError = 'La mémoire ALI n’a pas pu être chargée. Votre progression locale reste affichée.';
+      return;
+    }
+    if(!data || !data.state){ S.coachingState = freshCoachingState(); S.coachingPersistenceError = null; return; }
     // Fusionne avec un etat frais pour tolerer l'ajout futur de nouveaux
     // champs sans casser un etat sauvegarde avec l'ancien format.
     S.coachingState = Object.assign(freshCoachingState(), data.state);
-  }catch(e){ console.warn('Coaching state indisponible, redemarre a neuf', e); S.coachingState = freshCoachingState(); }
+    S.coachingPersistenceError = null;
+  }catch(e){
+    if(CURRENT_USER?.id !== requestedUserId || S.sport !== requestedSport) return;
+    console.warn('Coaching state indisponible ; l’état local est conservé', e);
+    S.coachingPersistenceError = 'La mémoire ALI n’a pas pu être chargée. Votre progression locale reste affichée.';
+  }
 }
 
 // Elague les journaux avant sauvegarde pour ne pas grossir indefiniment :
@@ -1642,15 +1656,27 @@ function prunedCoachingStateForSave(state){
 // dans stopRealtimeConversation(). Upsert : un seul enregistrement par
 // cavalier et par sport, toujours a jour, pas un historique qui grossit.
 async function saveCoachingState(){
-  if(!CURRENT_USER || !S.sport || !S.coachingState) return;
+  if(!CURRENT_USER || !S.sport || !S.coachingState) return false;
+  const requestedUserId = CURRENT_USER.id;
+  const requestedSport = S.sport;
   try{
-    await sbClient.from('coaching_states').upsert({
-      user_id: CURRENT_USER.id,
-      sport: S.sport,
+    const { error } = await sbClient.from('coaching_states').upsert({
+      user_id: requestedUserId,
+      sport: requestedSport,
       state: prunedCoachingStateForSave(S.coachingState),
       updated_at: new Date().toISOString(),
     }, { onConflict: 'user_id,sport' });
-  }catch(e){ console.warn('Sauvegarde du coaching state impossible', e); }
+    if(CURRENT_USER?.id !== requestedUserId || S.sport !== requestedSport) return false;
+    if(error) throw error;
+    S.coachingPersistenceError = null;
+    return true;
+  }catch(e){
+    if(CURRENT_USER?.id === requestedUserId && S.sport === requestedSport){
+      console.warn('Sauvegarde du coaching state impossible', e);
+      S.coachingPersistenceError = 'La mémoire ALI n’a pas pu être enregistrée. Réessayez avant de quitter.';
+    }
+    return false;
+  }
 }
 
 function correctionDensity(state){
@@ -3021,7 +3047,9 @@ function render(){
   if(!content) return;
   try {
     const renderer = map[S.tab] || rLive;
-    content.innerHTML = renderer();
+    content.innerHTML = (S.coachingPersistenceError
+      ? `<div role="status" style="margin:12px 16px;padding:12px 14px;border:1px solid #e4b6a8;border-radius:12px;background:#fff2ed;color:#713a2a;font-size:13px;line-height:1.45;">${esc(S.coachingPersistenceError)}</div>`
+      : '') + renderer();
   } catch (err) {
     console.error('Erreur de rendu onglet', S.tab, err);
     // Ne laisse jamais l'ancien onglet affiché, ce qui donnait l'impression que le clic ne fonctionnait pas.
