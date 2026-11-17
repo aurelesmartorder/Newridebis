@@ -34,6 +34,8 @@ npm run dev
 
 ## Nouveau site Netlify
 
+Une publication manuelle du dossier `dist` est aussi possible sur un nouveau site Netlify. Les fichiers `public/_redirects` et `public/_headers`, recopiés au build, préservent les routes profondes et les en-têtes lors d’un dépôt manuel. Cette méthode ne synchronise pas automatiquement les commits GitHub : il faut reconstruire puis republier, ou relier ultérieurement le nouveau site à cette branche. Le site V2 est marqué noindex pendant son développement.
+
 Créer un **nouveau** site depuis la branche `v2/product-refonte`, répertoire de base `apps/newride-v2`, configuration `netlify.toml` dans ce répertoire, build `npm ci && npm run build`, publication `dist`. Ne pas réutiliser le site actuel. Ce lot n’a besoin d’aucune clé Supabase ou IA. Ne pas ajouter de service_role ni de secret au frontend. La CSP est limitée aux capacités actuellement implémentées ; adapter explicitement connect-src aux seuls domaines V2 lors de l’intégration backend.
 
 Prochain lot : projet Supabase isolé, Auth invité contrôlée, schéma chevaux/séances privé, RLS testée entre deux identités, synchronisation idempotente, puis services vocaux protégés. Casque : obtenir protocole GATT, trames et appareil avant développement spécifique. Pour iPhone BLE, prévoir une couche native plutôt que promettre un support Web Bluetooth universel.
