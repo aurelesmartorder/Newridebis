@@ -2,7 +2,7 @@
 
 ## État au 17 novembre 2026
 
-Les nouveaux identifiants proposés `newride.testeur.a@example.com` et `newride.testeur.b@example.com` ne correspondent pas encore à des utilisateurs Supabase lors de la dernière vérification SQL. Deux formulaires de création ont été préparés dans le tableau de bord ; la saisie des nouveaux mots de passe et la validation restent à effectuer par Aurélie. Ce sont des identifiants techniques, pas des boîtes de réception. Ne pas déclarer les accès utilisables avant confirmation des utilisateurs et essai de connexion.
+Le compte `newride.testeur.a@example.com` existe et son email est confirmé lors de la dernière vérification SQL. Il n’a pas encore de profil public avant son premier essai de connexion dans la V2. Le compte `newride.testeur.b@example.com` reste absent ; la recherche des adresses contenant « newride » ne montre que A. Le formulaire de création B reste à finaliser par Aurélie. La connexion A dans l’interface et l’essai authentifié A↔B ne sont pas encore validés. Ce sont des identifiants techniques, pas des boîtes de réception. Ne pas déclarer les accès utilisables avant confirmation des utilisateurs et essai de connexion.
 
 Deux anciens comptes, `test@test.com` et `test1@test.com`, existent et sont confirmés, avec profils équestres. Leurs mots de passe n’ont pas été lus ni modifiés. Ils ne sont pas réaffectés automatiquement à de nouveaux testeurs.
 
@@ -34,6 +34,6 @@ La configuration du service Supabase ne dépend plus du `config.js` du site orig
 
 Quinze tests automatisés passent, dont deux tests utilisant les fonctions réelles de lecture du moteur dans un environnement isolé : une réponse arrivée après changement de compte n’injecte pas les amis ou le fil précédents. TypeScript et build Vite passent. Le formulaire d’accès test devient disponible dans le navigateur après correction de la configuration publique.
 
-Aucun échange authentifié A↔B n’a encore été effectué : aucun compte, mot de passe, demande d’amitié, publication ou commentaire de test n’a été créé par cette livraison dans Supabase. Aucun schéma ou réglage Auth/RLS de production modifié. Le câblage logiciel n’est pas une preuve d’intégration fonctionnelle complète.
+Aucun échange authentifié A↔B n’a encore été effectué. Le compte A a été créé manuellement par Aurélie ; aucun mot de passe, demande d’amitié, publication ou commentaire de test n’a été créé par l’agent dans Supabase. Le remplissage sécurisé du formulaire local a retourné `locator_invalid` deux fois ; une connexion manuelle A est nécessaire pour poursuivre la recette. Aucun schéma ou réglage Auth/RLS de production modifié. Le câblage logiciel n’est pas une preuve d’intégration fonctionnelle complète.
 
 Les politiques consultées montrent une lecture des posts limitée à soi et aux amis acceptés. Les politiques SELECT des commentaires et des likes sont actuellement plus larges ; leur exposition directe mérite une revue distincte avant présentation comme réseau privé. Aucun durcissement n’a été appliqué sur la base de production sans accord spécifique.
