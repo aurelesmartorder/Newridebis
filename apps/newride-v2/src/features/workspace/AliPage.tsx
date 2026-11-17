@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useStore } from "../../app/Store";
 import { aliContext } from "../../lib/aliContext";
+import { buildAliPlan } from "../../lib/aliCoach";
 import { MediaPicker } from "../../components/MediaPicker";
 import { Link } from "react-router-dom";
 import {
@@ -16,6 +17,7 @@ import { command, Header, Empty } from "./shared";
 import type { WorkspaceModel } from "./model";
 export function AliPage({ model }: { model: WorkspaceModel }) {
   const {data:localData}=useStore();
+  const coachPlan=buildAliPlan(localData);
   const [shareContext,setShareContext]=useState(false);
   const sending=useRef(false);
   const [sentQuestion,setSentQuestion]=useState("");
@@ -142,7 +144,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
                   placeholder="Qu’avez-vous ressenti ? Dans quelle situation ?"
                 />
                 <label className="ali-context-choice"><input type="checkbox" checked={shareContext} onChange={e=>setShareContext(e.target.checked)}/>Utiliser le cheval sélectionné et les cinq derniers bilans de cet appareil</label>
-                <p className="media-hint">Vos échanges du compte servent à la continuité. Le carnet local n’est transmis au service ALI que si vous cochez cette option.</p>
+                <p className="media-hint">Vos échanges du compte servent à la continuité. Si vous cochez cette option, ALI reçoit aussi le plan de progression déterministe, le cheval choisi et les bilans de séance de cet appareil. Les bilans sont des déclarations, pas des mesures certifiées.</p>
                 <button className="studio-dark" disabled={!question.trim() || state.chatBusy}>
                   <Send size={17} />
                   {state.chatBusy ? "Réponse en cours…" : "Envoyer à ALI"}
@@ -175,21 +177,18 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
               Choisissez un exercice adapté à votre niveau et gardez une
               intention simple pour la séance.
             </p>
+            <article className="program-day" aria-live="polite">
+              <span>PLAN ALI · {coachPlan.horseName || "DUO À SÉLECTIONNER"}</span>
+              <h3>{coachPlan.priority}</h3>
+              <p>{coachPlan.evidenceLabel}</p>
+              <p><strong>{coachPlan.exercise?.title || "Choisir un exercice"}</strong><br />{coachPlan.nextStep}</p>
+              {coachPlan.criteria.length > 0 && <ul>{coachPlan.criteria.map((criterion) => <li key={criterion}>{criterion}</li>)}</ul>}
+              <p className="media-hint">{coachPlan.safetyNotice}</p>
+              {coachPlan.exercise && <Link className="studio-text-link" to={`/live?exercice=${encodeURIComponent(coachPlan.exercise.id)}`}>Préparer cet exercice <ArrowRight size={17} /></Link>}
+            </article>
             <Link className="studio-dark" to="/exercices">
               Explorer les exercices <ArrowRight size={18} />
             </Link>
-            <button
-              className="studio-text-link"
-              onClick={() =>
-                state.authenticated
-                  ? command("program")
-                  : setNotice(
-                      "La génération personnalisée en ligne n’est pas disponible en mode invité. Les parcours guidés sont accessibles dès maintenant.",
-                    )
-              }
-            >
-              Générer avec ALI <ArrowRight size={18} />
-            </button>
             {state.program?.map((day, i) => (
               <article className="program-day" key={i}>
                 <span>{day.day}</span>
