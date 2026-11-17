@@ -1,21 +1,18 @@
-export const tabs = ["today", "community", "live", "ali", "stable"] as const;
+export const tabs = ["today", "ali", "helmet", "community", "stable"] as const;
 export type TabId = (typeof tabs)[number];
 export const tabRoots: Record<TabId, string> = {
   today: "/",
   community: "/discover",
-  live: "/live",
+  helmet: "/casque",
   ali: "/coaching",
   stable: "/ecurie",
 };
 export function tabForPath(path: string): TabId {
   if (/^\/(discover)/.test(path)) return "community";
-  if (
-    /^\/(live|casque|performances|carte|seance-guidee|seances)(\/|$)/.test(path)
-  )
-    return "live";
-  if (/^\/(coaching|ali|lecons|exercices|sources|connexion)(\/|$)/.test(path))
-    return "ali";
-  if (/^\/(ecurie|experts|pro|acces-test)(\/|$)/.test(path)) return "stable";
+  if (/^\/casque(\/|$)/.test(path)) return "helmet";
+  if (/^\/(live|seance-guidee|coaching|ali|lecons|exercices|sources|connexion)(\/|$)/.test(path)) return "ali";
+  if (/^\/carte(\/|$)/.test(path)) return "community";
+  if (/^\/(ecurie|performances|seances|experts|pro|acces-test)(\/|$)/.test(path)) return "stable";
   return "today";
 }
 const knownPath =

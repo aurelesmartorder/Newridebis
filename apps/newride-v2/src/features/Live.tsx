@@ -20,6 +20,8 @@ import { useStore } from "../app/Store";
 import { exercises } from "../content/exercises";
 import { durationLabel, elapsed, type Session } from "../lib/model";
 import { Badge, Button, Dialog } from "../components/ui";
+import { useVoiceActive } from "../app/LegacySession";
+import { useAliSpeech } from "../hooks/useAliSpeech";
 import { HorseForm } from "./HorseForm";
 export function Live() {
   const { data, dispatch } = useStore();
@@ -35,7 +37,8 @@ export function Live() {
   const [finish, setFinish] = useState(false);
   const [info, setInfo] = useState(false);
   const [now, setNow] = useState(Date.now());
-  const [voiceError, setVoiceError] = useState("");
+  const voice = useAliSpeech();
+  const conversationActive = useVoiceActive();
   const session = data.sessions.find((s) => s.status !== "finished");
   const exercise = exercises.find(
     (e) => e.id === (session?.exerciseId || exerciseId),
@@ -45,12 +48,6 @@ export function Live() {
     const interval = setInterval(() => setNow(Date.now()), 500);
     return () => clearInterval(interval);
   }, [session?.status]);
-  useEffect(
-    () => () => {
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    },
-    [],
-  );
   const time = session ? elapsed(session, now) : 0;
   let cumulative = 0;
   let stepIndex = exercise.steps.findIndex((step) => {
@@ -61,23 +58,8 @@ export function Live() {
   const step = exercise.steps[stepIndex];
   const planned = exercise.duration * 60000;
   const plannedDone = time >= planned;
-  function speak() {
-    if (!("speechSynthesis" in window)) {
-      setVoiceError(
-        "La lecture vocale n’est pas disponible dans ce navigateur. Le guide reste lisible à l’écran.",
-      );
-      return;
-    }
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(step.instruction);
-    utterance.lang = "fr-FR";
-    utterance.rate = 0.9;
-    utterance.onerror = () =>
-      setVoiceError(
-        "La lecture vocale a été interrompue. Vous pouvez la relancer.",
-      );
-    window.speechSynthesis.speak(utterance);
-  }
+  function speak() { void voice.speak(step.instruction); }
+  useEffect(() => { voice.stop(); }, [stepIndex, session?.status]);
   function start() {
     const horse = data.horses.find((h) => h.id === data.selectedHorseId);
     if (!horse || !ready) return;
@@ -109,7 +91,7 @@ export function Live() {
       notes: String(f.get("notes") || ""),
       outcome,
     });
-    window.speechSynthesis?.cancel();
+    voice.stop();
     setFinish(false);
     navigate(`/seances/${id}`);
   }
@@ -173,24 +155,24 @@ export function Live() {
                 </p>
                 <h2>{step.title}</h2>
                 <p className="instruction">{step.instruction}</p>
-                <button className="voice-repeat" onClick={speak}>
+                <button className="voice-repeat" disabled={conversationActive || voice.status === "loading"} onClick={speak}>
                   <Volume2 size={19} />
-                  Lire la consigne
+                  {voice.status === "loading" ? "Préparation de la voix…" : voice.status === "playing" ? "Réécouter avec ALI" : "Écouter avec ALI"}
                 </button>
                 <p className="voice-caption">
-                  Voix de cet appareil · lecture à votre demande
+                  {conversationActive ? "Terminez votre conversation ALI avant de lire une consigne." : "Voix ALI · lecture à votre demande"}
                 </p>
               </div>
-              {voiceError && (
+              {voice.error && (
                 <p role="status" className="voice-error">
-                  {voiceError}
+                  {voice.error}
                 </p>
               )}
               <div className="live-controls">
                 <Button
                   variant="secondary"
                   onClick={() => {
-                    window.speechSynthesis?.cancel();
+                    voice.stop();
                     dispatch({
                       type:
                         session.status === "active"
@@ -211,7 +193,7 @@ export function Live() {
                 <Button
                   variant="coral"
                   onClick={() => {
-                    window.speechSynthesis?.cancel();
+                    voice.stop();
                     dispatch({ type: "session/pause", now: Date.now() });
                     setNow(Date.now());
                     setFinish(true);
@@ -223,7 +205,7 @@ export function Live() {
               </div>
               <button
                 className="mute-control"
-                onClick={() => window.speechSynthesis?.cancel()}
+                onClick={() => voice.stop()}
               >
                 <VolumeX size={18} />
                 Couper la lecture vocale

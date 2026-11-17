@@ -333,7 +333,7 @@
       let mutationConfirmed=false;
       try {
         if (command === "publish") {
-          if (typeof text !== "string" || !text.trim() || text.length > 4000)
+          if (typeof text !== "string" || (!text.trim() && !event.data.file) || text.length > 4000)
             return;
           let photoUrl = null;
           const photo = event.data.file;

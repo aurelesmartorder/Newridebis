@@ -5278,7 +5278,7 @@ async function speakText(text, automatic){
   // robotique du navigateur passait en premier, et la bonne voix n'arrivait qu'en secours
   // si celle-ci échouait à démarrer — ce qui donnait l'impression qu'ALI n'était pas
   // vraiment branchée partout. La voix locale du navigateur ne sert plus qu'en tout dernier
-  // recours, si le réseau est réellement indisponible.
+  // recours supprimé dans la V2 : aucun changement silencieux de voix.
   try{
     for(let i=0;i<chunks.length;i++){
       if(requestId!==_speakRequestId) return;
@@ -5291,15 +5291,8 @@ async function speakText(text, automatic){
       await playSpeechBlob(blob,requestId);
     }
   }catch(networkError){
-    console.warn('Voix réseau indisponible, dernier recours : voix locale du navigateur',networkError);
-    if(requestId===_speakRequestId){ toast('🔊 Voix de secours (réseau indisponible)'); }
-    try{
-      await speakWithBrowserVoice(chunks.join(' '),requestId,1200);
-    }catch(localError){
-      console.error('Aucune voix disponible',localError);
-      if(requestId===_speakRequestId){
-        toast('🔊 Son impossible. Vérifie le volume, le mode silencieux et les écouteurs Bluetooth.');
-      }
+    if(requestId===_speakRequestId){
+      toast('La voix ALI est indisponible. Réessaie la lecture ; le texte reste accessible.');
     }
   }finally{
     if(requestId===_speakRequestId){

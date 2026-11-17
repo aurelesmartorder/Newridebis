@@ -1,183 +1,23 @@
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-
-import { MediaPicker } from "../../components/MediaPicker";
-import { SharedFeed, SocialConnection, FriendshipPanel } from "./SharedSocial";
-import { Header, Empty, command } from "./shared";
-import type { WorkspaceModel } from "./model";
-export function CommunityPage({ model }: { model: WorkspaceModel }) {
-  const {
-    setParams,
-    state,
-    draft,
-    setDraft,
-    drafts,
-    section,
-    community,
-    saveDraft,
-  } = model;
-  const [photo, setPhoto] = useState<File|null>(null);
-  const pendingPublish = useRef<string | null>(null);
-  useEffect(() => {
-    if (!state.socialBusy && pendingPublish.current !== null) {
-      if (state.socialError) setDraft(pendingPublish.current);
-      pendingPublish.current = null;
-    }
-  }, [state.socialBusy, state.socialError]);
-  return (
-    <>
-      <Header
-        number="COMMUNAUTÉ / L’ÉQUITATION SE PARTAGE"
-        title="LES MÊMES ÉMOTIONS."
-        description="Des moments à raconter, des chemins à découvrir et des rencontres à préparer."
-      />
-      <SocialConnection state={state} />
-      <nav className="studio-segments" aria-label="Rubriques de la communauté">
-        {[
-          ["social", "Le fil"],
-          ["routes", "Balades"],
-          ["events", "Événements"],
-          ["services", "Professionnels"],
-          ["top", "Progression"],
-        ].map(([id, label]) => (
-          <button
-            key={id}
-            aria-pressed={community === id}
-            onClick={() => setParams({ rubrique: id })}
-          >
-            {label}
-          </button>
-        ))}
-      </nav>
-      {community === "social" && (
-        <div className="studio-social-layout">
-          <div>
-            <FriendshipPanel state={state} />
-            <section className="studio-panel compose">
-              <span className="ride-kicker">VOTRE MOMENT À CHEVAL</span>
-              <label htmlFor="social-draft">
-                Qu’avez-vous envie de raconter ?
-              </label>
-              <textarea
-                id="social-draft"
-                value={draft}
-                maxLength={4000}
-                onChange={(e) => setDraft(e.target.value)}
-                placeholder="Une sensation, un progrès, un beau moment…"
-              />
-              <MediaPicker kind="photo" file={photo} onChange={setPhoto}/>
-              {photo && <p className="compat-note">La photo publiée sera stockée dans le stockage de photos existant. Toute personne disposant de son URL pourra potentiellement la consulter.</p>}
-              <div>
-                <span>
-                  {state.authenticated
-                    ? "Choisissez : conserver ici ou publier à vos amis."
-                    : "Brouillon privé · sur cet appareil"}
-                </span>
-                <button
-                  className="studio-dark"
-                  disabled={!draft.trim()}
-                  onClick={saveDraft}
-                >
-                  Conserver <ArrowRight size={17} />
-                </button>
-                {state.authenticated && (
-                  <button
-                    className="studio-dark"
-                    disabled={!draft.trim() || state.socialBusy}
-                    onClick={() => {
-                      pendingPublish.current = draft;
-                      const frame = document.getElementById("newride-engine") as HTMLIFrameElement | null;
-                      frame?.contentWindow?.postMessage({type:"newride-v2-command",command:"publish",text:draft,file:photo}, location.origin);
-                      setDraft("");
-                    }}
-                  >
-                    {state.socialBusy ? "Envoi…" : "Publier à mes amis"}
-                    <ArrowRight size={17} />
-                  </button>
-                )}
-              </div>
-            </section>
-            <SharedFeed state={state} />
-            {!state.posts?.length && (
-              <Empty
-                title="DE LA PLACE POUR VOS HISTOIRES."
-                text={
-                  state.authenticated
-                    ? "Aucune publication de votre cercle n’est chargée. Acceptez la demande d’amitié, publiez depuis le second compte puis actualisez le fil."
-                    : "Aucune publication communautaire n’est chargée dans ce mode. Les brouillons ci-dessous restent privés et ne sont pas des publications partagées."
-                }
-              />
-            )}
-            {drafts.map((d) => (
-              <article className="studio-panel journal-entry" key={d.id}>
-                <span>BROUILLON PRIVÉ</span>
-                <p>{d.text}</p>
-                <time>{new Date(d.at).toLocaleDateString("fr-FR")}</time>
-              </article>
-            ))}
-          </div>
-          <aside>
-            <img
-              src="/photos/landscape.webp"
-              alt="Deux personnes et leurs chevaux en montagne"
-            />
-            <span className="ride-kicker">UN LIEN QUI SE PARTAGE</span>
-            <h2>
-              LES HISTOIRES
-              <br />
-              COMMENCENT DEHORS.
-            </h2>
-            <Link className="studio-text-link" to="/carte">
-              Retrouver vos tracés <ArrowUpRight size={18} />
-            </Link>
-          </aside>
-        </div>
-      )}
-      {community === "routes" && (
-        <div className="studio-live-hero">
-          <img src="/photos/trail.webp" alt="Sortie en forêt à cheval" />
-          <div>
-            <span className="ride-kicker">EXPLORER À VOTRE RYTHME</span>
-            <h2>
-              AU BOUT
-              <br />
-              DU CHEMIN.
-            </h2>
-            <p>
-              Préparez une sortie, enregistrez votre tracé et conservez les
-              points de votre téléphone.
-            </p>
-            <Link className="studio-primary" to="/carte">
-              Vos parcours <ArrowRight size={18} />
-            </Link>
-          </div>
-        </div>
-      )}
-      {community === "events" && (
-        <Empty
-          title="LES RENDEZ-VOUS À VENIR."
-          text="Aucun événement vérifié n’est disponible dans ce mode. Nous n’affichons ni concours fictifs ni fausses disponibilités."
-          link="/pro"
-          label="Préparer votre entourage"
-        />
-      )}
-      {community === "services" && (
-        <Empty
-          title="LE BON REGARD À VOS CÔTÉS."
-          text="Trouvez un professionnel et vérifiez directement ses compétences, ses coordonnées et ses disponibilités."
-          link="/experts"
-          label="Rechercher un professionnel"
-        />
-      )}
-      {community === "top" && (
-        <Empty
-          title="VOTRE PARCOURS VOUS APPARTIENT."
-          text="Sans données comparables et vérifiées, aucun classement n’est affiché. Retrouvez vos propres séances et observations."
-          link="/performances"
-          label="Ouvrir votre carnet"
-        />
-      )}
-    </>
-  );
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Plus, UsersRound, Compass, ImagePlus } from 'lucide-react';
+import { MediaPicker } from '../../components/MediaPicker';
+import { Dialog } from '../../components/ui';
+import { SharedFeed, SocialConnection, FriendshipPanel } from './SharedSocial';
+import { Empty, command } from './shared';
+import type { WorkspaceModel } from './model';
+export function CommunityPage({model}:{model:WorkspaceModel}){
+ const {state,draft,setDraft,drafts,saveDraft,community,setParams}=model;
+ const [compose,setCompose]=useState(false);const [friends,setFriends]=useState(false);const [photo,setPhoto]=useState<File|null>(null);
+ const pending=useRef(false);const sawBusy=useRef(false);
+ useEffect(()=>{if(!pending.current)return;if(state.socialBusy){sawBusy.current=true;return;}if(!sawBusy.current)return;pending.current=false;sawBusy.current=false;if(!state.socialError){setDraft('');setPhoto(null);setCompose(false)}},[state.socialBusy,state.socialError]);
+ function publish(){if(!state.authenticated||state.socialBusy||(!draft.trim()&&!photo))return;const frame=document.getElementById('newride-engine') as HTMLIFrameElement|null;if(!frame)return;pending.current=true;sawBusy.current=false;frame.contentWindow?.postMessage({type:'newride-v2-command',command:'publish',text:draft,file:photo},location.origin)}
+ return <div className="community-feed-page"><header className="community-heading"><div><p className="ride-kicker">LES CAVALIERS, EN LIEN</p><h1>Communauté<span>.</span></h1></div><div><button className="community-icon" aria-label="Mes amis" onClick={()=>setFriends(true)}><UsersRound size={22}/></button><button className="media-action" onClick={()=>setCompose(true)}><Plus size={20}/><span>Publier</span></button></div></header>
+ <nav className="community-tabs" aria-label="Explorer la communauté">{[['social','Le fil'],['routes','Balades']].map(([id,label])=><button key={id} aria-pressed={community===id} onClick={()=>setParams({rubrique:id})}>{label}</button>)}</nav>
+ {community==='social'&&<div className="community-feed-column"><SocialConnection state={state}/><button className="community-compose-prompt" onClick={()=>setCompose(true)}><span className="community-prompt-avatar"><Plus size={22}/></span><span>Un moment à partager ?</span><ImagePlus size={22}/></button><SharedFeed state={state}/>{!state.posts?.length&&<section className="community-empty"><span className="community-empty-icon"><UsersRound size={30} strokeWidth={1.4}/></span><h2>Les premiers liens commencent ici.</h2><p>{state.authenticated?'Ajoutez vos amis pour retrouver leurs moments à cheval.':'Connectez votre compte pour retrouver les publications de vos amis. Vous pouvez déjà préparer votre premier post.'}</p><button className="media-action" onClick={()=>state.authenticated?setFriends(true):setCompose(true)}>{state.authenticated?'Retrouver mes amis':'Créer mon premier post'}<ArrowRight size={17}/></button></section>}{drafts.length>0&&<details className="community-drafts"><summary>Mes brouillons privés · {drafts.length}</summary>{drafts.map(d=><article key={d.id}><p>{d.text}</p><time>{new Date(d.at).toLocaleDateString('fr-FR')}</time></article>)}</details>}</div>}
+ {community==='routes'&&<div className="studio-live-hero"><img src="/photos/trail.webp" alt="Sortie en forêt à cheval"/><div><span className="ride-kicker">EXPLORER À VOTRE RYTHME</span><h2>AU BOUT<br/>DU CHEMIN.</h2><p>Votre carte, vos tracés et les sorties enregistrées sur cet appareil.</p><Link className="studio-primary" to="/carte"><Compass size={18}/>Ouvrir la carte</Link></div></div>}
+ {!['social','routes'].includes(community)&&<Empty title="Retrouvons le fil." text="Les professionnels sont désormais dans Mon écurie. Les événements et classements ne sont pas encore disponibles." link="/discover" label="Revenir au fil"/>}
+ {friends&&<Dialog title="Mes amis" onClose={()=>setFriends(false)}><FriendshipPanel state={state}/>{!state.authenticated&&<><p>Connectez votre compte pour ajouter et retrouver vos amis.</p><Link className="media-action" to="/acces-test" onClick={()=>setFriends(false)}>Mon compte <ArrowUpRight size={17}/></Link></>}</Dialog>}
+ {compose&&<Dialog title="Créer une publication" onClose={()=>{if(!state.socialBusy)setCompose(false)}}><div className="post-composer"><MediaPicker kind="photo" file={photo} onChange={setPhoto}/><label htmlFor="social-draft">Votre légende<textarea id="social-draft" value={draft} onChange={e=>setDraft(e.target.value)} maxLength={4000} placeholder="Racontez ce moment…"/></label>{photo&&<details className="media-hint"><summary>Visibilité de la photo</summary>La photo sera enregistrée dans le stockage existant. Une personne disposant de son URL peut potentiellement la consulter. Ne partagez pas de média sensible.</details>}<div className="composer-footer"><button className="media-action secondary" disabled={!draft.trim()||state.socialBusy} onClick={()=>{saveDraft();setCompose(false)}}>Garder le texte en brouillon</button>{state.authenticated?<button className="media-action" disabled={(!draft.trim()&&!photo)||state.socialBusy} onClick={publish}>{state.socialBusy?'Publication…':'Partager avec mes amis'}</button>:<Link className="media-action" to="/acces-test" onClick={()=>setCompose(false)}>Me connecter pour publier</Link>}</div>{state.socialError&&<p role="alert">{state.socialError}</p>}<p className="media-hint">Les brouillons de texte restent sur cet appareil. Les photos ne sont pas conservées dans les brouillons.</p></div></Dialog>}
+ </div>
 }

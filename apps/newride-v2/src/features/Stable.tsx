@@ -57,6 +57,7 @@ export function Stable() {
           Ajouter un cheval
         </Button>
       </div>
+      <nav className="stable-shortcuts" aria-label="Votre carnet et vos services"><Link to="/performances">Mes performances <ArrowUpRight size={17}/></Link><Link to="/experts">Trouver un professionnel <ArrowUpRight size={17}/></Link><Link to="/pro">Mes contacts <ArrowUpRight size={17}/></Link><Link to="/acces-test">Mon compte <ArrowUpRight size={17}/></Link></nav>
       <div className="page-tabs" aria-label="Sections de l’écurie">
         {tabs.map(([id, label]) => (
           <button

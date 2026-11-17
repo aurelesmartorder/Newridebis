@@ -41,41 +41,11 @@ import { type TabId } from "./navigation";
 import { Newridebis } from "../features/Newridebis";
 import { Dialog, Button } from "../components/ui";
 const navigation = [
-  {
-    id: "today" as TabId,
-    path: "/",
-    label: "Aujourd’hui",
-    icon: Home,
-    description: "Votre quotidien équestre",
-  },
-  {
-    id: "community" as TabId,
-    path: "/discover",
-    label: "Communauté",
-    icon: Compass,
-    description: "Social, balades & événements",
-  },
-  {
-    id: "live" as TabId,
-    path: "/live",
-    label: "Live",
-    icon: Activity,
-    description: "Séance, perfs & carte",
-  },
-  {
-    id: "ali" as TabId,
-    path: "/coaching",
-    label: "ALI",
-    icon: AudioLines,
-    description: "Voix, leçons & questions",
-  },
-  {
-    id: "stable" as TabId,
-    path: "/ecurie",
-    label: "Écurie",
-    icon: Footprints,
-    description: "Chevaux, profil & pros",
-  },
+ {id:"today" as TabId,path:"/",label:"Accueil",icon:Home,description:"Votre quotidien équestre"},
+ {id:"ali" as TabId,path:"/coaching",label:"ALI",icon:AudioLines,description:"Parler, écouter, s’entraîner"},
+ {id:"helmet" as TabId,path:"/casque",label:"Mon casque",icon:Radio,description:"Connexion & sécurité"},
+ {id:"community" as TabId,path:"/discover",label:"Communauté",icon:Compass,description:"Amis, moments & balades"},
+ {id:"stable" as TabId,path:"/ecurie",label:"Mon écurie",icon:Footprints,description:"Chevaux, carnet & entourage"},
 ];
 const mobileNavigation = navigation;
 const legacyTabs: Record<
@@ -83,6 +53,7 @@ const legacyTabs: Record<
   "live" | "perf" | "map" | "discover" | "coach" | "pro"
 > = {
   "/live": "live",
+  "/lecons": "coach",
   "/performances": "perf",
   "/carte": "map",
   "/discover": "discover",
@@ -135,7 +106,7 @@ function Shell() {
     month: "long",
   }).format(new Date());
   return (
-    <div className={`app-shell ${railCollapsed ? "compact-rail" : ""}`}>
+    <div className={`app-shell ${location.pathname !== "/" ? "feature-shell" : ""} ${railCollapsed ? "compact-rail" : ""}`}>
       <a className="skip-link" href="#main">
         Aller au contenu
       </a>
@@ -154,7 +125,7 @@ function Shell() {
               to={destination(id)}
               end={path === "/"}
               className={({ isActive }) =>
-                `nav-item ${activeTab === id ? "active" : ""} ${path === "/live" ? "nav-live" : ""}`
+                `nav-item ${activeTab === id ? "active" : ""} ${path === "/casque" ? "nav-live" : ""}`
               }
             >
               <Icon size={21} strokeWidth={1.7} />
@@ -162,33 +133,10 @@ function Shell() {
                 <strong>{label}</strong>
                 <small>{description}</small>
               </span>
-              {path === "/live" && <span className="nav-live-dot" />}
+              
             </NavLink>
           ))}
         </nav>
-        <NavLink to="/casque" className={({ isActive }) => `helmet-menu ${isActive ? "active" : ""}`}><Radio size={23} strokeWidth={1.7} /><span><strong>Connecter mon casque</strong><small>Bluetooth & audio</small></span><ArrowRight size={17} /></NavLink>
-        <div className="rail-subspaces">
-          <Link to="/performances">
-            <ChartNoAxesCombined size={15} />
-            Perfs
-          </Link>
-          <Link to="/carte">
-            <MapPin size={15} />
-            Carte
-          </Link>
-          <Link to="/pro">
-            <UsersRound size={15} />
-            Pro
-          </Link>
-          <Link to="/acces-test">
-            <UsersRound size={15} />
-            Accès test
-          </Link>
-          <Link to="/lecons">
-            <BookOpen size={15} />
-            Leçons
-          </Link>
-        </div>
         <div className="sidebar-bottom">
           <button
             className="rail-toggle"
@@ -247,7 +195,7 @@ function Shell() {
             <span className="header-date">{date}</span>
           </div>
           <div className="header-actions">
-            <Link to="/casque" className="mobile-helmet-menu"><Radio size={19}/><span>Casque</span></Link>
+
             {voiceActive && (
               <Link to="/ali?section=voice" className="voice-active-pill">
                 <span />
@@ -334,7 +282,7 @@ function Shell() {
             end={path === "/"}
             to={destination(id)}
             className={({ isActive }) =>
-              `${activeTab === id ? "active" : ""} ${path === "/live" ? "bottom-live" : ""}`
+              `${activeTab === id ? "active" : ""} ${path === "/casque" ? "bottom-live" : ""}`
             }
           >
             <span>
@@ -362,9 +310,7 @@ function Shell() {
               <li>Retrouvez votre ressenti dans le carnet.</li>
             </ol>
             <p>
-              Les onglets historiques sont accessibles dans un espace de
-              compatibilité : Live, Perfs, Carte, Discover, Coach ALI et Pro. Le
-              compte NewRidebis donne accès à la voix et aux données partagées.
+              Retrouvez le coaching dans ALI, la connexion et la sécurité dans Mon casque, les balades dans Communauté et votre historique dans Mon écurie. Un compte donne accès à la conversation vocale et aux publications partagées.
               L’Écurie V2 reste locale ; le casque et les réservations ne sont
               pas validés par cette reprise.
             </p>

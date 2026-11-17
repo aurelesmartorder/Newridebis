@@ -22,7 +22,10 @@ test("la redirection de connexion refuse les destinations externes et les boucle
 });
 test("les sous-parcours reviennent au bon espace et conservent un parent déterministe", () => {
   assert.equal(tabForPath("/ali/conversation"), "ali");
-  assert.equal(tabForPath("/performances"), "live");
+  assert.equal(tabForPath("/performances"), "stable");
+  assert.equal(tabForPath("/casque"), "helmet");
+  assert.equal(tabForPath("/live"), "ali");
+  assert.equal(tabForPath("/carte"), "community");
   assert.equal(tabForPath("/pro"), "stable");
   assert.equal(tabForPath("/discover"), "community");
   assert.equal(parentForPath("/coaching/rythme-au-pas"), "/exercices");

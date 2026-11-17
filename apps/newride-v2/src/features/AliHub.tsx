@@ -12,6 +12,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import categories from "../content/lessons.json";
+import { command, useEngine } from "./workspace/shared";
 import { Badge, SectionHeading } from "../components/ui";
 const displayTitles: Record<string, string> = {
   "Le geste que 9 selles sur 10 ratent":
@@ -55,7 +56,7 @@ export function AliHub() {
       "/lecons",
       BookOpen,
       "Leçons & questions",
-      "Les 50 sujets du catalogue NewRidebis, classés par discipline.",
+      "Choisissez un sujet et écoutez sa leçon.",
     ],
     [
       "/ali?section=program",
@@ -78,8 +79,8 @@ export function AliHub() {
     [
       "/exercices",
       MessageCircle,
-      "Exercices guidés V2",
-      "Trois parcours chronométrés locaux, distincts de la conversation vocale.",
+      "Exercices guidés",
+      "Un exercice, des étapes claires et les consignes d’ALI à la demande.",
     ],
   ] as const;
   return (
@@ -106,7 +107,7 @@ export function AliHub() {
         <ArrowRight size={24} />
       </Link>
       <div className="ali-feature-grid">
-        {cards.map(([to, Icon, title, description]) => (
+        {cards.filter(([to]) => !["/ali/conversation", "/ali?section=program", "/ali?section=memory"].includes(to)).map(([to, Icon, title, description]) => (
           <Link className="card ali-feature" to={to} key={title}>
             <Icon size={25} />
             <h2>{title}</h2>
@@ -118,6 +119,7 @@ export function AliHub() {
           </Link>
         ))}
       </div>
+      <details className="ali-secondary"><summary>Mon suivi avec ALI</summary><nav><Link to="/ali?section=program">Mon programme</Link><Link to="/ali?section=memory">Mon journal</Link></nav></details>
       <Link className="ali-about-link" to="/ali/a-propos">
         En savoir plus sur ALI <ArrowRight size={18} />
       </Link>
@@ -132,6 +134,8 @@ export function AliHub() {
   );
 }
 export function Lessons() {
+  const {state,notice,setNotice}=useEngine();
+  const [chosen,setChosen]=useState("");
   const [query, setQuery] = useState("");
   const [discipline, setDiscipline] = useState("all");
   const normalized = query.trim().toLocaleLowerCase("fr");
@@ -154,12 +158,13 @@ export function Lessons() {
           <p className="eyebrow">APPRENDRE AVEC ALI</p>
           <h1>Leçons & questions de cavaliers.</h1>
           <p>
-            Retrouvez les 50 sujets de NewRidebis. Ouvrez une leçon, puis lancez
-            sa conversation vocale.
+            Choisissez un thème, puis touchez Écouter. Vous pouvez interrompre ALI pour poser une question.
           </p>
         </div>
         <Badge tone="green">50 sujets · 8 catégories</Badge>
       </div>
+      {notice && <p role="status" className="studio-notice">{notice} {!state.authenticated && <Link to="/acces-test">Mon compte</Link>}</p>}
+      {(state.connecting || state.voiceActive) && <div className="lesson-player" role="status"><AudioLines size={22}/><div><strong>{state.connecting ? "Connexion à ALI…" : "Session vocale active"}</strong><p>{chosen}</p></div><button className="media-action secondary" onClick={()=>command("voice-stop")}>Arrêter</button></div>}
       <label className="search-field">
         <Search size={19} />
         <input
@@ -190,25 +195,23 @@ export function Lessons() {
       </div>
       <div className="lesson-category-grid">
         {list.map((cat) => (
-          <section className="card lesson-category" key={cat.name}>
-            <SectionHeading
-              title={cat.name
-                .replace(" — ce que dit la science", "")
-                .replace(" — ce que révèle le corpus", "")}
-            />
+          <details className="card lesson-category" key={cat.name} open={!!normalized || discipline !== "all"}>
+            <summary><h2>{cat.name.replace(" — ce que dit la science", "").replace(" — ce que révèle le corpus", "")}</h2><span>{cat.topics.length} leçons</span></summary>
             {cat.topics.map((topic) => (
-              <Link
+              <button type="button" className="lesson-row"
                 key={topic}
-                to={`/ali/conversation?lecon=${encodeURIComponent(topic)}`}
+                disabled={!!state.connecting || !!state.voiceActive}
+                onClick={()=>{setChosen(label(topic));setNotice("");if(!state.ready){setNotice("Le service vocal se prépare. Réessayez dans un instant.");return;}if(!state.authenticated){setNotice("Connectez votre compte pour écouter ALI. Le catalogue reste accessible sans compte.");return;}command("voice-start",topic)}}
+                aria-label={`Écouter la leçon : ${label(topic)}`}
               >
                 <span className="lesson-play">
                   <AudioLines size={17} />
                 </span>
                 <span>{label(topic)}</span>
-                <ChevronRight size={17} />
-              </Link>
+                <span className="lesson-listen">Écouter</span>
+              </button>
             ))}
-          </section>
+          </details>
         ))}
       </div>
       {!list.length && (
