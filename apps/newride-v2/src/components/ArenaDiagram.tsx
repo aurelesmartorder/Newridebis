@@ -3,7 +3,7 @@ export function ArenaDiagram({
   variant = "circle",
   compact = false,
 }: {
-  variant?: "circle" | "transition" | "line";
+  variant?: "circle" | "transition" | "line" | "serpentine" | "poles" | "lateral";
   compact?: boolean;
 }) {
   const id = useId().replaceAll(":", "");
@@ -13,7 +13,7 @@ export function ArenaDiagram({
       viewBox="0 0 340 190"
       role="img"
       aria-label={
-        variant === "circle"
+        variant === "serpentine" ? "Schéma indicatif de trois boucles, non à l’échelle" : variant === "poles" ? "Schéma indicatif de barres au sol, distances à adapter par l’enseignant" : variant === "lateral" ? "Schéma indicatif de déplacement latéral puis ligne droite" : variant === "circle"
           ? "Schéma : grande courbe dans une carrière"
           : variant === "line"
             ? "Schéma : ligne diagonale et grande courbe"
@@ -64,7 +64,7 @@ export function ArenaDiagram({
         stroke="#d0dbcb"
         strokeDasharray="4 5"
       />
-      {variant === "circle" ? (
+      {variant === "serpentine" ? <path d="M65 145 C65 15 150 15 150 95 S235 175 235 95 S280 30 280 45" fill="none" stroke="#365c47" strokeWidth="3" strokeDasharray="6 5"/> : variant === "poles" ? <><path d="M60 95H275" stroke="#365c47" strokeWidth="2" strokeDasharray="5 5"/>{[130,155,180,205].map(x=><path key={x} d={`M${x} 70V120`} stroke="#ff6746" strokeWidth="6"/>)}</> : variant === "lateral" ? <><path d="M75 145L220 55H275" fill="none" stroke="#365c47" strokeWidth="3" strokeDasharray="6 5"/><path d="M75 145V45" stroke="#bdcbb7" strokeWidth="2"/></> : variant === "circle" ? (
         <>
           <path
             d="M90 95C90 36 250 36 250 95S90 154 90 95"

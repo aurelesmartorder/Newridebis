@@ -4,12 +4,15 @@ import {
   ArrowRight,
   Check,
   Heart,
+  Ellipsis,
+  Trash2,
   MessageCircle,
   RefreshCw,
   Send,
   UserPlus,
 } from "lucide-react";
 import { command, type Snapshot, type Post } from "./shared";
+import { Dialog } from "../../components/ui";
 import { validSocialPayload } from "../../lib/social";
 export function SocialConnection({ state }: { state: Snapshot }) {
   return (
@@ -119,6 +122,8 @@ export function FriendshipPanel({ state }: { state: Snapshot }) {
 }
 function SharedPost({ post, state }: { post: Post; state: Snapshot }) {
   const [comment, setComment] = useState("");
+  const [menu,setMenu]=useState(false);
+  const [confirmDelete,setConfirmDelete]=useState(false);
   const pending = useRef<string | null>(null);
   useEffect(() => {
     if (!state.socialBusy && pending.current !== null) {
@@ -142,7 +147,9 @@ function SharedPost({ post, state }: { post: Post; state: Snapshot }) {
         </span>
         <strong>{post.authorName || "Cavalier"}</strong>
         <span>Publication partagée</span>
+        {state.authenticated && post.isSelf && <div className="post-options"><button type="button" className="post-options-toggle" aria-label="Options de ma publication" aria-expanded={menu} onClick={()=>setMenu(v=>!v)} disabled={state.socialBusy}><Ellipsis size={23}/></button>{menu && <div className="post-options-menu"><button type="button" onClick={()=>{setMenu(false);setConfirmDelete(true)}}><Trash2 size={17}/>Supprimer la publication</button></div>}</div>}
       </header>
+      {confirmDelete && <Dialog title="Supprimer cette publication ?" onClose={()=>{if(!state.socialBusy)setConfirmDelete(false)}}><p>Elle disparaîtra du fil, avec ses commentaires et ses mentions J’aime. Cette suppression est définitive.</p><div className="dialog-actions"><button type="button" className="media-action secondary" disabled={state.socialBusy} onClick={()=>setConfirmDelete(false)}>Conserver</button><button type="button" className="media-action post-delete-button" disabled={state.socialBusy} onClick={()=>{command("delete-post",undefined,post.id);setConfirmDelete(false)}}><Trash2 size={18}/>Supprimer définitivement</button></div></Dialog>}
       {post.photo_url && (
         <img
           src={post.photo_url}

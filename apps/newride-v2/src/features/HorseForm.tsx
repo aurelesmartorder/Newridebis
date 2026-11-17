@@ -48,7 +48,6 @@ export function HorseForm({ onClose }: { onClose: () => void }) {
             required
             maxLength={80}
             autoComplete="off"
-            autoFocus
             placeholder="Ex. Givenchy"
           />
         </label>
@@ -81,7 +80,7 @@ export function HorseForm({ onClose }: { onClose: () => void }) {
             {error}
           </p>
         )}
-        <Button type="submit">Créer la fiche</Button>
+        <div className="horse-form-actions"><Button type="submit">Créer la fiche</Button></div>
       </form>
     </Dialog>
   );

@@ -1,3 +1,4 @@
+import { trainingExercises, trainingReferences } from "./trainingLibrary.ts";
 export type Discipline = "Fondamentaux" | "Dressage" | "Extérieur";
 export interface ExerciseStep {
   title: string;
@@ -17,17 +18,22 @@ export interface Exercise {
   observation: string;
   sources: string[];
   steps: ExerciseStep[];
-  diagram: "circle" | "transition" | "line";
+  diagram: "circle" | "transition" | "line" | "serpentine" | "poles" | "lateral";
+  setup?: string;
+  criteria?: string[];
+  easier?: string;
+  harder?: string;
+  evidence?: string;
 }
 
-export const exercises: Exercise[] = [
+const starterExercises: Exercise[] = [
   {
     id: "rythme-au-pas",
     title: "Trouver votre rythme",
     subtitle: "Régularité au pas",
     discipline: "Fondamentaux",
     duration: 12,
-    level: "Accessible",
+    level: "Découverte",
     diagram: "circle",
     goal: "Observer la régularité du pas et garder une intention simple sur une grande courbe.",
     prerequisite:
@@ -71,7 +77,7 @@ export const exercises: Exercise[] = [
     subtitle: "Transitions pas–arrêt",
     discipline: "Dressage",
     duration: 15,
-    level: "Bases acquises",
+    level: "Découverte",
     diagram: "transition",
     goal: "Préparer une transition simple et observer la réponse, sans ajouter plusieurs corrections simultanées.",
     prerequisite:
@@ -116,7 +122,7 @@ export const exercises: Exercise[] = [
     subtitle: "Direction & grandes lignes",
     discipline: "Fondamentaux",
     duration: 10,
-    level: "Accessible",
+    level: "Découverte",
     diagram: "line",
     goal: "Prévoir sa trajectoire et rester disponible pour le mouvement du cheval.",
     prerequisite:
@@ -154,7 +160,10 @@ export const exercises: Exercise[] = [
   },
 ];
 
+export const exercises: Exercise[] = [...starterExercises, ...trainingExercises];
+
 export const scientificSources = [
+  ...trainingReferences,
   {
     title: "Principes d’apprentissage du cheval",
     publisher: "International Society for Equitation Science",

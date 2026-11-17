@@ -99,7 +99,15 @@ export function Dialog({
   useEffect(() => {
     const dialog = ref.current;
     dialog?.showModal();
-    return () => dialog?.close();
+    const viewport = window.visualViewport;
+    const resize = () => {
+      dialog?.style.setProperty('--dialog-viewport', `${viewport?.height || window.innerHeight}px`);
+      dialog?.style.setProperty('--dialog-offset', `${viewport?.offsetTop || 0}px`);
+    };
+    resize();
+    viewport?.addEventListener('resize',resize);
+    viewport?.addEventListener('scroll',resize);
+    return () => { viewport?.removeEventListener('resize',resize); viewport?.removeEventListener('scroll',resize); dialog?.close(); };
   }, []);
   return (
     <dialog

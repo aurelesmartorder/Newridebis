@@ -26,12 +26,13 @@ export function HelmetPage() {
   const [emergency, setEmergency] = useState(false);
   const [audioMessage, setAudioMessage] = useState("");
   const [playing, setPlaying] = useState(false);
-  const audio = useRef<AudioContext | null>(null);
+  const audio = useRef<HTMLAudioElement | null>(null);
   const connected = helmet.phase === "connected";
   const busy = helmet.phase === "choosing" || helmet.phase === "connecting";
   useEffect(
     () => () => {
-      void audio.current?.close();
+      audio.current?.pause();
+      if(audio.current) audio.current.src = "";
     },
     [],
   );
@@ -39,28 +40,19 @@ export function HelmetPage() {
     if (playing) return;
     setAudioMessage("");
     try {
-      const ctx = new AudioContext();
-      audio.current = ctx;
-      await ctx.resume();
-      const gain = ctx.createGain();
-      gain.gain.value = 0.06;
-      gain.connect(ctx.destination);
-      [0, 0.35, 0.7].forEach((at, i) => {
-        const tone = ctx.createOscillator();
-        tone.frequency.value = [440, 554, 659][i];
-        tone.connect(gain);
-        tone.start(ctx.currentTime + at);
-        tone.stop(ctx.currentTime + at + 0.18);
-      });
+      audio.current?.pause();
+      const player = new Audio('/audio/helmet-check.wav');
+      audio.current = player;
+      player.volume = 0.7;
+      player.muted = false;
+      player.setAttribute('playsinline', '');
+      player.onended = () => { setPlaying(false); setAudioMessage('Test terminé. Avez-vous entendu les trois notes dans le casque ?'); };
+      player.onerror = () => { setPlaying(false); setAudioMessage('Lecture impossible. Vérifiez la sortie audio et le volume du téléphone, puis réessayez.'); };
       setPlaying(true);
-      setAudioMessage(
-        "Écoutez les trois notes. Vérifiez si elles sortent du casque ou du téléphone.",
-      );
-      setTimeout(() => {
-        void ctx.close();
-        audio.current = null;
-        setPlaying(false);
-      }, 1200);
+      // play is invoked synchronously in the click gesture, without awaiting an audio context.
+      const playback = player.play();
+      setAudioMessage('Écoutez les trois notes et vérifiez leur sortie : casque ou téléphone.');
+      await playback;
     } catch {
       setAudioMessage(
         "Le son n’a pas pu être lu. Vérifiez le volume et la sortie audio de votre appareil.",

@@ -313,6 +313,7 @@
       [
         "social-refresh",
         "publish",
+        "delete-post",
         "like",
         "comment",
         "friend-request",
@@ -332,7 +333,15 @@
       let rollback = null;
       let mutationConfirmed=false;
       try {
-        if (command === "publish") {
+        if (command === "delete-post") {
+          if (!uuid(id)) throw Error('Invalid post');
+          const ownerId = CURRENT_USER.id;
+          await deleteOwnedSocialPost(sbClient, id, ownerId);
+          mutationConfirmed = true;
+          S.realPosts = (S.realPosts || []).filter(post => post.id !== id);
+          notify();
+          notice("Publication supprimée avec ses commentaires et ses mentions J’aime.");
+        } else if (command === "publish") {
           if (typeof text !== "string" || (!text.trim() && !event.data.file) || text.length > 4000)
             return;
           let photoUrl = null;

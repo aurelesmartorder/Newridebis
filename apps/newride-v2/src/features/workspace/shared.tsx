@@ -18,6 +18,7 @@ import {
 export type Post = {
   id: string;
   caption: string;
+  isSelf?: boolean;
   authorName?: string;
   photo_url?: string;
   like?: { count: number; likedByMe?: boolean };

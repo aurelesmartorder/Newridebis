@@ -18,12 +18,14 @@ import { useStore } from "../app/Store";
 export function Coaching() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("Tous");
+  const [level,setLevel]=useState("Tous les niveaux");
   const { data } = useStore();
   const list = exercises.filter(
     (e) =>
       (filter === "Tous" ||
         (filter === "Favoris" && data.favorites.includes(e.id)) ||
         e.discipline === filter) &&
+      (level === "Tous les niveaux" || e.level === level) &&
       `${e.title} ${e.subtitle}`
         .toLocaleLowerCase("fr")
         .includes(query.toLocaleLowerCase("fr")),
@@ -49,12 +51,12 @@ export function Coaching() {
             par une intention simple.
           </h2>
           <p>
-            Un petit catalogue pour explorer la régularité, les transitions et
-            la direction au pas.
+            Des parcours par niveau, des consignes concrètes et des critères à observer avec votre enseignant.
           </p>
         </div>
         <ArenaDiagram />
       </div>
+      <label className="training-level">Votre niveau<select value={level} onChange={e=>setLevel(e.target.value)}>{["Tous les niveaux","Découverte","Autonome","Confirmé"].map(l=><option key={l}>{l}</option>)}</select><small>Niveau choisi, pas évalué par ALI. Vérifiez les prérequis du couple sur chaque fiche.</small></label>
       <div className="library-toolbar">
         <label className="search-field">
           <Search size={19} />
@@ -92,6 +94,7 @@ export function Coaching() {
             onClick={() => {
               setQuery("");
               setFilter("Tous");
+              setLevel("Tous les niveaux");
             }}
           >
             Voir tous les exercices
@@ -168,8 +171,11 @@ export function ExerciseDetail() {
             <p>{exercise.goal}</p>
             <h3>Avant de commencer</h3>
             <p>{exercise.prerequisite}</p>
+            {exercise.setup && <><h3>Installation</h3><p>{exercise.setup}</p></>}
             <h3>Ce que vous allez observer</h3>
             <p>{exercise.observation}</p>
+            {exercise.criteria && <ul>{exercise.criteria.map(c=><li key={c}>{c}</li>)}</ul>}
+            {exercise.easier && <><h3>Si c’est difficile</h3><p>{exercise.easier}</p><h3>Si c’est facile</h3><p>{exercise.harder}</p></>}
             <div className="safety-note">
               <ShieldCheck size={22} />
               <p>{exercise.stop}</p>
@@ -181,6 +187,7 @@ export function ExerciseDetail() {
                 avant validation pédagogique. Les durées sont des repères
                 adaptables, pas un protocole scientifique validé.
               </p>
+              {exercise.evidence && <p>{exercise.evidence}</p>}
               <ul>
                 {exercise.sources.map((s) => (
                   <li key={s}>{s}</li>

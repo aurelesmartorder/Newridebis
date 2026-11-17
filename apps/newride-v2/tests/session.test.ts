@@ -110,3 +110,9 @@ test("les durées des étapes correspondent au parcours annoncé", async () => {
       e.duration * 60,
     );
 });
+test('le catalogue contient trois niveaux et les parcours techniques exposent leurs prérequis',async()=>{
+ const {exercises}=await import('../src/content/exercises.ts');
+ assert.equal(new Set(exercises.map(e=>e.id)).size,exercises.length);
+ for(const level of ['Découverte','Autonome','Confirmé'])assert.ok(exercises.some(e=>e.level===level));
+ for(const e of exercises.filter(e=>e.level==='Confirmé')){assert.ok(e.prerequisite.includes('enseignant'));assert.ok(e.criteria?.length);assert.ok(e.sources.length);assert.ok(e.easier);}
+});
