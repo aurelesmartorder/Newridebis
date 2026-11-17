@@ -31,6 +31,7 @@ import {
   PanelLeftOpen,
 } from "lucide-react";
 import { StoreProvider, useStore } from "./Store";
+import { GpsProvider, useRideRecorder } from "../features/Workspace";
 import { RetainedScreens } from "./routes";
 import { NavigationState, useTabNavigation } from "./NavigationState";
 import { LegacySessionProvider, useVoiceActive } from "./LegacySession";
@@ -93,6 +94,7 @@ function Shell() {
   const { data, storageError } = useStore();
   const { activeTab, destination } = useTabNavigation();
   const voiceActive = useVoiceActive();
+  const gps = useRideRecorder();
   const [railCollapsed, setRailCollapsed] = useState(false);
   const location = useLocation();
   const legacyTab = legacyTabs[location.pathname];
@@ -276,6 +278,14 @@ function Shell() {
             {storageError}
           </div>
         )}
+        {gps.started && (
+          <div className="gps-recording-banner" role="status">
+            <Link to="/live">
+              GPS du téléphone en cours · {Math.floor(gps.seconds / 60)} min
+            </Link>
+            <button onClick={gps.stop}>Terminer et conserver</button>
+          </div>
+        )}
         {active && location.pathname !== "/seance-guidee" && (
           <Link className="active-session-banner" to="/seance-guidee">
             <Radio size={18} />
@@ -292,11 +302,7 @@ function Shell() {
           <RetainedScreens />
           {engineMounted && (
             <div hidden={!legacyTab}>
-              <Newridebis
-                tab={lastLegacy.current}
-                visible={!!legacyTab}
-                loginRequested={location.pathname === "/connexion"}
-              />
+              <Newridebis tab={lastLegacy.current} visible={!!legacyTab} />
             </div>
           )}
 
@@ -306,7 +312,7 @@ function Shell() {
               Votre pratique, à votre rythme.
             </span>
             <span>
-              V2 · NewRidebis repris + carnet local{" "}
+              Votre carnet · Sur cet appareil{" "}
               <Link to="/sources">Sources & limites</Link>
             </span>
           </footer>
@@ -413,7 +419,9 @@ export default function App() {
         <StoreProvider>
           <LegacySessionProvider>
             <NavigationState>
-              <Shell />
+              <GpsProvider>
+                <Shell />
+              </GpsProvider>
             </NavigationState>
           </LegacySessionProvider>
         </StoreProvider>

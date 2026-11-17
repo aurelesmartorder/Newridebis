@@ -58,19 +58,19 @@ export function AliHub() {
       "Les 50 sujets du catalogue NewRidebis, classés par discipline.",
     ],
     [
-      "/ali",
+      "/ali?section=program",
       CalendarDays,
       "Programme & séance",
       "Retrouver la préparation, le programme et les commandes du coach.",
     ],
     [
-      "/ali",
+      "/ali?section=memory",
       Brain,
       "Mémoire & progression",
       "Notes, historique et observations du coaching NewRidebis.",
     ],
     [
-      "/ali",
+      "/ali?section=video",
       Video,
       "Analyse vidéo",
       "Accéder à l’analyse de séquences disponible dans NewRidebis.",
@@ -101,10 +101,7 @@ export function AliHub() {
         <div>
           <Badge>COACH VOCAL INTERACTIF</Badge>
           <h2>Une question ? Parlons-en.</h2>
-          <p>
-            Ouvrez la conversation ALI. Votre compte NewRidebis est nécessaire
-            pour activer la voix.
-          </p>
+          <p>Choisissez un sujet et retrouvez votre espace de conversation.</p>
         </div>
         <ArrowRight size={24} />
       </Link>
@@ -127,10 +124,8 @@ export function AliHub() {
       <div className="editorial-note">
         <BookOpen size={23} />
         <p>
-          Les fonctions de NewRidebis sont reprises dans un espace de
-          compatibilité. La présence d’une fonction ne vaut pas validation du
-          coaching ou des mesures : les essais voix et capteurs restent
-          distincts.
+          Un accompagnement pour observer, comprendre et préparer votre
+          pratique. Les échanges ne certifient pas une compétence.
         </p>
       </div>
     </>
@@ -204,7 +199,7 @@ export function Lessons() {
             {cat.topics.map((topic) => (
               <Link
                 key={topic}
-                to={`/ali?section=lessons&lecon=${encodeURIComponent(topic)}`}
+                to={`/ali/conversation?lecon=${encodeURIComponent(topic)}`}
               >
                 <span className="lesson-play">
                   <AudioLines size={17} />

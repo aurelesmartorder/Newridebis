@@ -10,22 +10,24 @@
         type: "newridebis-ready",
         authenticated: !!CURRENT_USER,
         voiceActive: !!S.realtimeActive,
+        connecting: !!S.realtimeConnecting,
+        sessions: (S.sessions || []).slice(0, 30),
+        posts: (S.realPosts || []).slice(0, 30),
+        program: S.weeklyProgram || [],
+        chat: (S.chatHistory || []).slice(-30),
         tab: S.tab,
       },
       location.origin,
     );
   }
+  function notice(message) {
+    parent.postMessage({ type: "newride-v2-notice", message }, location.origin);
+  }
   function showLogin() {
-    if (S.realtimeActive || S.realtimeConnecting) return;
-    document.getElementById("auth").classList.remove("hidden");
-    document.getElementById("auth-title").textContent =
-      "Retrouvez votre compte NewRidebis";
-    const message = document.getElementById("auth-error");
-    if (message) {
-      message.textContent =
-        "Connectez-vous pour utiliser ALI et enregistrer vos données partagées.";
-      message.style.display = "block";
-    }
+    document.getElementById("auth")?.classList.add("hidden");
+    notice(
+      "Le service vocal connecté n’est pas disponible en mode invité pour le moment. Vous pouvez continuer à explorer et utiliser les exercices guidés.",
+    );
   }
   window.newrideV2Preview = function () {
     S.obSport = "equestre";
@@ -112,6 +114,7 @@
     }
     const login = document.querySelector("#hdr-inner button[title]");
     if (login && !CURRENT_USER) login.title = "Se connecter à NewRidebis";
+    document.getElementById("auth")?.classList.add("hidden");
     notify();
   };
   const positions = new Map();
@@ -187,6 +190,56 @@
     }
     notify();
   };
+  const originalToast = toast;
+  toast = function (message) {
+    notice(String(message).replace(/[\p{Extended_Pictographic}\uFE0F]/gu, ""));
+  };
+  addEventListener("message", async (event) => {
+    if (
+      event.origin !== location.origin ||
+      event.source !== parent ||
+      event.data?.type !== "newride-v2-command"
+    )
+      return;
+    const { command, text } = event.data;
+    try {
+      if (command === "voice-stop") {
+        await stopRealtimeConversation();
+        notify();
+        return;
+      }
+      if (!CURRENT_USER) {
+        showLogin();
+        return;
+      }
+      if (command === "voice-start") {
+        if (
+          typeof text === "string" &&
+          LESSON_CATEGORIES.some((c) => c.topics.includes(text))
+        )
+          await startLessonConversation(text);
+        else await startRealtimeConversation();
+      } else if (command === "program") await generateWeeklyProgram(false);
+      else if (
+        command === "chat" &&
+        typeof text === "string" &&
+        text.length <= 4000
+      ) {
+        go("coach");
+        const input = document.getElementById("ci");
+        if (input) {
+          input.value = text;
+          await sendChat();
+        }
+      }
+      notify();
+    } catch (error) {
+      notice(
+        "Le service n’a pas pu terminer cette demande. Votre navigation reste disponible.",
+      );
+    }
+  });
+  setInterval(notify, 1500);
   notify();
 })();
 // A lesson title is editorial, never evidence for a number or causal conclusion.

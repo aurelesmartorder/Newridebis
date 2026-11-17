@@ -1,5 +1,6 @@
 import { Activity, lazy, Suspense, useEffect, useState } from "react";
 import {
+  Navigate,
   Link,
   Route,
   Routes,
@@ -8,7 +9,7 @@ import {
 } from "react-router-dom";
 import { Dashboard } from "../features/Dashboard";
 import { AliHub, Lessons, AboutAli } from "../features/AliHub";
-import { LoginScreen, RequireAccount } from "./LegacySession";
+import { Workspace } from "../features/Workspace";
 import { tabForPath, type TabId } from "./navigation";
 import { Skeleton } from "../components/ui";
 const Library = lazy(() =>
@@ -46,21 +47,22 @@ function RouteStack({ location }: { location: Location }) {
         <Route path="/seances/:id" element={<Session />} />
         <Route path="/experts" element={<Experts />} />
         <Route path="/sources" element={<Sources />} />
-        <Route path="/connexion" element={<LoginScreen />} />
-        <Route path="/ali/a-propos" element={<AboutAli />} />
         <Route
-          path="/ali/conversation"
-          element={
-            <RequireAccount>
-              <span className="sr-only">Conversation ALI</span>
-            </RequireAccount>
-          }
+          path="/connexion"
+          element={<Navigate to="/coaching" replace />}
         />
-        {["/live", "/performances", "/carte", "/discover", "/ali", "/pro"].map(
-          (path) => (
-            <Route key={path} path={path} element={null} />
-          ),
-        )}
+        <Route path="/ali/a-propos" element={<AboutAli />} />
+        {[
+          "/live",
+          "/performances",
+          "/carte",
+          "/discover",
+          "/ali",
+          "/ali/conversation",
+          "/pro",
+        ].map((path) => (
+          <Route key={path} path={path} element={<Workspace />} />
+        ))}
         <Route
           path="*"
           element={
