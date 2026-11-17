@@ -13,6 +13,16 @@ export function LivePage({ model }: { model: WorkspaceModel }) {
         title="EN SELLE. ENSEMBLE."
         description="Choisissez votre partenaire, une intention, et prenez le temps de pratiquer."
       />
+      <nav className="studio-segments" aria-label="Espaces Live">
+        <Link to="/live" aria-current="page">
+          Ma séance
+        </Link>
+        <Link to="/casque">
+          Je connecte mon casque <ArrowRight size={15} />
+        </Link>
+        <Link to="/performances">Performances</Link>
+        <Link to="/carte">Carte</Link>
+      </nav>
       <div className="studio-live-hero">
         <img src="/photos/trail.webp" alt="Cavalier et cheval en forêt" />
         <div>
@@ -75,8 +85,8 @@ export function LivePage({ model }: { model: WorkspaceModel }) {
             de chute ne sont pas disponibles sans appareil et protocole validés.
           </p>
           <span className="hardware-state">Capteurs non connectés</span>
-          <Link className="studio-text-link" to="/sources">
-            État des fonctions et limites <ArrowRight size={18} />
+          <Link className="studio-text-link" to="/casque">
+            Je connecte mon casque <ArrowRight size={18} />
           </Link>
         </section>
       </div>

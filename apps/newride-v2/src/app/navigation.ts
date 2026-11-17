@@ -9,7 +9,9 @@ export const tabRoots: Record<TabId, string> = {
 };
 export function tabForPath(path: string): TabId {
   if (/^\/(discover)/.test(path)) return "community";
-  if (/^\/(live|performances|carte|seance-guidee|seances)(\/|$)/.test(path))
+  if (
+    /^\/(live|casque|performances|carte|seance-guidee|seances)(\/|$)/.test(path)
+  )
     return "live";
   if (/^\/(coaching|ali|lecons|exercices|sources|connexion)(\/|$)/.test(path))
     return "ali";
@@ -17,7 +19,7 @@ export function tabForPath(path: string): TabId {
   return "today";
 }
 const knownPath =
-  /^\/(?:$|live$|performances$|carte$|discover$|coaching(?:\/[^/]+)?$|ali(?:\/(?:conversation|a-propos))?$|lecons$|exercices$|seance-guidee$|seances\/[^/]+$|ecurie$|experts$|pro$|sources$)/;
+  /^\/(?:$|live$|casque$|performances$|carte$|discover$|coaching(?:\/[^/]+)?$|ali(?:\/(?:conversation|a-propos))?$|lecons$|exercices$|seance-guidee$|seances\/[^/]+$|ecurie$|experts$|pro$|sources$)/;
 export function safeReturnTo(input: string | null): string {
   if (
     !input ||
@@ -44,6 +46,7 @@ export function parentForPath(path: string): string {
   if (path === "/lecons" || path.startsWith("/ali")) return "/coaching";
   if (path === "/exercices" || path === "/sources") return "/coaching";
   if (
+    path === "/casque" ||
     path === "/performances" ||
     path === "/carte" ||
     path === "/seance-guidee"

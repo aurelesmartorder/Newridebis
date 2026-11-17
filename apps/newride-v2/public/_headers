@@ -1,7 +1,7 @@
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(self), microphone=(self), camera=(self)
+  Permissions-Policy: bluetooth=(self), geolocation=(self), microphone=(self), camera=(self)
   Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
   X-Robots-Tag: noindex, nofollow
 /newridebis/*

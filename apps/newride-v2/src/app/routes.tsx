@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { Dashboard } from "../features/Dashboard";
 import { AliHub, Lessons, AboutAli } from "../features/AliHub";
+import { HelmetPage } from "../features/helmet/HelmetPage";
 import { Workspace } from "../features/Workspace";
 import { tabForPath, type TabId } from "./navigation";
 import { Skeleton } from "../components/ui";
@@ -45,6 +46,7 @@ function RouteStack({ location }: { location: Location }) {
         <Route path="/seance-guidee" element={<Guided />} />
         <Route path="/ecurie" element={<Stable />} />
         <Route path="/seances/:id" element={<Session />} />
+        <Route path="/casque" element={<HelmetPage />} />
         <Route path="/experts" element={<Experts />} />
         <Route path="/sources" element={<Sources />} />
         <Route

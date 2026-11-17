@@ -31,6 +31,7 @@ import {
   PanelLeftOpen,
 } from "lucide-react";
 import { StoreProvider, useStore } from "./Store";
+import { HelmetProvider } from "../features/helmet/HelmetProvider";
 import { GpsProvider, useRideRecorder } from "../features/Workspace";
 import { RetainedScreens } from "./routes";
 import { NavigationState, useTabNavigation } from "./NavigationState";
@@ -164,6 +165,10 @@ function Shell() {
           ))}
         </nav>
         <div className="rail-subspaces">
+          <Link to="/casque">
+            <Radio size={17} />
+            Mon casque
+          </Link>
           <Link to="/performances">
             <ChartNoAxesCombined size={15} />
             Perfs
@@ -419,9 +424,11 @@ export default function App() {
         <StoreProvider>
           <LegacySessionProvider>
             <NavigationState>
-              <GpsProvider>
-                <Shell />
-              </GpsProvider>
+              <HelmetProvider>
+                <GpsProvider>
+                  <Shell />
+                </GpsProvider>
+              </HelmetProvider>
             </NavigationState>
           </LegacySessionProvider>
         </StoreProvider>

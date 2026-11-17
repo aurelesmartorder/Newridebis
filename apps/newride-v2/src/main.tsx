@@ -16,3 +16,5 @@ createRoot(document.getElementById("root")!).render(
 import "@fontsource/barlow-condensed/latin-600.css";
 import "@fontsource/barlow-condensed/latin-700.css";
 import "./design/editorial.css";
+
+import "./design/helmet.css";

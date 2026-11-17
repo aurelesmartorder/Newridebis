@@ -1,0 +1,852 @@
+.helmet-page {
+  color: #193025;
+}
+.helmet-topline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #7b8474;
+  margin: 4px 0 27px;
+}
+.helmet-topline > a {
+  color: #53664b;
+  text-decoration: none;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+}
+.helmet-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  border: 1px solid #dde3d3;
+  border-radius: 20px;
+  padding: 9px 13px;
+  font-size: 10px;
+  background: #eef0e6;
+  color: #6a795d;
+}
+.helmet-status i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #8b957f;
+}
+.helmet-status.is-connected {
+  color: #2e643b;
+  background: #e4efdf;
+}
+.helmet-status.is-connected i {
+  background: #488b4d;
+}
+.helmet-hero {
+  position: relative;
+  min-height: 580px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #14271d;
+  color: #fff;
+  isolation: isolate;
+}
+.helmet-hero > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 67% center;
+  z-index: -2;
+}
+.helmet-hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #0d211bf5 0%,
+    #0d211bd9 28%,
+    #0d211b51 55%,
+    #0d211b05 80%
+  );
+  z-index: -1;
+}
+.helmet-hero-copy {
+  padding: 50px 48px;
+  max-width: 570px;
+}
+.helmet-hero-copy .ride-kicker {
+  font-size: 9px;
+  color: #d1dec4;
+  letter-spacing: 1.9px;
+}
+.helmet-hero-copy h1 {
+  font:
+    700 clamp(52px, 6.2vw, 90px) / 0.97 "Barlow Condensed",
+    sans-serif;
+  letter-spacing: -1.6px;
+  margin: 37px 0 25px;
+}
+.helmet-hero-copy h1 em {
+  font-style: normal;
+  color: #c2d5a1;
+}
+.helmet-hero-copy > p:not(.ride-kicker) {
+  color: #d4e0cb;
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0 0 30px;
+}
+.helmet-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 27px;
+  background: #f1ebdb;
+  color: #203428;
+  text-decoration: none;
+  border-radius: 4px;
+  min-height: 55px;
+  padding: 0 24px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.helmet-hero-cta:hover {
+  background: #fff6e1;
+}
+.helmet-hero-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 48px 24px;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: #c6cdbb;
+}
+.helmet-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  padding: 65px 0 50px;
+}
+.helmet-intro h2,
+.helmet-features-heading h2 {
+  font:
+    600 clamp(35px, 4.4vw, 52px) / 1.02 "Barlow Condensed",
+    sans-serif;
+  letter-spacing: -0.5px;
+  margin: 18px 0 0;
+}
+.helmet-intro > p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #6d7963;
+  max-width: 490px;
+  margin: 0;
+}
+.helmet-pairing {
+  background: #fff;
+  border: 1px solid #dfe4d6;
+  border-radius: 12px;
+  scroll-margin-top: 30px;
+}
+.helmet-pairing-heading {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 29px 32px;
+  border-bottom: 1px solid #e6e9df;
+}
+.helmet-step-index {
+  width: 45px;
+  height: 45px;
+  border: 1px solid #d4deca;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font:
+    500 20px "Barlow Condensed",
+    sans-serif;
+  color: #7d9170;
+  flex-shrink: 0;
+}
+.helmet-pairing-heading > div {
+  flex: 1;
+}
+.helmet-pairing-heading .ride-kicker {
+  font-size: 8px;
+}
+.helmet-pairing-heading h2 {
+  font-size: 24px;
+  letter-spacing: -0.6px;
+  margin: 10px 0;
+}
+.helmet-pairing-heading p:last-child {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #74816b;
+  margin: 0;
+}
+.helmet-pairing-heading > svg {
+  color: #6c835c;
+}
+.helmet-pairing-body {
+  display: grid;
+  grid-template-columns: 140px 1fr 170px;
+  gap: 32px;
+  padding: 40px 35px;
+  align-items: center;
+}
+.helmet-search-orbit {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #486f3e;
+}
+.helmet-search-orbit > span {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #e1e8d9;
+  border-radius: 50%;
+}
+.helmet-search-orbit > span:nth-child(2) {
+  inset: 17px;
+}
+.helmet-search-orbit > span:nth-child(3) {
+  inset: 35px;
+  background: #edf3e5;
+}
+.helmet-search-orbit > svg {
+  z-index: 1;
+}
+.helmet-search-orbit.is-searching > span {
+  animation: helmet-pulse 1.8s ease-in-out infinite;
+}
+.helmet-search-orbit.is-searching > span:nth-child(2) {
+  animation-delay: 0.25s;
+}
+.helmet-search-orbit.is-searching > span:nth-child(3) {
+  animation-delay: 0.5s;
+}
+.helmet-device > .ride-kicker {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+}
+.helmet-device h3 {
+  font-size: 23px;
+  letter-spacing: -0.8px;
+  margin: 13px 0;
+}
+.helmet-device > p {
+  font-size: 12px;
+  line-height: 1.85;
+  color: #718064;
+  max-width: 480px;
+  overflow-wrap: anywhere;
+}
+.helmet-connect-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  min-height: 52px;
+  background: #1b3425;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  padding: 0 22px;
+  font:
+    600 12px Inter,
+    sans-serif;
+  margin: 22px 0 8px;
+  cursor: pointer;
+}
+.helmet-connect-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.helmet-text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #41583a;
+  font:
+    600 11px Inter,
+    sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+}
+.helmet-text-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.helmet-battery {
+  border-left: 1px solid #e4e9db;
+  padding-left: 30px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 9px;
+  color: #78906a;
+}
+.helmet-battery strong {
+  font:
+    600 45px/1.1 "Barlow Condensed",
+    sans-serif;
+  color: #2d4432;
+}
+.helmet-battery span,
+.helmet-battery small {
+  font-size: 10px;
+  line-height: 1.6;
+}
+.helmet-pairing-note {
+  font-size: 10px;
+  line-height: 1.9;
+  color: #8a927f;
+  margin: 0;
+  padding: 0 35px 24px;
+  max-width: 900px;
+}
+.helmet-device-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.helmet-link-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #e9f0e2;
+  color: #3e6937;
+  padding: 9px 12px;
+  font-size: 10px;
+  border-radius: 4px;
+}
+.helmet-device-actions button {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #a6b699;
+  min-height: 48px;
+  font-size: 11px;
+  color: #62765a;
+  cursor: pointer;
+}
+.helmet-audio {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #e9eddf;
+  border-radius: 12px;
+  margin-top: 24px;
+  overflow: hidden;
+}
+.helmet-audio-copy {
+  position: relative;
+  padding: 40px;
+}
+.helmet-audio-copy > .helmet-step-index {
+  margin-bottom: 28px;
+  border-color: #c1cdb3;
+}
+.helmet-audio-copy .ride-kicker {
+  font-size: 9px;
+}
+.helmet-audio-copy h2 {
+  font:
+    600 58px/0.99 "Barlow Condensed",
+    sans-serif;
+  letter-spacing: -0.8px;
+  margin: 22px 0;
+}
+.helmet-audio-copy h2 em {
+  font-style: normal;
+  color: #769160;
+}
+.helmet-audio-copy > p:not(.ride-kicker) {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #67795a;
+  max-width: 370px;
+}
+.helmet-audio-test {
+  background: #f6f7ef;
+  border: 1px solid #dfe6d4;
+  border-radius: 9px;
+  margin: 30px;
+  padding: 34px;
+  align-self: center;
+}
+.helmet-audio-test > svg {
+  display: block;
+  color: #5d784c;
+  margin: 0 0 30px;
+}
+.helmet-audio-test > .ride-kicker {
+  font-size: 8px;
+}
+.helmet-audio-test h3 {
+  font-size: 26px;
+  letter-spacing: -0.9px;
+  margin: 16px 0;
+}
+.helmet-audio-test > p {
+  font-size: 12px;
+  line-height: 1.85;
+  color: #758267;
+}
+.helmet-audio-test > .studio-dark {
+  margin: 15px 0 20px;
+  width: 100%;
+}
+.helmet-audio-confirm {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 11px;
+  line-height: 1.8;
+  min-height: 48px;
+  padding: 13px 0;
+  border-top: 1px solid #dce3d1;
+  cursor: pointer;
+}
+.helmet-audio-confirm input {
+  width: 19px;
+  height: 19px;
+  accent-color: #315631;
+  flex-shrink: 0;
+  margin: 0;
+}
+.helmet-audio-ready {
+  display: flex;
+  gap: 12px;
+  background: #e4eddb;
+  padding: 17px;
+  border-radius: 6px;
+  color: #46663a;
+  margin-top: 10px;
+}
+.helmet-audio-ready strong {
+  font-size: 11px;
+}
+.helmet-audio-ready p {
+  font-size: 10px;
+  line-height: 1.8;
+}
+.helmet-audio-ready a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  color: #324f2b;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.helmet-features-heading {
+  padding: 64px 0 35px;
+}
+.helmet-capabilities {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+}
+.helmet-capabilities article {
+  border-top: 1px solid #cdd7c1;
+  padding: 26px 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.helmet-capabilities article > svg {
+  margin-bottom: 25px;
+  color: #6b805b;
+}
+.helmet-feature-number {
+  font-size: 8px;
+  letter-spacing: 1.3px;
+  color: #819270;
+}
+.helmet-capabilities h3 {
+  font-size: 23px;
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+  margin: 19px 0 14px;
+}
+.helmet-capabilities p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #78836c;
+  flex: 1;
+}
+.helmet-capabilities a,
+.helmet-capabilities button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #3c5432;
+  font:
+    600 11px Inter,
+    sans-serif;
+  min-height: 48px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.helmet-feature-state {
+  font-size: 8px;
+  line-height: 1.8;
+  background: #e9eddf;
+  color: #6e7d5f;
+  padding: 6px 9px;
+  border-radius: 3px;
+  margin-top: 12px;
+}
+.helmet-safety {
+  background: #142d21;
+  color: #eaf0e2;
+  display: flex;
+  gap: 33px;
+  align-items: flex-start;
+  border-radius: 12px;
+  padding: 38px;
+  margin: 30px 0 20px;
+}
+.helmet-safety > svg {
+  color: #a6bc8e;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.helmet-safety .ride-kicker {
+  color: #aabd94;
+  font-size: 8px;
+}
+.helmet-safety h2 {
+  font:
+    600 41px/1.05 "Barlow Condensed",
+    sans-serif;
+  letter-spacing: -0.5px;
+  margin: 18px 0;
+}
+.helmet-safety p:not(.ride-kicker) {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #b5c4a6;
+  max-width: 670px;
+}
+.helmet-safety > div > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+  margin-top: 22px;
+}
+.helmet-safety .helmet-text-button {
+  color: #d8e3cb;
+}
+.helmet-emergency-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  min-height: 50px;
+  border: 1px solid #bf8f6b;
+  border-radius: 4px;
+  background: transparent;
+  color: #eac3a5;
+  padding: 0 18px;
+  font:
+    600 11px Inter,
+    sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+}
+.helmet-visual-caption {
+  font-size: 9px;
+  line-height: 1.9;
+  color: #8c9580;
+  max-width: 800px;
+}
+.helmet-guide {
+  padding-left: 24px;
+}
+.helmet-guide li {
+  padding: 14px 0 14px 7px;
+  font-size: 13px;
+  color: #3a5131;
+}
+.helmet-guide p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #7a876e;
+}
+.helmet-emergency-dialog {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 18px;
+}
+.helmet-emergency-dialog h3 {
+  font-size: 21px;
+  margin: 0;
+}
+.helmet-emergency-dialog p {
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 0;
+}
+.helmet-emergency-dialog .helmet-emergency-button {
+  color: #7c4b2d;
+  border-color: #b77c57;
+}
+.helmet-emergency-dialog > a:last-child {
+  min-height: 48px;
+  font-size: 11px;
+  color: #697e56;
+  display: inline-flex;
+  align-items: center;
+}
+.helmet-page button:focus-visible,
+.helmet-page a:focus-visible {
+  outline: 3px solid #ff7853;
+  outline-offset: 4px;
+}
+@keyframes helmet-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+@media (max-width: 1000px) {
+  .helmet-hero {
+    min-height: 540px;
+  }
+  .helmet-hero-copy {
+    padding: 38px 32px;
+  }
+  .helmet-hero-copy h1 {
+    font-size: 70px;
+  }
+  .helmet-pairing-body {
+    grid-template-columns: 90px 1fr 120px;
+    padding: 30px 25px;
+    gap: 22px;
+  }
+  .helmet-search-orbit {
+    width: 90px;
+    height: 90px;
+  }
+  .helmet-intro {
+    gap: 35px;
+  }
+  .helmet-audio-copy {
+    padding: 30px;
+  }
+  .helmet-audio-test {
+    padding: 25px;
+    margin: 20px;
+  }
+  .helmet-battery {
+    padding-left: 20px;
+  }
+}
+@media (max-width: 720px) {
+  .helmet-topline {
+    gap: 9px;
+    font-size: 10px;
+    margin-bottom: 16px;
+  }
+  .helmet-status {
+    font-size: 8px;
+    padding: 8px 10px;
+  }
+  .helmet-hero {
+    min-height: 650px;
+  }
+  .helmet-hero > img {
+    object-position: 61% 50%;
+    height: 65%;
+    top: 0;
+    bottom: auto;
+  }
+  .helmet-hero-shade {
+    background: linear-gradient(
+      0deg,
+      #0c241c 9%,
+      #0c241cf5 33%,
+      #0c241c38 65%,
+      #0c241c0a
+    );
+  }
+  .helmet-hero-copy {
+    padding: 280px 26px 30px;
+    max-width: none;
+  }
+  .helmet-hero-copy h1 {
+    font-size: 54px;
+    letter-spacing: -0.8px;
+    margin: 22px 0;
+  }
+  .helmet-hero-copy .ride-kicker {
+    font-size: 7px;
+    letter-spacing: 1.3px;
+    max-width: 210px;
+    line-height: 1.8;
+  }
+  .helmet-hero-copy > p:not(.ride-kicker) {
+    font-size: 13px;
+  }
+  .helmet-hero-cta {
+    width: 100%;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 0 18px;
+  }
+  .helmet-hero-foot {
+    padding: 0 26px 24px;
+    font-size: 6px;
+  }
+  .helmet-hero-foot > span:last-child {
+    display: none;
+  }
+  .helmet-intro {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 38px 0;
+  }
+  .helmet-intro h2 {
+    font-size: 39px;
+  }
+  .helmet-intro > p {
+    font-size: 13px;
+  }
+  .helmet-pairing-heading {
+    padding: 23px 22px;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .helmet-step-index {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+  .helmet-pairing-heading > svg {
+    display: none;
+  }
+  .helmet-pairing-heading h2 {
+    font-size: 22px;
+  }
+  .helmet-pairing-body {
+    grid-template-columns: 1fr;
+    padding: 25px;
+    gap: 24px;
+  }
+  .helmet-search-orbit {
+    width: 105px;
+    height: 105px;
+    margin: 0 auto;
+  }
+  .helmet-device h3 {
+    font-size: 23px;
+  }
+  .helmet-device .helmet-connect-button {
+    width: 100%;
+    font-size: 11px;
+  }
+  .helmet-battery {
+    border-left: 0;
+    border-top: 1px solid #e0e6d7;
+    padding: 20px 0 0;
+    display: grid;
+    grid-template-columns: 35px 70px 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+  .helmet-battery strong {
+    font-size: 32px;
+  }
+  .helmet-battery small {
+    grid-column: 2/-1;
+  }
+  .helmet-pairing-note {
+    padding: 0 25px 25px;
+    font-size: 9px;
+  }
+  .helmet-audio {
+    grid-template-columns: 1fr;
+  }
+  .helmet-audio-copy {
+    padding: 27px;
+  }
+  .helmet-audio-copy h2 {
+    font-size: 50px;
+  }
+  .helmet-audio-test {
+    padding: 25px;
+    margin: 0 20px 20px;
+  }
+  .helmet-capabilities {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .helmet-capabilities article {
+    padding: 24px 0;
+  }
+  .helmet-capabilities article > svg {
+    margin-bottom: 18px;
+  }
+  .helmet-capabilities h3 {
+    font-size: 26px;
+  }
+  .helmet-features-heading {
+    padding: 40px 0 27px;
+  }
+  .helmet-safety {
+    padding: 27px;
+    gap: 18px;
+  }
+  .helmet-safety > svg {
+    width: 23px;
+  }
+  .helmet-safety h2 {
+    font-size: 34px;
+  }
+  .helmet-safety > div > div {
+    gap: 12px;
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .helmet-emergency-button {
+    font-size: 10px;
+    padding: 0 12px;
+  }
+  .helmet-visual-caption {
+    font-size: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .helmet-search-orbit > span {
+    animation: none !important;
+  }
+  .helmet-page * {
+    scroll-behavior: auto !important;
+  }
+}
+.rail-subspaces>a[href="/casque"]{grid-column:1/-1;white-space:nowrap}
+@media(max-width:720px){.helmet-topline>span:not(.helmet-status){display:none}.helmet-status{margin-left:auto}.helmet-hero{min-height:600px}.helmet-hero-copy{padding:210px 22px 26px}.helmet-hero-copy h1{font-size:42px;letter-spacing:-.6px}.helmet-hero-copy>p:not(.ride-kicker){margin-bottom:24px}}
