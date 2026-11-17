@@ -26,6 +26,8 @@ export type Post = {
 };
 export type Snapshot = {
   ready?: boolean;
+  chatBusy?: boolean;
+  chatError?: string;
   videoLoading?: boolean;
   videoProgress?: string;
   videoReport?: {summary?:string; observations?: unknown; frameCount?:number}|null;

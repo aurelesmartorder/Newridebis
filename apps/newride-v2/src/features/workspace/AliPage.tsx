@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useStore } from "../../app/Store";
+import { aliContext } from "../../lib/aliContext";
 import { MediaPicker } from "../../components/MediaPicker";
 import { Link } from "react-router-dom";
 import {
@@ -13,11 +15,16 @@ import {
 import { command, Header, Empty } from "./shared";
 import type { WorkspaceModel } from "./model";
 export function AliPage({ model }: { model: WorkspaceModel }) {
+  const {data:localData}=useStore();
+  const [shareContext,setShareContext]=useState(false);
+  const sending=useRef(false);
+  const [sentQuestion,setSentQuestion]=useState("");
   const [video, setVideo] = useState<File|null>(null);
   const {
     setParams,
     state,
     setNotice,
+    notice,
     draft,
     setDraft,
     drafts,
@@ -28,6 +35,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
     lesson,
     saveDraft,
   } = model;
+  useEffect(()=>{if(state.chatBusy)sending.current=false;if(state.chatError){sending.current=false;setQuestion(previous=>previous||sentQuestion)}},[state.chatBusy,state.chatError]);
   return (
     <>
       <Header
@@ -108,18 +116,21 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
           <div className="studio-two">
             <section className="studio-panel">
               <span className="ride-kicker">UNE QUESTION PRÉCISE</span>
-              <h2>Partons de votre observation.</h2>
+              <h2>Votre conversation avec ALI.</h2>
+              {notice && <p role="status" className="ali-chat-notice">{notice} {!state.authenticated&&<Link to="/acces-test">Me connecter</Link>}</p>}
+              <div className="ali-chat-history" role="log" aria-live="polite" aria-label="Historique de la conversation">{state.chat?.map((message,i)=><article className={message.role==='user'?'ali-message from-rider':'ali-message from-ali'} key={i}><strong>{message.role==='user'?'Vous':'ALI'}</strong><p>{message.content}</p></article>)}{state.chatBusy&&<p className="ali-chat-pending" role="status">ALI prépare sa réponse…</p>}</div>
+              {state.chatError&&<p role="alert" className="media-error">{state.chatError}</p>}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  if (!question.trim()) return;
-                  if (state.authenticated) {
-                    command("chat", question);
-                    setQuestion("");
-                  } else
-                    setNotice(
-                      "Les réponses ALI en ligne ne sont pas encore disponibles en mode invité. Vous pouvez conserver cette question dans votre journal.",
-                    );
+                  if (!question.trim() || state.chatBusy || sending.current) return;
+                  if (!state.ready) {setNotice('Le service ALI se prépare. Réessayez dans un instant.');return;}
+                  if (!state.authenticated) {setNotice('Connectez votre compte pour discuter avec ALI. Votre question reste conservée.');return;}
+                  const frame=document.getElementById('newride-engine') as HTMLIFrameElement|null;
+                  if(!frame?.contentWindow){setNotice('Le service ALI n’est pas prêt. Votre question est conservée.');return;}
+                  sending.current=true;setSentQuestion(question);
+                  frame.contentWindow.postMessage({type:'newride-v2-command',command:'chat',text:question,context:shareContext?aliContext(localData,question):null},location.origin);
+                  setQuestion('');
                 }}
               >
                 <label htmlFor="ali-question">Votre question à ALI</label>
@@ -130,17 +141,13 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="Qu’avez-vous ressenti ? Dans quelle situation ?"
                 />
-                <button className="studio-dark" disabled={!question.trim()}>
+                <label className="ali-context-choice"><input type="checkbox" checked={shareContext} onChange={e=>setShareContext(e.target.checked)}/>Utiliser le cheval sélectionné et les cinq derniers bilans de cet appareil</label>
+                <p className="media-hint">Vos échanges du compte servent à la continuité. Le carnet local n’est transmis au service ALI que si vous cochez cette option.</p>
+                <button className="studio-dark" disabled={!question.trim() || state.chatBusy}>
                   <Send size={17} />
-                  Envoyer
+                  {state.chatBusy ? "Réponse en cours…" : "Envoyer à ALI"}
                 </button>
               </form>
-              {state.chat?.map((message, i) => (
-                <div key={i} className="studio-chat">
-                  <b>{message.role === "user" ? "Vous" : "ALI"}</b>
-                  <p>{message.content}</p>
-                </div>
-              ))}
             </section>
             <section className="studio-panel studio-learn">
               <BookOpen size={26} strokeWidth={1.2} />
