@@ -13,3 +13,6 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </StrictMode>,
 );
+import "@fontsource/barlow-condensed/latin-600.css";
+import "@fontsource/barlow-condensed/latin-700.css";
+import "./design/editorial.css";

@@ -154,7 +154,11 @@ export function Stable() {
               data.sessions.map((s) => (
                 <Link
                   key={s.id}
-                  to={s.status === "finished" ? `/seances/${s.id}` : "/live"}
+                  to={
+                    s.status === "finished"
+                      ? `/seances/${s.id}`
+                      : "/seance-guidee"
+                  }
                   className="journal-row"
                 >
                   <span className="journal-date">
@@ -183,7 +187,7 @@ export function Stable() {
                 icon={Clock3}
                 title="Votre première séance vous attend"
                 action={
-                  <Link className="button button-primary" to="/live">
+                  <Link className="button button-primary" to="/seance-guidee">
                     Préparer une séance
                   </Link>
                 }
@@ -346,7 +350,7 @@ export function SessionDetail() {
             acquise ni un résultat biomécanique.
           </p>
         </div>
-        <Link to="/live" className="button button-primary">
+        <Link to="/seance-guidee" className="button button-primary">
           Préparer une autre séance
           <ArrowUpRight size={18} />
         </Link>

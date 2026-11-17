@@ -1,22 +1,18 @@
 import {
   Component,
-  Suspense,
-  lazy,
   useEffect,
   useState,
+  useRef,
   type ReactNode,
   type ErrorInfo,
 } from "react";
-import {
-  BrowserRouter,
-  Link,
-  NavLink,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Link, NavLink, useLocation } from "react-router-dom";
 import {
   Activity,
+  MapPin,
+  Compass,
+  ChartNoAxesCombined,
+  Ellipsis,
   ArrowRight,
   AudioLines,
   Bell,
@@ -31,74 +27,91 @@ import {
   UsersRound,
   WifiOff,
   X,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { StoreProvider, useStore } from "./Store";
-import { Dashboard } from "../features/Dashboard";
-import { Dialog, Button, Skeleton } from "../components/ui";
-const Coaching = lazy(() =>
-  import("../features/Coaching").then((m) => ({ default: m.Coaching })),
-);
-const ExerciseDetail = lazy(() =>
-  import("../features/Coaching").then((m) => ({ default: m.ExerciseDetail })),
-);
-const Sources = lazy(() =>
-  import("../features/Coaching").then((m) => ({ default: m.Sources })),
-);
-const Live = lazy(() =>
-  import("../features/Live").then((m) => ({ default: m.Live })),
-);
-const Stable = lazy(() =>
-  import("../features/Stable").then((m) => ({ default: m.Stable })),
-);
-const SessionDetail = lazy(() =>
-  import("../features/Stable").then((m) => ({ default: m.SessionDetail })),
-);
-const Experts = lazy(() =>
-  import("../features/Experts").then((m) => ({ default: m.Experts })),
-);
+import { RetainedScreens } from "./routes";
+import { NavigationState, useTabNavigation } from "./NavigationState";
+import { LegacySessionProvider, useVoiceActive } from "./LegacySession";
+import { type TabId } from "./navigation";
+import { Newridebis } from "../features/Newridebis";
+import { Dialog, Button } from "../components/ui";
 const navigation = [
   {
+    id: "today" as TabId,
     path: "/",
-    label: "Flux",
+    label: "Aujourd’hui",
     icon: Home,
     description: "Votre quotidien équestre",
   },
   {
-    path: "/coaching",
-    label: "Coaching",
-    icon: BookOpen,
-    description: "Exercices & objectifs",
+    id: "community" as TabId,
+    path: "/discover",
+    label: "Communauté",
+    icon: Compass,
+    description: "Social, balades & événements",
   },
   {
+    id: "live" as TabId,
     path: "/live",
     label: "Live",
+    icon: Activity,
+    description: "Séance, perfs & carte",
+  },
+  {
+    id: "ali" as TabId,
+    path: "/coaching",
+    label: "ALI",
     icon: AudioLines,
-    description: "Votre séance en direct",
+    description: "Voix, leçons & questions",
   },
   {
-    path: "/experts",
-    label: "Experts",
-    icon: UsersRound,
-    description: "Les professionnels",
-  },
-  {
+    id: "stable" as TabId,
     path: "/ecurie",
     label: "Écurie",
     icon: Footprints,
-    description: "Votre duo & votre carnet",
+    description: "Chevaux, profil & pros",
   },
 ];
+const mobileNavigation = navigation;
+const legacyTabs: Record<
+  string,
+  "live" | "perf" | "map" | "discover" | "coach" | "pro"
+> = {
+  "/live": "live",
+  "/performances": "perf",
+  "/carte": "map",
+  "/discover": "discover",
+  "/ali": "coach",
+  "/ali/conversation": "coach",
+  "/connexion": "coach",
+  "/pro": "pro",
+};
+
 function Shell() {
   const { data, storageError } = useStore();
+  const { activeTab, destination } = useTabNavigation();
+  const voiceActive = useVoiceActive();
+  const [railCollapsed, setRailCollapsed] = useState(false);
   const location = useLocation();
+  const legacyTab = legacyTabs[location.pathname];
+  const lastLegacy = useRef<
+    "live" | "perf" | "map" | "discover" | "coach" | "pro"
+  >("coach");
+  if (legacyTab) lastLegacy.current = legacyTab;
+  const [engineMounted, setEngineMounted] = useState(!!legacyTab);
+  useEffect(() => {
+    if (legacyTab) setEngineMounted(true);
+  }, [legacyTab]);
   const [help, setHelp] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [online, setOnline] = useState(navigator.onLine);
   const horse = data.horses.find((h) => h.id === data.selectedHorseId);
   const active = data.sessions.find((s) => s.status !== "finished");
   useEffect(() => {
-    document.querySelector("main")?.focus();
-    window.scrollTo({ top: 0, behavior: "instant" });
+    document.querySelector("main")?.focus({ preventScroll: true });
+
     setNotifications(false);
   }, [location.pathname]);
   useEffect(() => {
@@ -117,7 +130,7 @@ function Shell() {
     month: "long",
   }).format(new Date());
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${railCollapsed ? "compact-rail" : ""}`}>
       <a className="skip-link" href="#main">
         Aller au contenu
       </a>
@@ -130,13 +143,13 @@ function Shell() {
         </Link>
         <p className="brand-descriptor">L’ÉQUITATION, EN CONNEXION</p>
         <nav className="desktop-navigation" aria-label="Navigation principale">
-          {navigation.map(({ path, label, icon: Icon, description }) => (
+          {navigation.map(({ id, path, label, icon: Icon, description }) => (
             <NavLink
               key={path}
-              to={path}
+              to={destination(id)}
               end={path === "/"}
               className={({ isActive }) =>
-                `nav-item ${isActive ? "active" : ""} ${path === "/live" ? "nav-live" : ""}`
+                `nav-item ${activeTab === id ? "active" : ""} ${path === "/live" ? "nav-live" : ""}`
               }
             >
               <Icon size={21} strokeWidth={1.7} />
@@ -148,7 +161,41 @@ function Shell() {
             </NavLink>
           ))}
         </nav>
+        <div className="rail-subspaces">
+          <Link to="/performances">
+            <ChartNoAxesCombined size={15} />
+            Perfs
+          </Link>
+          <Link to="/carte">
+            <MapPin size={15} />
+            Carte
+          </Link>
+          <Link to="/pro">
+            <UsersRound size={15} />
+            Pro
+          </Link>
+          <Link to="/lecons">
+            <BookOpen size={15} />
+            Leçons
+          </Link>
+        </div>
         <div className="sidebar-bottom">
+          <button
+            className="rail-toggle"
+            onClick={() => setRailCollapsed((v) => !v)}
+            aria-label={
+              railCollapsed
+                ? "Développer la navigation"
+                : "Réduire la navigation"
+            }
+          >
+            {railCollapsed ? (
+              <PanelLeftOpen size={20} />
+            ) : (
+              <PanelLeftClose size={20} />
+            )}
+            <span>Réduire la navigation</span>
+          </button>
           <div className="sidebar-quote">
             <span>«</span>
             <p>
@@ -190,6 +237,12 @@ function Shell() {
             <span className="header-date">{date}</span>
           </div>
           <div className="header-actions">
+            {voiceActive && (
+              <Link to="/ali?section=voice" className="voice-active-pill">
+                <span />
+                Microphone ALI actif
+              </Link>
+            )}
             <Link className="horse-switch" to="/ecurie">
               <Footprints size={17} />
               <span>{horse?.name || "Mon écurie"}</span>
@@ -223,8 +276,8 @@ function Shell() {
             {storageError}
           </div>
         )}
-        {active && location.pathname !== "/live" && (
-          <Link className="active-session-banner" to="/live">
+        {active && location.pathname !== "/seance-guidee" && (
+          <Link className="active-session-banner" to="/seance-guidee">
             <Radio size={18} />
             Séance {active.status === "paused"
               ? "en pause"
@@ -236,50 +289,37 @@ function Shell() {
           </Link>
         )}
         <main id="main" tabIndex={-1}>
-          <Suspense fallback={<Skeleton rows={4} />}>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/coaching" element={<Coaching />} />
-              <Route path="/coaching/:id" element={<ExerciseDetail />} />
-              <Route path="/live" element={<Live />} />
-              <Route path="/experts" element={<Experts />} />
-              <Route path="/ecurie" element={<Stable />} />
-              <Route path="/seances/:id" element={<SessionDetail />} />
-              <Route path="/sources" element={<Sources />} />
-              <Route
-                path="*"
-                element={
-                  <div className="card empty-state">
-                    <h1>Retrouvons le bon chemin.</h1>
-                    <p>Cette page n’existe pas.</p>
-                    <Link to="/" className="button button-primary">
-                      Revenir à l’accueil
-                    </Link>
-                  </div>
-                }
+          <RetainedScreens />
+          {engineMounted && (
+            <div hidden={!legacyTab}>
+              <Newridebis
+                tab={lastLegacy.current}
+                visible={!!legacyTab}
+                loginRequested={location.pathname === "/connexion"}
               />
-            </Routes>
-          </Suspense>
+            </div>
+          )}
+
           <footer className="page-footer">
             <span>
               <ShieldCheck size={14} />
               Votre pratique, à votre rythme.
             </span>
             <span>
-              V2 · Carnet local sur cet appareil{" "}
+              V2 · NewRidebis repris + carnet local{" "}
               <Link to="/sources">Sources & limites</Link>
             </span>
           </footer>
         </main>
       </div>
       <nav className="bottom-navigation" aria-label="Navigation mobile">
-        {navigation.map(({ path, label, icon: Icon }) => (
+        {mobileNavigation.map(({ id, path, label, icon: Icon }) => (
           <NavLink
             key={path}
             end={path === "/"}
-            to={path}
+            to={destination(id)}
             className={({ isActive }) =>
-              `${isActive ? "active" : ""} ${path === "/live" ? "bottom-live" : ""}`
+              `${activeTab === id ? "active" : ""} ${path === "/live" ? "bottom-live" : ""}`
             }
           >
             <span>
@@ -289,6 +329,7 @@ function Shell() {
           </NavLink>
         ))}
       </nav>
+
       {help && (
         <Dialog
           title="Bienvenue dans votre espace"
@@ -306,9 +347,11 @@ function Shell() {
               <li>Retrouvez votre ressenti dans le carnet.</li>
             </ol>
             <p>
-              Ce premier module est un carnet local avec guide de séance. Le
-              casque, la conversation IA, la synchronisation et les réservations
-              ne sont pas encore intégrés.
+              Les onglets historiques sont accessibles dans un espace de
+              compatibilité : Live, Perfs, Carte, Discover, Coach ALI et Pro. Le
+              compte NewRidebis donne accès à la voix et aux données partagées.
+              L’Écurie V2 reste locale ; le casque et les réservations ne sont
+              pas validés par cette reprise.
             </p>
             <Button onClick={() => setHelp(false)}>C’est parti</Button>
           </div>
@@ -368,7 +411,11 @@ export default function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <StoreProvider>
-          <Shell />
+          <LegacySessionProvider>
+            <NavigationState>
+              <Shell />
+            </NavigationState>
+          </LegacySessionProvider>
         </StoreProvider>
       </BrowserRouter>
     </ErrorBoundary>

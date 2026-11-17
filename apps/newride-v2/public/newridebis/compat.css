@@ -1,0 +1,244 @@
+:root {
+  --bg: #f5f3ef;
+  --card: #fff;
+  --orange: #365c47;
+  --orangeL: #365c47;
+  --orangeD: #284b38;
+  --orangePale: #edf2e9;
+  --sport: #365c47;
+  --border: #e3e6e2;
+  --black: #182c35;
+  --text: #182c35;
+  --sub: #526174;
+}
+body {
+  max-width: none !important;
+  font-family: Inter, Manrope, system-ui, sans-serif;
+}
+#tabs {
+  display: none !important;
+}
+#hdr-inner {
+  padding: 12px 20px;
+}
+#content {
+  padding: 20px;
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
+}
+.btn,
+button:not(.ob-sport-card) {
+  min-height: 48px;
+}
+.card {
+  border-radius: 16px !important;
+}
+.v2-focus {
+  outline: 3px solid #ff6746 !important;
+  outline-offset: 3px;
+}
+.tl {
+  font-size: 11px !important;
+}
+#auth,
+#onboarding {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.v2-preview-login {
+  background: #fff4e9;
+  padding: 14px;
+  color: #182c35;
+}
+@media (max-width: 600px) {
+  #content {
+    padding: 14px;
+  }
+  #hdr-inner {
+    padding: 10px 14px;
+  }
+  button {
+    touch-action: manipulation;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+#content.v2-coach-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-content: start;
+}
+#content.v2-coach-layout > div:first-child,
+.v2-voice-card,
+.v2-lessons-card {
+  grid-column: 1/-1;
+}
+#content.v2-coach-layout > .card-dark {
+  margin: 0 !important;
+  padding: 24px !important;
+}
+.v2-story,
+.v2-context-card {
+  display: none !important;
+}
+.card-dark {
+  background: #14271f !important;
+  border: 1px solid #243e2c !important;
+  border-radius: 16px !important;
+}
+button {
+  font-size: 13px !important;
+}
+.card-dark [style*="font-size:10px"],
+.card-dark [style*="font-size:11px"] {
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+}
+.card-dark [style*="font-size:15px"] {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.5px;
+}
+.v2-voice-card {
+  background: #14271f url("/photos/portrait.webp") no-repeat right center !important;
+  background-size: auto 150% !important;
+  position: relative;
+  overflow: hidden;
+  padding: 32px !important;
+}
+.v2-voice-card:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #11271ff7, #11271ff2 40%, #11271f80 100%);
+  pointer-events: none;
+}
+.v2-voice-card > div,
+.v2-voice-card > button {
+  position: relative !important;
+  z-index: 1 !important;
+}
+.v2-voice-card > button {
+  max-width: 430px !important;
+  background: #ff7853 !important;
+  color: #15271d !important;
+  border: 0 !important;
+  font-size: 15px !important;
+  border-radius: 7px !important;
+}
+.v2-voice-card [style*="font-size:14px"] {
+  font-size: 25px !important;
+}
+.v2-lessons-card {
+  padding: 26px !important;
+}
+.v2-lessons-card button {
+  min-height: 50px !important;
+}
+@media (max-width: 720px) {
+  #content.v2-coach-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .v2-voice-card {
+    padding: 24px !important;
+    background-position: 80% center !important;
+  }
+  .card-dark [style*="font-size:11px"] {
+    font-size: 13px !important;
+  }
+  #content.v2-coach-layout > .card-dark {
+    padding: 22px !important;
+  }
+}
+body.v2-modern-coach #hdr {
+  display: none !important;
+}
+body.v2-modern-coach #content {
+  padding: 0 0 20px !important;
+  max-width: none;
+}
+.v2-modern-coach #content > div:first-child {
+  display: none !important;
+}
+.v2-modern-coach .card-dark:before {
+  display: none !important;
+}
+.v2-modern-coach .v2-voice-card {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+}
+.v2-modern-coach .v2-voice-card > div:first-child {
+  margin-bottom: 26px !important;
+}
+.v2-modern-coach .v2-voice-card > div:first-child > div:first-child {
+  display: none !important;
+}
+.v2-modern-coach .v2-voice-card [style*="font-size:14px"] {
+  font-size: clamp(28px, 4vw, 48px) !important;
+  max-width: 520px;
+  line-height: 1.04 !important;
+  letter-spacing: -1.4px;
+}
+.v2-modern-coach .v2-voice-card [style*="font-size:10.5px"] {
+  margin-top: 16px;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #d5dfd7 !important;
+}
+.v2-modern-coach .v2-voice-card > button {
+  min-height: 56px !important;
+  max-width: 320px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+.v2-modern-coach .v2-lessons-card {
+  background: #fff !important;
+  border: 1px solid #e0e4dc !important;
+}
+.v2-modern-coach .v2-lessons-card div,
+.v2-modern-coach .v2-lessons-card span {
+  color: #20372b !important;
+}
+.v2-modern-coach .v2-lessons-card button {
+  color: #20372b !important;
+  background: #f1f3eb !important;
+  border: 1px solid #dfe4da !important;
+  text-align: left !important;
+  border-radius: 8px !important;
+}
+.v2-modern-coach .v2-lessons-card [style*="font-size:14px"] {
+  font-size: 24px !important;
+}
+.v2-modern-coach .v2-lessons-card [style*="font-size:10px"] {
+  font-size: 13px !important;
+  line-height: 1.6;
+}
+.v2-modern-coach .card-dark {
+  box-shadow: none !important;
+}
+.v2-modern-coach .v2-lessons-card [style*="font-size:22px"]:empty {
+  display: none !important;
+}
+@media (max-width: 600px) {
+  .v2-modern-coach .v2-voice-card {
+    padding: 26px !important;
+    min-height: 320px;
+  }
+}
+#content.v2-coach-layout{grid-auto-rows:max-content;align-items:start}.v2-modern-coach .card-dark:not(.v2-voice-card):not(.v2-lessons-card){background:#fff!important;border:1px solid #dfe5da!important;color:#20372b!important;min-height:160px}.v2-modern-coach .card-dark:not(.v2-voice-card):not(.v2-lessons-card) div,.v2-modern-coach .card-dark:not(.v2-voice-card):not(.v2-lessons-card) span{color:#20372b!important}.v2-modern-coach .card-dark:not(.v2-voice-card):not(.v2-lessons-card) button{background:#e8eddf!important;color:#20372b!important;min-height:48px}.v2-modern-coach .card-dark:not(.v2-voice-card):not(.v2-lessons-card) textarea{background:#f6f7f1!important;color:#20372b!important;border:1px solid #d4dccd!important}.v2-modern-coach .card-dark>div>div:has(>svg){background:transparent!important}.v2-modern-coach .card-dark svg{stroke:#52694b!important;stroke-width:1.5}

@@ -132,7 +132,7 @@ export function ExerciseDetail() {
   const favorite = data.favorites.includes(exercise.id);
   return (
     <>
-      <Link to="/coaching" className="back-link">
+      <Link to="/exercices" className="back-link">
         <ArrowLeft size={17} />
         Bibliothèque d’exercices
       </Link>
@@ -213,7 +213,7 @@ export function ExerciseDetail() {
           </ol>
           <Link
             className="button button-primary"
-            to={`/live?exercice=${exercise.id}`}
+            to={`/seance-guidee?exercice=${exercise.id}`}
           >
             Préparer cette séance
             <ArrowRight size={18} />
@@ -229,7 +229,7 @@ export function ExerciseDetail() {
 export function Sources() {
   return (
     <>
-      <Link to="/coaching" className="back-link">
+      <Link to="/exercices" className="back-link">
         <ArrowLeft size={17} />
         Coaching
       </Link>

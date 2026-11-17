@@ -258,6 +258,13 @@ export function Live() {
                 <Play size={20} />
                 Commencer la séance
               </Button>
+              {(!ready || !data.selectedHorseId) && (
+                <p className="live-start-reason" role="status">
+                  {!data.selectedHorseId
+                    ? "Ajoutez ou sélectionnez un cheval dans « Préparer votre duo »."
+                    : "Cochez la confirmation de préparation pour démarrer."}
+                </p>
+              )}
               <p className="live-footnote">
                 Chronomètre et bilan enregistrés sur cet appareil.
                 <br />
