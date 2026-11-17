@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 export type OriginalTab =
   | "live"
   | "perf"
@@ -15,6 +15,19 @@ export function Newridebis({
   visible?: boolean;
 }) {
   const frame = useRef<HTMLIFrameElement>(null);
+  const [generation, setGeneration] = useState(0);
+  useEffect(() => {
+    function reset(event: MessageEvent) {
+      if (
+        event.origin === location.origin &&
+        event.source === frame.current?.contentWindow &&
+        event.data?.type === "newride-v2-session-reset"
+      )
+        setGeneration((g) => g + 1);
+    }
+    addEventListener("message", reset);
+    return () => removeEventListener("message", reset);
+  }, []);
   function route() {
     frame.current?.contentWindow?.postMessage(
       { type: "newride-v2-route", tab: "coach" },
@@ -26,6 +39,7 @@ export function Newridebis({
   }, [tab, visible]);
   return (
     <iframe
+      key={generation}
       hidden
       id="newride-engine"
       ref={frame}

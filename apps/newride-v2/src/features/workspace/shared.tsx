@@ -15,14 +15,23 @@ import {
   readRides,
   type GpsPoint,
 } from "../../lib/guestRide";
-type Post = {
+export type Post = {
   id: string;
   caption: string;
   authorName?: string;
   photo_url?: string;
-  like?: { count: number };
+  like?: { count: number; likedByMe?: boolean };
+  comments?: { id: string; content: string; authorName?: string }[];
 };
-type Snapshot = {
+export type Snapshot = {
+  ready?: boolean;
+  accountLabel?: string;
+  authBusy?: boolean;
+  socialBusy?: boolean;
+  socialError?: string;
+  friends?: { id: string; username: string }[];
+  incoming?: { requesterId: string; username: string }[];
+  sent?: { addresseeId: string; username: string }[];
   authenticated?: boolean;
   voiceActive?: boolean;
   connecting?: boolean;
@@ -30,12 +39,12 @@ type Snapshot = {
   program?: { day: string; activity: string; detail: string }[];
   chat?: { role: string; content: string }[];
 };
-export function command(command: string, text?: string) {
+export function command(command: string, text?: string, id?: string) {
   const frame = document.getElementById(
     "newride-engine",
   ) as HTMLIFrameElement | null;
   frame?.contentWindow?.postMessage(
-    { type: "newride-v2-command", command, text },
+    { type: "newride-v2-command", command, text, id },
     location.origin,
   );
 }
@@ -86,7 +95,12 @@ export function Empty({
     </div>
   );
 }
-export function useEngine() {
+const ServiceContext = createContext<{
+  state: Snapshot;
+  notice: string;
+  setNotice: React.Dispatch<React.SetStateAction<string>>;
+} | null>(null);
+export function ServiceProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<Snapshot>({});
   const [notice, setNotice] = useState("");
   useEffect(() => {
@@ -99,14 +113,26 @@ export function useEngine() {
         event.source !== frame?.contentWindow
       )
         return;
-      if (event.data?.type === "newridebis-ready") setState(event.data);
+      if (event.data?.type === "newride-v2-session-reset")
+        setState({ ready: false });
+      if (event.data?.type === "newridebis-ready")
+        setState({ ...event.data, ready: true });
       if (event.data?.type === "newride-v2-notice")
         setNotice(String(event.data.message).slice(0, 500));
     }
     addEventListener("message", receive);
     return () => removeEventListener("message", receive);
   }, []);
-  return { state, notice, setNotice };
+  return (
+    <ServiceContext value={{ state, notice, setNotice }}>
+      {children}
+    </ServiceContext>
+  );
+}
+export function useEngine() {
+  const value = useContext(ServiceContext);
+  if (!value) throw Error("ServiceProvider absent");
+  return value;
 }
 function useGpsRecorder() {
   const [rides, setRides] = useState(() =>

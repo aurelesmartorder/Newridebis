@@ -1,4 +1,3 @@
-/newridebis/config.js https://famous-starburst-2555e3.netlify.app/config.js 200
 /api/coach-chat https://famous-starburst-2555e3.netlify.app/.netlify/functions/coach-chat 200
 /api/realtime-token https://famous-starburst-2555e3.netlify.app/.netlify/functions/realtime-token 200
 /api/transcribe-audio https://famous-starburst-2555e3.netlify.app/.netlify/functions/transcribe-audio 200

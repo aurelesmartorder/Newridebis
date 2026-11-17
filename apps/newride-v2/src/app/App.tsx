@@ -31,6 +31,7 @@ import {
   PanelLeftOpen,
 } from "lucide-react";
 import { StoreProvider, useStore } from "./Store";
+import { ServiceProvider } from "../features/workspace/shared";
 import { HelmetProvider } from "../features/helmet/HelmetProvider";
 import { GpsProvider, useRideRecorder } from "../features/Workspace";
 import { RetainedScreens } from "./routes";
@@ -88,6 +89,7 @@ const legacyTabs: Record<
   "/ali": "coach",
   "/ali/conversation": "coach",
   "/connexion": "coach",
+  "/acces-test": "coach",
   "/pro": "pro",
 };
 
@@ -180,6 +182,10 @@ function Shell() {
           <Link to="/pro">
             <UsersRound size={15} />
             Pro
+          </Link>
+          <Link to="/acces-test">
+            <UsersRound size={15} />
+            Accès test
           </Link>
           <Link to="/lecons">
             <BookOpen size={15} />
@@ -426,7 +432,9 @@ export default function App() {
             <NavigationState>
               <HelmetProvider>
                 <GpsProvider>
-                  <Shell />
+                  <ServiceProvider>
+                    <Shell />
+                  </ServiceProvider>
                 </GpsProvider>
               </HelmetProvider>
             </NavigationState>

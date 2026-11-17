@@ -9,6 +9,13 @@
       {
         type: "newridebis-ready",
         authenticated: !!CURRENT_USER,
+        accountLabel: S.accountUsername || S.userName || "",
+        authBusy: !!S.nativeAuthBusy,
+        socialBusy: !!S.nativeSocialBusy,
+        socialError: S.nativeSocialError || "",
+        friends: S.friends || [],
+        incoming: S.friendRequestsReceived || [],
+        sent: S.friendRequestsSent || [],
         voiceActive: !!S.realtimeActive,
         connecting: !!S.realtimeConnecting,
         sessions: (S.sessions || []).slice(0, 30),
@@ -194,6 +201,21 @@
   toast = function (message) {
     notice(String(message).replace(/[\p{Extended_Pictographic}\uFE0F]/gu, ""));
   };
+  async function refreshSocial() {
+    if (!CURRENT_USER) return;
+    S.nativeSocialError = "";
+    const { error } = await sbClient
+      .from("friendships")
+      .select("requester_id")
+      .or(
+        `requester_id.eq.${CURRENT_USER.id},addressee_id.eq.${CURRENT_USER.id}`,
+      )
+      .limit(1);
+    if (error) throw error;
+    await loadFriendships();
+    await loadRealPosts("equestre");
+    notify();
+  }
   addEventListener("message", async (event) => {
     if (
       event.origin !== location.origin ||
@@ -201,7 +223,237 @@
       event.data?.type !== "newride-v2-command"
     )
       return;
-    const { command, text } = event.data;
+    const { command, text, id } = event.data;
+    const uuid = (value) =>
+      typeof value === "string" &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        value,
+      );
+    if (command === "test-login") {
+      const { email, password } = event.data;
+      if (
+        S.nativeAuthBusy ||
+        typeof email !== "string" ||
+        typeof password !== "string" ||
+        !email.includes("@") ||
+        email.length > 254 ||
+        !password ||
+        password.length > 200
+      )
+        return;
+      S.nativeAuthBusy = true;
+      notify();
+      try {
+        if (CURRENT_USER || (await sbClient.auth.getSession()).data.session)
+          throw Error("already signed in");
+        const result = await sbClient.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+        if (result.error || !result.data.user) throw Error("login failed");
+        CURRENT_USER = {
+          id: result.data.user.id,
+          email: result.data.user.email,
+        };
+        await afterAuth();
+        window.newrideV2Preview();
+        await refreshSocial();
+        notice(
+          "Compte connecté. Vous pouvez tester les échanges dans la communauté.",
+        );
+      } catch {
+        notice(
+          CURRENT_USER
+            ? "Le compte est connecté, mais les données sociales n’ont pas pu être actualisées."
+            : "Connexion impossible. Vérifiez les identifiants et la confirmation du compte.",
+        );
+      } finally {
+        S.nativeAuthBusy = false;
+        notify();
+      }
+      return;
+    }
+    if (command === "test-logout") {
+      if (S.nativeAuthBusy || S.nativeSocialBusy) {
+        notice(
+          "Attendez la fin de l’opération en cours avant de changer de compte.",
+        );
+        return;
+      }
+      S.nativeAuthBusy = true;
+      notify();
+      try {
+        await stopRealtimeConversation();
+        const result = await sbClient.auth.signOut();
+        if (result.error) throw result.error;
+        await logoutUser();
+        S.weeklyProgram = [];
+        S.coachMemorySummary = "";
+        S.nativeSocialError = "";
+        window.newrideV2Preview();
+        notice(
+          "Compte déconnecté. La navigation sans compte reste disponible.",
+        );
+        parent.postMessage(
+          { type: "newride-v2-session-reset" },
+          location.origin,
+        );
+      } catch {
+        notice("La déconnexion n’a pas pu être terminée.");
+      } finally {
+        S.nativeAuthBusy = false;
+        notify();
+      }
+      return;
+    }
+    if (
+      [
+        "social-refresh",
+        "publish",
+        "like",
+        "comment",
+        "friend-request",
+        "friend-accept",
+      ].includes(command)
+    ) {
+      if (!CURRENT_USER) {
+        notice(
+          "Ouvrez l’accès test facultatif pour utiliser les fonctions partagées. Les brouillons locaux restent accessibles.",
+        );
+        return;
+      }
+      if (S.nativeSocialBusy) return;
+      S.nativeSocialBusy = true;
+      S.nativeSocialError = "";
+      notify();
+      let rollback = null;
+      let mutationConfirmed=false;
+      try {
+        if (command === "publish") {
+          if (typeof text !== "string" || !text.trim() || text.length > 4000)
+            return;
+          const { error } = await sbClient.from("posts").insert({
+            user_id: CURRENT_USER.id,
+            sport: "equestre",
+            kind: "social",
+            caption: text.trim(),
+          });
+          if (error) throw error;
+          notice("Message publié. Il sera visible par vos amis acceptés.");
+        } else if (command === "friend-request") {
+          if (
+            typeof text !== "string" ||
+            text.trim().length < 2 ||
+            text.length > 80
+          )
+            return;
+          const { data: target, error: lookupError } = await sbClient
+            .from("profiles")
+            .select("id,username")
+            .eq("username", text.trim())
+            .maybeSingle();
+          if (lookupError) throw lookupError;
+          if (!target || target.id === CURRENT_USER.id) {
+            notice("Aucun autre profil ne correspond exactement à ce pseudo.");
+            return;
+          }
+          const { error } = await sbClient.from("friendships").insert({
+            requester_id: CURRENT_USER.id,
+            addressee_id: target.id,
+            status: "pending",
+          });
+          if (error) {
+            if (error.code === "23505") {
+              notice("Une relation ou une demande existe déjà avec ce profil.");
+              return;
+            }
+            throw error;
+          }
+          notice("Demande d’amitié envoyée.");
+        } else if (command === "friend-accept") {
+          if (
+            !uuid(id) ||
+            !(S.friendRequestsReceived || []).some((f) => f.requesterId === id)
+          )
+            return;
+          const { data, error } = await sbClient
+            .from("friendships")
+            .update({ status: "accepted" })
+            .eq("requester_id", id)
+            .eq("addressee_id", CURRENT_USER.id)
+            .eq("status", "pending")
+            .select("requester_id");
+          if (error || !data?.length) throw error || Error("request missing");
+          notice(
+            "Demande acceptée. Vous pouvez consulter vos publications respectives.",
+          );
+        } else if (command === "like") {
+          const post = (S.realPosts || []).find((p) => p.id === id);
+          if (!uuid(id) || !post) return;
+          const original = {
+            count: post.like?.count || 0,
+            likedByMe: !!post.like?.likedByMe,
+          };
+          post.like = {
+            count: Math.max(0, original.count + (original.likedByMe ? -1 : 1)),
+            likedByMe: !original.likedByMe,
+          };
+          rollback = () => (post.like = original);
+          notify();
+          const result = original.likedByMe
+            ? await sbClient
+                .from("post_likes")
+                .delete()
+                .eq("post_id", id)
+                .eq("user_id", CURRENT_USER.id)
+            : await sbClient
+                .from("post_likes")
+                .insert({ post_id: id, user_id: CURRENT_USER.id });
+          if (result.error) throw result.error;
+        } else if (command === "comment") {
+          if (
+            !uuid(id) ||
+            !(S.realPosts || []).some((p) => p.id === id) ||
+            typeof text !== "string" ||
+            !text.trim() ||
+            text.length > 2000
+          )
+            return;
+          const post = S.realPosts.find((p) => p.id === id);
+          const previous = post.comments || [];
+          post.comments = [
+            ...previous,
+            {
+              id: "pending-" + crypto.randomUUID(),
+              content: text.trim(),
+              authorName: getDisplayName(),
+              isSelf: true,
+            },
+          ];
+          rollback = () => (post.comments = previous);
+          notify();
+          const { error } = await sbClient.from("post_comments").insert({
+            post_id: id,
+            user_id: CURRENT_USER.id,
+            content: text.trim(),
+          });
+          if (error) throw error;
+          notice("Commentaire enregistré.");
+        }
+        mutationConfirmed=command!=="social-refresh";
+        await refreshSocial();
+      } catch {
+        if(mutationConfirmed){S.nativeSocialError="";notice("Opération enregistrée. Le fil n’a pas pu être actualisé ; utilisez Actualiser avant une nouvelle action.");return;}
+        rollback?.();
+        S.nativeSocialError =
+          "L’opération n’a pas pu être confirmée par le serveur. Actualisez avant de réessayer.";
+        notice(S.nativeSocialError);
+      } finally {
+        S.nativeSocialBusy = false;
+        notify();
+      }
+      return;
+    }
     try {
       if (command === "voice-stop") {
         await stopRealtimeConversation();

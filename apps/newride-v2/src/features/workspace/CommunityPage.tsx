@@ -1,7 +1,9 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-import { Header, Empty } from "./shared";
+import { SharedFeed, SocialConnection, FriendshipPanel } from "./SharedSocial";
+import { Header, Empty, command } from "./shared";
 import type { WorkspaceModel } from "./model";
 export function CommunityPage({ model }: { model: WorkspaceModel }) {
   const {
@@ -14,6 +16,13 @@ export function CommunityPage({ model }: { model: WorkspaceModel }) {
     community,
     saveDraft,
   } = model;
+  const pendingPublish = useRef<string | null>(null);
+  useEffect(() => {
+    if (!state.socialBusy && pendingPublish.current !== null) {
+      if (state.socialError) setDraft(pendingPublish.current);
+      pendingPublish.current = null;
+    }
+  }, [state.socialBusy, state.socialError]);
   return (
     <>
       <Header
@@ -21,6 +30,7 @@ export function CommunityPage({ model }: { model: WorkspaceModel }) {
         title="LES MÊMES ÉMOTIONS."
         description="Des moments à raconter, des chemins à découvrir et des rencontres à préparer."
       />
+      <SocialConnection state={state} />
       <nav className="studio-segments" aria-label="Rubriques de la communauté">
         {[
           ["social", "Le fil"],
@@ -41,6 +51,7 @@ export function CommunityPage({ model }: { model: WorkspaceModel }) {
       {community === "social" && (
         <div className="studio-social-layout">
           <div>
+            <FriendshipPanel state={state} />
             <section className="studio-panel compose">
               <span className="ride-kicker">VOTRE MOMENT À CHEVAL</span>
               <label htmlFor="social-draft">
@@ -54,7 +65,11 @@ export function CommunityPage({ model }: { model: WorkspaceModel }) {
                 placeholder="Une sensation, un progrès, un beau moment…"
               />
               <div>
-                <span>Brouillon privé · sur cet appareil</span>
+                <span>
+                  {state.authenticated
+                    ? "Choisissez : conserver ici ou publier à vos amis."
+                    : "Brouillon privé · sur cet appareil"}
+                </span>
                 <button
                   className="studio-dark"
                   disabled={!draft.trim()}
@@ -62,31 +77,31 @@ export function CommunityPage({ model }: { model: WorkspaceModel }) {
                 >
                   Conserver <ArrowRight size={17} />
                 </button>
+                {state.authenticated && (
+                  <button
+                    className="studio-dark"
+                    disabled={!draft.trim() || state.socialBusy}
+                    onClick={() => {
+                      pendingPublish.current = draft;
+                      command("publish", draft);
+                      setDraft("");
+                    }}
+                  >
+                    {state.socialBusy ? "Envoi…" : "Publier à mes amis"}
+                    <ArrowRight size={17} />
+                  </button>
+                )}
               </div>
             </section>
-            {state.posts?.map((post) => (
-              <article className="studio-panel feed-post" key={post.id}>
-                <header>
-                  <span className="feed-avatar">
-                    {(post.authorName || "C").slice(0, 1)}
-                  </span>
-                  <strong>{post.authorName || "Cavalier"}</strong>
-                </header>
-                {post.photo_url && (
-                  <img
-                    src={post.photo_url}
-                    alt="Publication du cavalier"
-                    loading="lazy"
-                  />
-                )}
-                <p>{post.caption}</p>
-                <span>{post.like?.count || 0} mentions J’aime</span>
-              </article>
-            ))}
+            <SharedFeed state={state} />
             {!state.posts?.length && (
               <Empty
                 title="DE LA PLACE POUR VOS HISTOIRES."
-                text="Aucune publication communautaire n’est chargée dans ce mode. Les brouillons ci-dessous restent privés et ne sont pas des publications partagées."
+                text={
+                  state.authenticated
+                    ? "Aucune publication de votre cercle n’est chargée. Acceptez la demande d’amitié, publiez depuis le second compte puis actualisez le fil."
+                    : "Aucune publication communautaire n’est chargée dans ce mode. Les brouillons ci-dessous restent privés et ne sont pas des publications partagées."
+                }
               />
             )}
             {drafts.map((d) => (

@@ -15,11 +15,11 @@ export function tabForPath(path: string): TabId {
     return "live";
   if (/^\/(coaching|ali|lecons|exercices|sources|connexion)(\/|$)/.test(path))
     return "ali";
-  if (/^\/(ecurie|experts|pro)(\/|$)/.test(path)) return "stable";
+  if (/^\/(ecurie|experts|pro|acces-test)(\/|$)/.test(path)) return "stable";
   return "today";
 }
 const knownPath =
-  /^\/(?:$|live$|casque$|performances$|carte$|discover$|coaching(?:\/[^/]+)?$|ali(?:\/(?:conversation|a-propos))?$|lecons$|exercices$|seance-guidee$|seances\/[^/]+$|ecurie$|experts$|pro$|sources$)/;
+  /^\/(?:$|live$|casque$|performances$|carte$|discover$|coaching(?:\/[^/]+)?$|ali(?:\/(?:conversation|a-propos))?$|lecons$|exercices$|seance-guidee$|seances\/[^/]+$|acces-test$|ecurie$|experts$|pro$|sources$)/;
 export function safeReturnTo(input: string | null): string {
   if (
     !input ||
@@ -52,6 +52,7 @@ export function parentForPath(path: string): string {
     path === "/seance-guidee"
   )
     return "/live";
-  if (path === "/pro" || path === "/experts") return "/ecurie";
+  if (path === "/acces-test" || path === "/pro" || path === "/experts")
+    return "/ecurie";
   return "/";
 }

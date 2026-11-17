@@ -356,8 +356,8 @@ const SUPABASE_URL = PUBLIC_CONFIG.SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = PUBLIC_CONFIG.SUPABASE_ANON_KEY || '';
 const MAPBOX_TOKEN = PUBLIC_CONFIG.MAPBOX_TOKEN || '';
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !MAPBOX_TOKEN) {
-  console.error('Configuration publique NewRide manquante. Vérifie les variables Netlify SUPABASE_URL, SUPABASE_ANON_KEY et MAPBOX_TOKEN.');
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  console.error('Configuration publique NewRide manquante. Vérifie la configuration publique Supabase de cette version.');
 }
 
 const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -2034,18 +2034,19 @@ async function stopRealtimeConversation(){
 
 async function loadFriendships(){
   if(!CURRENT_USER) return;
+  const requestUserId=CURRENT_USER.id;
   try{
     const { data, error } = await sbClient
       .from('friendships')
       .select('*, requester:profiles!friendships_requester_id_fkey(id,username,avatar_url), addressee:profiles!friendships_addressee_id_fkey(id,username,avatar_url)')
-      .or(`requester_id.eq.${CURRENT_USER.id},addressee_id.eq.${CURRENT_USER.id}`);
-    if(error || !data) return;
-    S.friendRequestsReceived = data.filter(f => f.status==='pending' && f.addressee_id===CURRENT_USER.id)
+      .or(`requester_id.eq.${requestUserId},addressee_id.eq.${requestUserId}`);
+    if(error || !data || CURRENT_USER?.id!==requestUserId) return;
+    S.friendRequestsReceived = data.filter(f => f.status==='pending' && f.addressee_id===requestUserId)
       .map(f => ({ requesterId: f.requester_id, username: f.requester?.username, avatar: f.requester?.avatar_url }));
-    S.friendRequestsSent = data.filter(f => f.status==='pending' && f.requester_id===CURRENT_USER.id)
+    S.friendRequestsSent = data.filter(f => f.status==='pending' && f.requester_id===requestUserId)
       .map(f => ({ addresseeId: f.addressee_id, username: f.addressee?.username, avatar: f.addressee?.avatar_url }));
     S.friends = data.filter(f => f.status==='accepted').map(f => {
-      const isMeRequester = f.requester_id===CURRENT_USER.id;
+      const isMeRequester = f.requester_id===requestUserId;
       const other = isMeRequester ? f.addressee : f.requester;
       return { id: other?.id, username: other?.username, avatar: other?.avatar_url };
     });
@@ -2145,6 +2146,7 @@ async function removeFriend(otherId){
 
 async function loadRealPosts(sportId){
   if(!CURRENT_USER) return;
+  const requestUserId=CURRENT_USER.id;
   try{
     // (CORRECTIF) plus de jointure automatique "author:profiles(...)" (fragile, pouvait échouer
     // silencieusement) — on fait 2 requêtes séparées et on les assemble nous-mêmes, plus robuste.
@@ -2155,6 +2157,7 @@ async function loadRealPosts(sportId){
       .order('created_at', { ascending: false })
       .limit(30);
     if(error){ console.error('Erreur chargement posts:', error); return; }
+    if(CURRENT_USER?.id!==requestUserId)return;
     if(!data){ S.realPosts = []; if(S.tab==='discover') render(); return; }
 
     const postIds = data.map(row=>row.id);
@@ -2176,7 +2179,7 @@ async function loadRealPosts(sportId){
       (likesData||[]).forEach(l=>{
         likesByPost[l.post_id] = likesByPost[l.post_id] || { count:0, likedByMe:false };
         likesByPost[l.post_id].count++;
-        if(l.user_id === CURRENT_USER.id) likesByPost[l.post_id].likedByMe = true;
+        if(l.user_id === requestUserId) likesByPost[l.post_id].likedByMe = true;
       });
       // charge aussi les auteurs des commentaires + leurs likes en 2 requêtes séparées
       const commentAuthorIds = [...new Set((commentsData||[]).map(c=>c.user_id))];
@@ -2192,22 +2195,23 @@ async function loadRealPosts(sportId){
         (cLikes||[]).forEach(l=>{
           commentLikesByComment[l.comment_id] = commentLikesByComment[l.comment_id] || { count:0, likedByMe:false };
           commentLikesByComment[l.comment_id].count++;
-          if(l.user_id === CURRENT_USER.id) commentLikesByComment[l.comment_id].likedByMe = true;
+          if(l.user_id === requestUserId) commentLikesByComment[l.comment_id].likedByMe = true;
         });
       }
       (commentsData||[]).forEach(c=>{
         commentsByPost[c.post_id] = commentsByPost[c.post_id] || [];
         commentsByPost[c.post_id].push({
           id: c.id, content: c.content,
-          authorName: c.user_id===CURRENT_USER.id ? getDisplayName() : (commentAuthorsById[c.user_id]?.username || 'Cavalier'),
-          isSelf: c.user_id===CURRENT_USER.id,
+          authorName: c.user_id===requestUserId ? getDisplayName() : (commentAuthorsById[c.user_id]?.username || 'Cavalier'),
+          isSelf: c.user_id===requestUserId,
           like: commentLikesByComment[c.id] || { count:0, likedByMe:false },
         });
       });
     }
 
+    if(CURRENT_USER?.id!==requestUserId)return;
     S.realPosts = data.map(row=>{
-      const isSelf = row.user_id === CURRENT_USER.id;
+      const isSelf = row.user_id === requestUserId;
       const author = authorsById[row.user_id];
       return {
         id: row.id, photo_url: row.photo_url, caption: row.caption, title: row.title, kind: row.kind,
@@ -2226,21 +2230,22 @@ async function loadRealPosts(sportId){
 
 async function loadRealSessions(sportId){
   if(!CURRENT_USER) return;
+  const requestUserId=CURRENT_USER.id;
   try{
     const { data, error } = await sbClient
       .from('sessions')
       .select('*')
-      .eq('user_id', CURRENT_USER.id)
+      .eq('user_id', requestUserId)
       .eq('sport', sportId)
       .order('started_at', { ascending: false })
       .limit(10);
-    if(error || !data || data.length===0) return;
+    if(error || !data || data.length===0 || CURRENT_USER?.id!==requestUserId) return;
     S.sessions = data.map(row=>({
       date: new Date(row.started_at).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'}),
       dur: row.duration_seconds ? fmt(row.duration_seconds) : '—',
       met2: row.metrics?.met2 ?? 0,
       met3: row.metrics?.met3 ?? 0,
-      score: row.metrics?.score ?? 80,
+      score: row.metrics?.score ?? null,
       type: row.metrics?.type ?? 0,
       dist: row.distance_km ?? 0,
       elev: row.metrics?.elev ?? 0,
