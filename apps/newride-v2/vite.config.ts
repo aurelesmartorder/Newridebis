@@ -45,6 +45,8 @@ export default defineConfig(({ mode }) => {
     ],
     server: {
       proxy: {
+        "/geo/city": { target: "https://photon.komoot.io", changeOrigin: true, rewrite: path => path.replace("/geo/city", "/api/") },
+        "/geo/professionals": { target: "https://overpass-api.de", changeOrigin: true, rewrite: path => path.replace("/geo/professionals", "/api/interpreter") },
         "^/api/(coach-chat|realtime-token|transcribe-audio|analyze-video-session|describe-photo|text-to-speech|send-report)$":
           {
             target: origin,
