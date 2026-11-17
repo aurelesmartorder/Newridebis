@@ -166,11 +166,8 @@ function Shell() {
             </NavLink>
           ))}
         </nav>
+        <NavLink to="/casque" className={({ isActive }) => `helmet-menu ${isActive ? "active" : ""}`}><Radio size={23} strokeWidth={1.7} /><span><strong>Connecter mon casque</strong><small>Bluetooth & audio</small></span><ArrowRight size={17} /></NavLink>
         <div className="rail-subspaces">
-          <Link to="/casque">
-            <Radio size={17} />
-            Mon casque
-          </Link>
           <Link to="/performances">
             <ChartNoAxesCombined size={15} />
             Perfs
@@ -250,6 +247,7 @@ function Shell() {
             <span className="header-date">{date}</span>
           </div>
           <div className="header-actions">
+            <Link to="/casque" className="mobile-helmet-menu"><Radio size={19}/><span>Casque</span></Link>
             {voiceActive && (
               <Link to="/ali?section=voice" className="voice-active-pill">
                 <span />

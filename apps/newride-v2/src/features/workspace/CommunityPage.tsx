@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
+import { MediaPicker } from "../../components/MediaPicker";
 import { SharedFeed, SocialConnection, FriendshipPanel } from "./SharedSocial";
 import { Header, Empty, command } from "./shared";
 import type { WorkspaceModel } from "./model";
@@ -16,6 +17,7 @@ export function CommunityPage({ model }: { model: WorkspaceModel }) {
     community,
     saveDraft,
   } = model;
+  const [photo, setPhoto] = useState<File|null>(null);
   const pendingPublish = useRef<string | null>(null);
   useEffect(() => {
     if (!state.socialBusy && pendingPublish.current !== null) {
@@ -64,6 +66,8 @@ export function CommunityPage({ model }: { model: WorkspaceModel }) {
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Une sensation, un progrès, un beau moment…"
               />
+              <MediaPicker kind="photo" file={photo} onChange={setPhoto}/>
+              {photo && <p className="compat-note">La photo publiée sera stockée dans le stockage de photos existant. Toute personne disposant de son URL pourra potentiellement la consulter.</p>}
               <div>
                 <span>
                   {state.authenticated
@@ -83,7 +87,8 @@ export function CommunityPage({ model }: { model: WorkspaceModel }) {
                     disabled={!draft.trim() || state.socialBusy}
                     onClick={() => {
                       pendingPublish.current = draft;
-                      command("publish", draft);
+                      const frame = document.getElementById("newride-engine") as HTMLIFrameElement | null;
+                      frame?.contentWindow?.postMessage({type:"newride-v2-command",command:"publish",text:draft,file:photo}, location.origin);
                       setDraft("");
                     }}
                   >

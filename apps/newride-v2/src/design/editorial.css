@@ -2142,3 +2142,11 @@ main {
     gap: 0;
   }
 }
+
+.helmet-menu{display:flex;align-items:center;gap:10px;min-height:64px;padding:13px 11px;margin:14px 0;color:#f5f5ec;border:1px solid #8da28d66;background:#ffffff0a;border-radius:8px;text-decoration:none}.helmet-menu span{flex:1;min-width:0}.helmet-menu strong{display:block;font-size:12px;line-height:1.5}.helmet-menu small{display:block;font-size:10px;color:#b4c4b6;margin-top:3px}.helmet-menu>svg{flex-shrink:0}.helmet-menu:hover,.helmet-menu.active{background:#edf0e4;color:#172e23}.helmet-menu.active small{color:#4b6451}.compact-rail .helmet-menu span,.compact-rail .helmet-menu>svg:last-child{display:none}@media(max-width:900px){.helmet-menu{display:none}}
+
+.mobile-helmet-menu{display:none}@media(max-width:900px){.mobile-helmet-menu{display:flex;gap:6px;align-items:center;justify-content:center;min-height:48px;padding:0 9px;background:#172e23;color:#fff;border-radius:7px;text-decoration:none;font-size:11px}.header-actions{gap:6px}}
+
+.geo-map-panel{min-width:0}.geo-map-canvas{height:540px;min-height:340px;border:1px solid #dce1d5;border-radius:12px;z-index:0}.geo-map-toolbar{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.geo-map-toolbar p{font-size:12px;line-height:1.6;flex:1;min-width:180px}.geo-map-canvas .leaflet-control-zoom a{width:48px;height:48px;line-height:48px}.geo-map-canvas .leaflet-control-attribution{font-size:11px}@media(max-width:600px){.geo-map-canvas{height:60dvh}.geo-map-toolbar{gap:8px}}
+
+.media-actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.media-actions label{cursor:pointer}.media-actions label:has(+input:focus-visible){outline:3px solid #ff6746}.media-preview{margin:16px 0}.media-preview img,.media-preview video{display:block;width:100%;max-height:440px;object-fit:contain;border-radius:10px;background:#13251e}.compose .media-picker>div{display:flex;flex-wrap:wrap}.media-picker p{font-size:12px;line-height:1.7}

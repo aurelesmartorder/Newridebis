@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 import { distance } from "../../lib/guestRide";
-import { Header, Trace } from "./shared";
+import { Header } from "./shared";
+import { GeoMap } from "../../components/GeoMap";
 import type { WorkspaceModel } from "./model";
 export function MapPage({ model }: { model: WorkspaceModel }) {
   const { gps, selected, setSelected } = model;
@@ -56,19 +57,7 @@ export function MapPage({ model }: { model: WorkspaceModel }) {
             Préparer une sortie <ArrowRight size={17} />
           </Link>
         </aside>
-        <div className="studio-map">
-          <span>TRACÉ GPS / SANS FOND DE CARTE</span>
-          <Trace
-            points={
-              (gps.rides.find((r) => r.id === selected) || gps.rides[0])
-                ?.points || []
-            }
-          />
-          <small>
-            Les positions reflètent la précision du téléphone. Ce tracé ne
-            définit pas un chemin praticable ou autorisé.
-          </small>
-        </div>
+        <GeoMap points={gps.started ? gps.points : (gps.rides.find(r => r.id === selected) || gps.rides[0])?.points || []} />
       </div>
     </>
   );

@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { MediaPicker } from "../../components/MediaPicker";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -11,6 +13,7 @@ import {
 import { command, Header, Empty } from "./shared";
 import type { WorkspaceModel } from "./model";
 export function AliPage({ model }: { model: WorkspaceModel }) {
+  const [video, setVideo] = useState<File|null>(null);
   const {
     setParams,
     state,
@@ -92,8 +95,8 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
                 {state.connecting
                   ? "Connexion en cours…"
                   : state.voiceActive
-                    ? "Terminer la conversation"
-                    : "Parler avec ALI"}
+                    ? (lesson ? "Arrêter la leçon" : "Terminer la conversation")
+                    : (lesson ? "Écouter la leçon" : "Parler avec ALI")}
               </button>
               <small>
                 {state.voiceActive
@@ -228,12 +231,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
         </section>
       )}
       {section === "video" && (
-        <Empty
-          title="UN AUTRE ANGLE DE VUE."
-          text="L’analyse vidéo connectée nécessite encore une validation de son parcours dans cette version. Aucune vidéo n’est envoyée ni analysée sur cet écran."
-          link="/ali?section=memory"
-          label="Préparer une observation écrite"
-        />
+        <section className="studio-panel"><span className="ride-kicker">ALI / OBSERVER APRÈS LA SÉANCE</span><h2>Un autre angle de vue.</h2><MediaPicker kind="video" file={video} onChange={setVideo}/><p className="compat-note">L’analyse porte sur des images extraites de la vidéo, après enregistrement. Elle ne mesure pas des angles ou une boiterie et ne remplace pas un professionnel.</p><button className="studio-primary" disabled={!video || !state.authenticated || state.videoLoading} onClick={()=>{const frame=document.getElementById('newride-engine') as HTMLIFrameElement|null;frame?.contentWindow?.postMessage({type:'newride-v2-command',command:'video-analyze',file:video},location.origin)}}>{state.videoLoading ? 'Analyse en cours…' : 'Envoyer les images à ALI pour analyse'}</button>{!state.authenticated && <p>Connectez votre compte dans <Link to="/acces-test">Accès test</Link> pour demander une analyse.</p>}<p role="status">{state.videoProgress}</p>{state.videoReport?.summary && <article><h3>Retour d’ALI</h3><p>{state.videoReport.summary}</p><small>{state.videoReport.frameCount} images examinées · interprétation à vérifier avec votre enseignant</small></article>}</section>
       )}
     </>
   );

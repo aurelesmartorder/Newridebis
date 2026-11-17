@@ -1920,7 +1920,7 @@ async function connectRealtimeSession(instructions, { autoStart = false, mode = 
 
     _realtimeDataChannel = pc.createDataChannel('oai-events');
     _realtimeDataChannel.addEventListener('open', () => {
-      if(autoStart) _realtimeDataChannel.send(JSON.stringify({ type: 'response.create' }));
+      if(autoStart) _realtimeDataChannel.send(JSON.stringify({ type: 'response.create', ...(mode === 'lesson' ? { response: { instructions: "Commence directement par une explication concr\u00e8te du sujet. Aucun pr\u00e9ambule, accord, salutation, pr\u00e9sentation ou question initiale. Ne dis pas D\u2019accord, Bien s\u00fbr, Bonjour, ni Voici la le\u00e7on. Les questions viennent apr\u00e8s le contenu essentiel ou \u00e0 la demande du cavalier. Respecte les limites des sources. Sujet : " + label } } : {}) }));
     });
     _realtimeDataChannel.addEventListener('message', async (e) => {
       try{

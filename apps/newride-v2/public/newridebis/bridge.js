@@ -18,6 +18,9 @@
         sent: S.friendRequestsSent || [],
         voiceActive: !!S.realtimeActive,
         connecting: !!S.realtimeConnecting,
+        videoLoading: !!S.videoReportLoading,
+        videoProgress: S.videoReportProgress || "",
+        videoReport: S.lastVideoReport || null,
         sessions: (S.sessions || []).slice(0, 30),
         posts: (S.realPosts || []).slice(0, 30),
         program: S.weeklyProgram || [],
@@ -332,11 +335,22 @@
         if (command === "publish") {
           if (typeof text !== "string" || !text.trim() || text.length > 4000)
             return;
+          let photoUrl = null;
+          const photo = event.data.file;
+          if(photo){
+            if(!(photo instanceof File) || !/^image\/(jpeg|png|webp)$/.test(photo.type) || photo.size > 10*1024*1024) throw Error('Photo invalide');
+            const ext = {"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[photo.type];
+            const path = CURRENT_USER.id + '/' + crypto.randomUUID() + '.' + ext;
+            const upload = await sbClient.storage.from('photos').upload(path,photo,{contentType:photo.type,upsert:false});
+            if(upload.error) throw upload.error;
+            photoUrl = sbClient.storage.from('photos').getPublicUrl(path).data.publicUrl;
+          }
           const { error } = await sbClient.from("posts").insert({
             user_id: CURRENT_USER.id,
             sport: "equestre",
             kind: "social",
             caption: text.trim(),
+            photo_url: photoUrl,
           });
           if (error) throw error;
           notice("Message publié. Il sera visible par vos amis acceptés.");
@@ -464,7 +478,12 @@
         showLogin();
         return;
       }
-      if (command === "voice-start") {
+      if (command === "video-analyze") {
+        const file = event.data.file;
+        if(!(file instanceof File) || !file.type.startsWith('video/') || file.size > 100*1024*1024 || S.videoReportLoading) return;
+        S.lastVideoReport = null;
+        await uploadSessionVideo({files:[file],value:''});
+      } else if (command === "voice-start") {
         if (
           typeof text === "string" &&
           LESSON_CATEGORIES.some((c) => c.topics.includes(text))
@@ -499,7 +518,7 @@ const v2EvidenceGuard =
   "\nNe traite jamais un titre de leçon comme une preuve. Ne donne pas de pourcentage, de classement de causes, de diagnostic ou de promesse d’efficacité sans une référence établie et pertinente. Distingue les résultats d’études, les hypothèses et le ressenti déclaré. Aucune compétence acquise ne se déduit d’une conversation ni de deux appels d’outil. Un capteur de casque n’est pas un capteur placé sur le cheval. Indique les limites et demande une observation qualifiée lorsque nécessaire.";
 const v2OriginalLessonInstructions = buildLessonRealtimeInstructions;
 buildLessonRealtimeInstructions = function (topic) {
-  return v2OriginalLessonInstructions(topic) + v2EvidenceGuard;
+  return v2OriginalLessonInstructions(topic) + v2EvidenceGuard + "\nOUVERTURE DE LA LE\u00c7ON : Commence directement par une explication concr\u00e8te du sujet. Aucun pr\u00e9ambule, accord, salutation, pr\u00e9sentation ou question initiale. Ne dis pas D\u2019accord, Bien s\u00fbr, Bonjour, ni Voici la le\u00e7on. Les questions viennent apr\u00e8s le contenu essentiel ou \u00e0 la demande du cavalier. Respecte les limites des sources.";
 };
 const v2OriginalRealtimeInstructions = buildRealtimeInstructions;
 buildRealtimeInstructions = function () {

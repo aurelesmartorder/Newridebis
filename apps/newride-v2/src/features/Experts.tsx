@@ -1,131 +1,18 @@
-import { useState, type FormEvent } from "react";
-import { Compass, MapPin, Search, ShieldCheck, UsersRound } from "lucide-react";
-import { Badge, Button, EmptyState } from "../components/ui";
-export function Experts() {
-  const [specialty, setSpecialty] = useState("Enseignant d’équitation");
-  const [location, setLocation] = useState("");
-  const [searched, setSearched] = useState(false);
-  function search(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSearched(true);
-  }
-  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${specialty} ${location}`)}`;
-  return (
-    <>
-      <div className="page-intro">
-        <div>
-          <p className="eyebrow">BIEN ENTOURÉS POUR ALLER PLUS LOIN</p>
-          <h1>
-            Les bons experts<span className="greeting-dot">.</span>
-          </h1>
-          <p>Un regard professionnel pour accompagner votre duo.</p>
-        </div>
-      </div>
-      <section className="expert-hero">
-        <div className="expert-hero-text">
-          <Badge tone="green">À VOS CÔTÉS</Badge>
-          <h2>
-            Chaque duo mérite
-            <br />
-            un accompagnement adapté.
-          </h2>
-          <p>
-            Enseignement, soins, bien-être : trouvez le bon interlocuteur pour
-            votre cheval.
-          </p>
-        </div>
-        <div className="expert-orbit" aria-hidden="true">
-          <div>
-            <UsersRound size={42} strokeWidth={1.2} />
-          </div>
-          <span />
-          <span />
-          <span />
-        </div>
-      </section>
-      <form className="card expert-search" onSubmit={search}>
-        <label>
-          <span>
-            <Search size={17} />
-            Quel professionnel ?
-          </span>
-          <select
-            value={specialty}
-            onChange={(e) => {
-              setSpecialty(e.target.value);
-              setSearched(false);
-            }}
-          >
-            {[
-              "Enseignant d’équitation",
-              "Vétérinaire équin",
-              "Ostéopathe équin",
-              "Maréchal-ferrant",
-            ].map((s) => (
-              <option key={s}>{s}</option>
-            ))}
-          </select>
-        </label>
-        <label>
-          <span>
-            <MapPin size={17} />
-            Où chercher ?
-          </span>
-          <input
-            required
-            value={location}
-            onChange={(e) => {
-              setLocation(e.target.value);
-              setSearched(false);
-            }}
-            maxLength={100}
-            placeholder="Ville ou code postal"
-          />
-        </label>
-        <Button type="submit">
-          <Search size={18} />
-          Rechercher
-        </Button>
-      </form>
-      <section className="card expert-empty">
-        <EmptyState
-          icon={Compass}
-          title={
-            searched
-              ? `Votre recherche à ${location}`
-              : "Un réseau qui se construit"
-          }
-          action={
-            searched ? (
-              <a
-                href={mapUrl}
-                className="button button-secondary"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Ouvrir cette recherche sur la carte
-                <MapPin size={17} />
-              </a>
-            ) : undefined
-          }
-        >
-          {searched
-            ? `Aucun profil ${specialty.toLowerCase()} avec réservation n’est publié dans cette V2. Vous pouvez poursuivre votre recherche sur Google Maps.`
-            : "Aucun professionnel ni créneau n’est encore publié dans cette V2. L’annuaire sera enrichi avec des professionnels et leurs disponibilités."}
-        </EmptyState>
-      </section>
-      <div className="editorial-note">
-        <ShieldCheck size={24} />
-        <div>
-          <h3>La confiance se vérifie</h3>
-          <p>
-            Les résultats d’une recherche externe ne sont pas vérifiés par
-            NewRide. Contrôlez les qualifications et contactez le professionnel
-            pour confirmer sa disponibilité. La réservation intégrée fera
-            l’objet d’un module distinct.
-          </p>
-        </div>
-      </div>
-    </>
-  );
+import { useState, type FormEvent } from 'react';
+import { MapPin, Search } from 'lucide-react';
+import { GeoMap } from '../components/GeoMap';
+type Pro={id:string;name:string;lat:number;lng:number;address:string;phone:string;website:string;km:number};
+function km(a:number,b:number,c:number,d:number){const r=Math.PI/180;const x=Math.sin((c-a)*r/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;return 6371*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
+export function Experts(){
+ const [specialty,setSpecialty]=useState('veterinary');const [city,setCity]=useState('');const [radius,setRadius]=useState('25');const [busy,setBusy]=useState(false);const [message,setMessage]=useState('');const [pros,setPros]=useState<Pro[]>([]);const [chosen,setChosen]=useState<Pro|null>(null);
+ async function search(e?:FormEvent,coords?:{lat:number;lng:number}){e?.preventDefault();setBusy(true);setMessage('Recherche des établissements répertoriés…');setPros([]);setChosen(null);
+ try{let center=coords;if(!center){const res=await fetch('https://photon.komoot.io/api/?q='+encodeURIComponent(city)+'&limit=1&lang=fr');if(!res.ok)throw Error('Le service de recherche de ville ne répond pas.');const data=await res.json();const xy=data.features?.[0]?.geometry?.coordinates;if(!xy)throw Error('Ville ou région introuvable. Précisez votre recherche.');center={lat:xy[1],lng:xy[0]}}
+ const filter=specialty==='veterinary'?'["amenity"="veterinary"]':specialty==='osteopath'?'["healthcare"="osteopath"]':specialty==='farrier'?'["craft"="farrier"]':'["leisure"="horse_riding"]';
+ const query=`[out:json][timeout:20];nwr${filter}(around:${Number(radius)*1000},${center.lat},${center.lng});out center tags;`;
+ const res=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:new URLSearchParams({data:query})});if(!res.ok)throw Error('Le service cartographique est momentanément indisponible. Réessayez plus tard.');const data=await res.json();
+ const list:Pro[]=(data.elements||[]).flatMap((el:any)=>{const t=el.tags||{},lat=el.lat??el.center?.lat,lng=el.lon??el.center?.lon;if(!Number.isFinite(lat)||!Number.isFinite(lng))return [];return [{id:el.type+'/'+el.id,name:t.name||'Établissement sans nom renseigné',lat,lng,address:[t['addr:housenumber'],t['addr:street'],t['addr:postcode'],t['addr:city']].filter(Boolean).join(' '),phone:t.phone||t['contact:phone']||'',website:t.website||t['contact:website']||'',km:km(center!.lat,center!.lng,lat,lng)}]}).sort((a:Pro,b:Pro)=>a.km-b.km);
+ setPros(list);setChosen(list[0]||null);setMessage(list.length?`${list.length} établissement(s) répertorié(s), par distance à vol d’oiseau.`:'Aucun établissement répertorié pour cette recherche. Cela ne signifie pas qu’aucun professionnel n’exerce dans cette zone.');
+ }catch(err){setMessage(err instanceof Error?err.message:'Recherche impossible.')}finally{setBusy(false)}}
+ function nearby(){if(!navigator.geolocation){setMessage('Localisation non disponible. Recherchez par ville.');return;}setMessage('Recherche de votre position…');navigator.geolocation.getCurrentPosition(p=>search(undefined,{lat:p.coords.latitude,lng:p.coords.longitude}),()=>setMessage('Position inaccessible ou refusée. Vous pouvez rechercher par ville.'),{enableHighAccuracy:true,timeout:15000,maximumAge:30000})}
+ return <><div className="studio-heading"><div><p className="ride-kicker">NEWRIDE / VOTRE ENTOURAGE</p><h1>LE BON REGARD, À VOS CÔTÉS.</h1><p>Recherchez un établissement près de chez vous, sans quitter NewRide.</p></div></div><form className="studio-panel expert-search" onSubmit={search}><label>Spécialité<select value={specialty} onChange={e=>setSpecialty(e.target.value)}><option value="veterinary">Vétérinaires</option><option value="osteopath">Ostéopathes</option><option value="riding">Centres équestres & enseignement</option><option value="farrier">Maréchaux-ferrants</option></select></label><label>Ville ou région<input required value={city} onChange={e=>setCity(e.target.value)} placeholder="Lyon, Ain, Bordeaux…" maxLength={100}/></label><label>Rayon<select value={radius} onChange={e=>setRadius(e.target.value)}>{[10,25,50,100].map(n=><option key={n} value={n}>{n} km</option>)}</select></label><button className="studio-primary" disabled={busy}><Search size={18}/>{busy?'Recherche…':'Rechercher'}</button><button type="button" className="studio-dark" disabled={busy} onClick={nearby}><MapPin size={18}/>Autour de moi</button></form><p className="compat-note">Source : données publiques OpenStreetMap, non exhaustives et non vérifiées par NewRide. Les vétérinaires et ostéopathes ne sont pas nécessairement spécialisés en équins ; les centres ne constituent pas des profils de coachs individuels. Confirmez spécialité, qualifications et disponibilité par téléphone. Aucun créneau de réservation n’est fourni.</p><p role="status">{message}</p><div className="studio-map-layout"><div>{pros.map(p=><article className="studio-panel" key={p.id}><h2>{p.name}</h2><p>{p.address||'Adresse détaillée non renseignée'} · {p.km.toFixed(1)} km</p>{p.phone&&<a className="studio-text-link" href={'tel:'+p.phone.replace(/[^+0-9]/g,'')}>Appeler {p.phone}</a>}<button className="studio-dark" onClick={()=>setChosen(p)}>Voir sur la carte</button></article>)}</div><GeoMap points={chosen?[{lat:chosen.lat,lng:chosen.lng,accuracy:0,at:0}]:[]}/></div><p className="compat-note">La recherche transmet la ville ou, après votre demande « Autour de moi », les coordonnées de la zone aux services Photon et Overpass. Aucune donnée de votre carnet n’est envoyée.</p></>
 }

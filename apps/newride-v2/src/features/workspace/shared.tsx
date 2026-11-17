@@ -25,6 +25,9 @@ export type Post = {
 };
 export type Snapshot = {
   ready?: boolean;
+  videoLoading?: boolean;
+  videoProgress?: string;
+  videoReport?: {summary?:string; observations?: unknown; frameCount?:number}|null;
   accountLabel?: string;
   authBusy?: boolean;
   socialBusy?: boolean;

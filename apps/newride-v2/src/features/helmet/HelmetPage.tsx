@@ -1,3 +1,4 @@
+import { EmergencyContact } from "../../components/EmergencyContact";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -454,6 +455,7 @@ export function HelmetPage() {
           </div>
         </Dialog>
       )}
+      <EmergencyContact />
     </div>
   );
 }
