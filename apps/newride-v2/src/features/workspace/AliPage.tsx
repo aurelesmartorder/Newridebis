@@ -9,6 +9,7 @@ import {
   ArrowUpRight,
   BookOpen,
   Check,
+  History,
   Mic,
   Send,
 } from "lucide-react";
@@ -42,8 +43,8 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
     <>
       <Header
         number="ALI / CONVERSATION"
-        title="ON PREND LE TEMPS."
-        description="Un sujet, votre contexte. Une conversation pour y voir plus clair."
+        title="ALI, votre coach."
+        description="Posez votre question. ALI vous répond sans détour."
       >
         <Link className="studio-text-link" to="/ali/a-propos">
           En savoir plus <ArrowUpRight size={18} />
@@ -120,6 +121,10 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
               <span className="ride-kicker">UNE QUESTION PRÉCISE</span>
               <h2>Votre conversation avec ALI.</h2>
               {notice && <p role="status" className="ali-chat-notice">{notice} {!state.authenticated&&<Link to="/acces-test">Me connecter</Link>}</p>}
+              <button className="studio-text-link" type="button" disabled={!state.authenticated || state.chatHistoryLoading} onClick={()=>command("chat-history")}>
+                <History size={17} />
+                {state.chatHistoryLoading ? "Chargement de l’historique…" : "Retrouver mes anciennes discussions"}
+              </button>
               <div className="ali-chat-history" role="log" aria-live="polite" aria-label="Historique de la conversation">{state.chat?.map((message,i)=><article className={message.role==='user'?'ali-message from-rider':'ali-message from-ali'} key={i}><strong>{message.role==='user'?'Vous':'ALI'}</strong><p>{message.content}</p></article>)}{state.chatBusy&&<p className="ali-chat-pending" role="status">ALI prépare sa réponse…</p>}</div>
               {state.chatError&&<p role="alert" className="media-error">{state.chatError}</p>}
               <form
@@ -144,7 +149,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
                   placeholder="Qu’avez-vous ressenti ? Dans quelle situation ?"
                 />
                 <label className="ali-context-choice"><input type="checkbox" checked={shareContext} onChange={e=>setShareContext(e.target.checked)}/>Utiliser le cheval sélectionné et les cinq derniers bilans de cet appareil</label>
-                <p className="media-hint">Vos échanges du compte servent à la continuité. Si vous cochez cette option, ALI reçoit aussi le plan de progression déterministe, le cheval choisi et les bilans de séance de cet appareil. Les bilans sont des déclarations, pas des mesures certifiées.</p>
+                <p className="media-hint">Les échanges de ce compte sont conservés pour consultation et continuité. Cochez la case pour transmettre aussi à ALI le cheval choisi et les bilans de cet appareil.</p>
                 <button className="studio-dark" disabled={!question.trim() || state.chatBusy}>
                   <Send size={17} />
                   {state.chatBusy ? "Réponse en cours…" : "Envoyer à ALI"}

@@ -28,6 +28,7 @@ export type Snapshot = {
   ready?: boolean;
   chatBusy?: boolean;
   chatError?: string;
+  chatHistoryLoading?: boolean;
   videoLoading?: boolean;
   videoProgress?: string;
   videoReport?: {summary?:string; observations?: unknown; frameCount?:number}|null;
@@ -43,7 +44,7 @@ export type Snapshot = {
   connecting?: boolean;
   posts?: Post[];
   program?: { day: string; activity: string; detail: string }[];
-  chat?: { role: string; content: string }[];
+  chat?: { role: string; content: string; created_at?: string }[];
 };
 export function command(command: string, text?: string, id?: string) {
   const frame = document.getElementById(
