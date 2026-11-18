@@ -1,0 +1,1301 @@
+{
+  "document": "ALI-KB-001",
+  "title": "Corpus de connaissances équestres — plugin NewRide",
+  "version": "1.2.0-candidate",
+  "generatedAt": "2026-11-17",
+  "statut": "Candidat documentaire : 73 fiches, 14 sources distinctes, pas de validation clinique ni d’activation moteur",
+  "avertissement": {
+    "nature": "Ce corpus est une extraction structurée et reformulée de résultats publiés sous licence Creative Commons Attribution. Il ne reproduit pas le texte des articles ; chaque entrée est une synthèse propre, tracée jusqu'à sa source.",
+    "usage": "Destiné à alimenter le plugin NewRide (contenu métier) et à calibrer la politique du Core ALI. Ne se substitue pas à la validation par un enseignant diplômé.",
+    "limites": "Une entrée marquée evidenceStrength=FAIBLE repose sur une étude unique, un petit échantillon ou un résultat contesté. Ne pas en faire un critère de coaching sans validation professionnelle."
+  },
+  "licences": {
+    "obligation": "Les sources CC BY imposent la citation de l'auteur et de la source originale en cas de réutilisation, y compris commerciale.",
+    "consequence_produit": "Toute fonctionnalité NewRide s'appuyant sur ce corpus doit exposer une page de crédits listant les sources ci-dessous."
+  },
+  "sources": [
+    {
+      "sourceId": "S1",
+      "citation": "Clayton, H.M.; MacKechnie-Guire, R.; Hobbs, S.J. Riders' Effects on Horses—Biomechanical Principles with Examples from the Literature. Animals 2023, 13(24), 3854.",
+      "doi": "10.3390/ani13243854",
+      "licence": "CC BY",
+      "type": "Revue",
+      "autorite": "HAUTE",
+      "note_autorite": "Clayton : vétérinaire, 45 ans de recherche en biomécanique équine, plus de 250 articles. Hobbs : directrice de centre de recherche en biomécanique du sport. MacKechnie-Guire : Centaur Biomechanics, analyse de performance pour les équipes britanniques."
+    },
+    {
+      "sourceId": "S2",
+      "citation": "Byström, A.; Egenvall, A.; Eisersiö, M.; Engell, M.T.; Lykken, S.; Lundesjö Kvart, S. The impact of teaching approach on horse and rider biomechanics during riding lessons. Heliyon 2025.",
+      "licence": "CC BY",
+      "type": "Étude expérimentale",
+      "autorite": "HAUTE",
+      "note_autorite": "40 leçons de 20 min. 4 enseignants de niveau IGEQ 2 ou 3 (formateurs de formateurs) dans les centres nationaux de Strömsholm (Suède) et Starum (Norvège). 10 cavaliers de niveau moyen en dressage, 11 chevaux d'école. IMU EquiMoves 200 Hz (10 capteurs cheval + cavalier), capteurs de tension de rênes 100 Hz. 333 transitions pas-trot analysées, 8813 foulées. Analyse conversationnelle des interactions croisée avec les données biomécaniques.",
+      "statut_extraction": "COMPLÈTE",
+      "doi": "10.1016/j.heliyon.2025.e41947",
+      "limites_declarees": "Effectifs faibles. Cavaliers tous issus de formations d'enseignants, chevaux d'école — généralisation limitée. Étude exploratoire sans correction pour tests multiples. Pas de suivi après les leçons : impossible de savoir ce que les cavaliers ont retenu."
+    },
+    {
+      "sourceId": "S3",
+      "citation": "Hobbs, S.J.; Baxter, J.; Broom, L.; Rossell, L.-A.; Sinclair, J.; Clayton, H.M. Posture, flexibility and grip strength in horse riders. J. Hum. Kinet. 2014, 42, 113–125.",
+      "licence": "CC BY 3.0",
+      "type": "Étude observationnelle",
+      "autorite": "MOYENNE_HAUTE",
+      "note_autorite": "127 cavaliers droitiers, UK et USA."
+    },
+    {
+      "sourceId": "S4",
+      "citation": "Crecan, C.M.; Peștean, C.P. Inertial Sensor Technologies—Their Role in Equine Gait Analysis, a Review. Sensors 2023. PMCID PMC10386433.",
+      "licence": "CC BY 4.0",
+      "type": "Revue narrative",
+      "autorite": "HAUTE",
+      "pertinence": "Directement liée au module capteur du casque NewRide.",
+      "statut_extraction": "COMPLÈTE",
+      "limites_declarees": "Revue narrative sans méthodologie de recherche pré-spécifiée : les auteurs reconnaissent que les conclusions peuvent être biaisées et non généralisables."
+    },
+    {
+      "sourceId": "S5",
+      "citation": "Viry, S.; Sleimen-Malkoun, R.; Temprado, J.-J.; Frances, J.-P.; Berton, E.; Laurent, M.; Nicol, C. Patterns of Horse-Rider Coordination during Endurance Race: A Dynamical System Approach. PLoS ONE 2013, 8(8), e71804.",
+      "licence": "CC BY",
+      "type": "Étude expérimentale",
+      "autorite": "MOYENNE_HAUTE",
+      "pertinence": "Accéléromètres triaxiaux sur cheval ET cavalier en conditions réelles — le protocole le plus proche de NewRide.",
+      "statut_extraction": "COMPLÈTE",
+      "doi": "10.1371/journal.pone.0071804",
+      "note_autorite": "6 couples experts internationaux (au moins 3 podiums internationaux sur 5 ans), enregistrés en course d'endurance réelle de 120 à 139 km. Deux accéléromètres triaxiaux : Locometrix sur ceinture lombaire du cavalier, Equimetrix dans le sanglon sous le sternum du cheval.",
+      "limites_declarees": "Six couples seulement, TOUS experts — l'étude ne peut donc rien dire sur les différences de niveau. Les auteurs recommandent explicitement d'inclure des couples de niveaux variés dans de futurs travaux."
+    },
+    {
+      "sourceId": "S6",
+      "citation": "Elmeua González, M.; Šarabon, N. Muscle modes of the equestrian rider at walk, rising trot and canter. PLoS ONE 2020, 15(8), e0237727.",
+      "doi": "10.1371/journal.pone.0237727",
+      "licence": "CC BY 4.0",
+      "type": "Étude expérimentale",
+      "autorite": "MOYENNE_HAUTE",
+      "note_autorite": "6 cavaliers amateurs (2-4 h/semaine) vs 9 professionnels de l'École espagnole d'équitation de Lipica (>35 h/semaine). EMG de surface sur 12 muscles, synchronisée par IMU sur l'antérieur du cheval, 60 foulées propres par allure.",
+      "limites_declarees": "Petits effectifs. Les amateurs montaient un seul cheval d'obstacle, les professionnels trois lipizzans — facteur de confusion reconnu par les auteurs. EMG de surface avec faible rapport signal/bruit sur le multifide et le gastrocnémien."
+    },
+    {
+      "sourceId": "S7",
+      "citation": "Rijnbeek, N.; McGreevy, P.D.; et al. Effects of pre-conditioning on behavior and physiology of horses during a standardised learning task. PLoS ONE 2017, 12(3), e0174313.",
+      "doi": "10.1371/journal.pone.0174313",
+      "licence": "CC BY",
+      "type": "Étude expérimentale",
+      "autorite": "MOYENNE",
+      "pertinence": "Seule source identifiée qui teste directement l'effet d'une préparation courte avant une tâche d'apprentissage sur le stress et la performance du cheval.",
+      "statut_extraction": "PARTIELLE (résumé et extraits, pas le PDF complet)",
+      "limites_declarees": "Tâche standardisée en main, pas en selle — transposition au coaching monté à confirmer."
+    },
+    {
+      "sourceId": "S8",
+      "citation": "Olivier, A.; Viseu, J.-P.; Vignais, N.; Vuillerme, N. Balance control during stance — A comparison between horseback riding athletes and non-athletes. PLoS ONE 2019, 14(2), e0211834.",
+      "doi": "10.1371/journal.pone.0211834",
+      "licence": "CC BY",
+      "type": "Étude expérimentale",
+      "autorite": "MOYENNE",
+      "pertinence": "Plateforme de force sur appui stable/instable, yeux ouverts/fermés — protocole directement transposable à un bilan hors-cheval low-tech.",
+      "statut_extraction": "PARTIELLE (résumé et extraits, pas le PDF complet)",
+      "limites_declarees": "Petit échantillon (10 cavalières expertes vs 12 non-sportives), femmes uniquement."
+    },
+    {
+      "sourceId": "S9",
+      "citation": "Alexander, J.; Hobbs, S.J.; et al. Comparison of rider stability in a flapless saddle versus a conventional saddle. PLoS ONE 2018, 13(6), e0196960.",
+      "doi": "10.1371/journal.pone.0196960",
+      "licence": "CC BY",
+      "type": "Étude expérimentale",
+      "autorite": "MOYENNE",
+      "pertinence": "Donne un repère postural de référence (oreille-épaule-hanche-talon) directement formulable à l'oral, complémentaire aux valeurs d'angle de phase de S5 (Viry).",
+      "statut_extraction": "PARTIELLE (résumé et extraits, pas le PDF complet)",
+      "limites_declarees": "Étude centrée sur le type de selle ; le repère postural cité est une référence de littérature générale plus qu'un résultat original de cette étude."
+    },
+    {
+      "sourceId": "S10",
+      "citation": "International Society for Equitation Science — ISES Training Principles",
+      "url": "https://www.equitationscience.com/ises-training-principles",
+      "type": "Recommandations de société savante, pas un essai contrôlé",
+      "access": "Page institutionnelle consultée",
+      "licence": "Ne pas reproduire le texte ; synthèse originale et attribution ; droits des illustrations non acquis",
+      "limites": "Principes généraux ; pas de preuve d’efficacité d’ALI ni de dosage universel."
+    },
+    {
+      "sourceId": "S11",
+      "citation": "The Effects of a Real-Time Visual Kinetic Feedback Intervention on Shock Attenuation of the Equestrian Rider’s Trunk: A Pilot Study (2022)",
+      "doi": "10.3389/fspor.2022.899379",
+      "url": "https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2022.899379/full",
+      "type": "Étude pilote, 16 cavaliers",
+      "access": "Résumé et extraits indexés consultés ; lecture méthodologique complète à finaliser",
+      "licence": "CC BY annoncé ; attribution et contrôle des crédits requis",
+      "limites": "Feedback visuel et dispositif multi-capteurs ; ne valide ni voix seule, ni casque seul, ni rétention durable."
+    },
+    {
+      "sourceId": "S12",
+      "citation": "Applying Multi-Purpose Commercial Inertial Sensors for Monitoring Equine Locomotion in Equestrian Training (2024)",
+      "doi": "10.3390/s24248170",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11680087/",
+      "type": "Étude pilote instrumentée",
+      "access": "Article consulté, passages méthodes et limites",
+      "licence": "CC BY 4.0 indiqué par PMC",
+      "limites": "Cinq emplacements sur le cheval ; variations individuelles et contexte de surface/allure. Pas de validation d’un casque cavalier."
+    },
+    {
+      "sourceId": "S13",
+      "citation": "Dyson S.; Pollard D. Application of the Ridden Horse Pain Ethogram to 150 Horses with Musculoskeletal Pain before and after Diagnostic Anaesthesia (2023)",
+      "doi": "10.3390/ani13121940",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37370450/",
+      "type": "Étude clinique, 150 chevaux",
+      "access": "Notice, résumé et résultats indexés ; protocole complet à revoir avant toute implémentation de score",
+      "licence": "Synthèse originale ; vérifier licence éditeur avant redistribution de grilles",
+      "limites": "Évaluation clinique spécialisée ; ne valide ni autodiagnostic, ni détection par ALI, ni score sur une vidéo non standardisée."
+    },
+    {
+      "sourceId": "S14",
+      "citation": "Balog O.; Havanecz K.; Csányi T.; Ökrös C.; Tóth L.; Berki T. A narrative review of factors influencing rider performance and horse welfare in equestrian activities (2026)",
+      "doi": "10.3389/fspor.2025.1744918",
+      "url": "https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2025.1744918/full",
+      "type": "Revue narrative de 17 études",
+      "access": "Article et résumé consultés ; références primaires non toutes réévaluées",
+      "licence": "Vérifier les crédits et la licence de chaque élément avant redistribution ; pas de reproduction de figures",
+      "limites": "Majorité de petites études observationnelles ; ne pas recompter ses références comme essais indépendants."
+    }
+  ],
+  "entries": [
+    {
+      "id": "KB-PROG-001",
+      "categorie": "PROGRESSION",
+      "claim": "Ordre de difficulté des allures pour l'assiette du cavalier : le pas est le plus facile à suivre, le trot est le plus difficile à asseoir, le galop est plus facile à asseoir que le trot.",
+      "detail": "Au pas, les forces verticales et longitudinales sont faibles, ce qui rend le suivi aisé. Le trot impose de fortes accélérations et décélérations verticales et longitudinales dues aux contacts diagonaux simultanés, avec des oscillations d'environ 3 Hz. Le galop présente des accélérations longitudinales plus faibles que le trot, et les mesures de synchronisation cheval-cavalier y sont meilleures qu'au pas comme au trot.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Ordonner les exercices d'assiette : pas → galop → trot assis. Contredit l'ordre intuitif pas → trot → galop couramment utilisé.",
+      "impact_plugin": "Réordonner le catalogue STABILITE_ASSIETTE.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Ne pas transformer une difficulté biomécanique en progression universelle pas → galop → trot ; niveau du couple et enseignant prioritaires."
+    },
+    {
+      "id": "KB-SKILL-001",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Le cavalier expert est en phase continue avec le cheval ; le novice est moins synchronisé.",
+      "detail": "La synchronisation temporelle des mouvements du cavalier avec ceux du cheval est reconnue comme déterminante dans l'apparition de l'harmonie.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "PRUDENCE : marqueur d'expertise établi en EMG mais NON confirmé en mesure IMU (voir contradiction). À valider expérimentalement avant d'en faire une métrique produit.",
+      "mesurable_par": [
+        "IMU_CASQUE",
+        "IMU_TELEPHONE"
+      ],
+      "contradiction": {
+        "source": "S4",
+        "gravite": "MAJEURE",
+        "detail": "Une étude IMU (Xsens) ayant quantifié l'interaction cheval-cavalier au pas, au trot assis et au galop, chez des cavaliers professionnels et débutants, a trouvé des différences significatives entre ALLURES (p ≤ 0,038 pour 5 paramètres sur 6) mais AUCUNE différence significative selon le NIVEAU des cavaliers (p ≥ 0,078).",
+        "consequence": "La synchronisation de phase mesurée par IMU n'est PAS démontrée comme discriminante du niveau. L'écart entre novices et experts établi par EMG (S6) ne s'est pas retrouvé en cinématique IMU.",
+        "action": "Ne pas retenir la synchronisation de phase comme métrique cible principale du casque sans validation propre. À traiter comme hypothèse à tester, pas comme acquis."
+      },
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-002",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Le cavalier non expérimenté déplace son bassin EN AVANCE sur le mouvement du cheval au pas.",
+      "detail": "Ce décalage pourrait traduire l'usage de l'assiette comme aide de poussée. Le cavalier confirmé maintient au contraire un basculement postérieur du bassin plus marqué durant la foulée de pas.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Marqueur discriminant mesurable : le SIGNE du déphasage (avance vs retard) distingue le niveau, pas seulement son amplitude.",
+      "mesurable_par": [
+        "IMU_CASQUE"
+      ],
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Le bassin et son déphasage ne sont pas directement mesurés par une IMU de casque."
+    },
+    {
+      "id": "KB-SKILL-003",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Les cavaliers novices présentent une amplitude de mouvement plus grande du coude gauche et du genou gauche, et une inclinaison de tête plus antérieure que les professionnels.",
+      "detail": "Les professionnels conservent des coudes plus fléchis au trot assis et une amplitude de flexion-extension du genou plus faible.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "L'inclinaison antérieure de tête est le seul de ces marqueurs directement mesurable par un capteur de casque. Candidat fort pour la V1 du casque.",
+      "mesurable_par": [
+        "IMU_CASQUE",
+        "VIDEO"
+      ],
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-004",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Au galop, le cavalier confirmé présente moins de roulis du bassin que le novice, qui tend à maintenir le bassin roulé à droite.",
+      "detail": "Amplitude de roulis du bassin d'environ 6° au galop assis, en opposition de phase avec le tronc du cheval.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Fournit un ordre de grandeur exploitable comme seuil : au-delà d'environ 6°, le roulis sort de la plage attendue.",
+      "mesurable_par": [
+        "IMU_CASQUE"
+      ],
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Le roulis du bassin n’est pas directement mesuré au casque."
+    },
+    {
+      "id": "KB-OFFHORSE-001",
+      "categorie": "EVALUATION_HORS_CHEVAL",
+      "claim": "L'asymétrie mesurée hors cheval prédit quantitativement l'asymétrie à cheval, avec un facteur d'amplification d'environ 2,4.",
+      "detail": "Un degré d'asymétrie de roulis du bassin ou de la tête mesuré sur une chaise d'équilibre correspond à environ 2,4 degrés d'asymétrie en situation montée. La même posture asymétrique est adoptée sur ligne droite, sur cercle et en cession à la jambe, dans les deux directions.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "RÉSULTAT STRATÉGIQUE MAJEUR : permet une évaluation NewRide sans cheval, testable par n'importe qui avec un téléphone. Débloque le test produit sans accès à une carrière.",
+      "impact_produit": "Justifie un module « bilan hors-cheval » utilisable dès aujourd'hui, y compris par une porteuse de projet non cavalière.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-OFFHORSE-002",
+      "categorie": "EVALUATION_HORS_CHEVAL",
+      "claim": "La capacité à mobiliser et contrôler le bassin sur un ballon de gymnastique prédit l'harmonie avec le cheval.",
+      "detail": "Les cavaliers testés en bascule antérieure et postérieure du bassin sur ballon produisent des compensations lombaires ; ceux dont les compensations sont les plus marquées se penchent davantage vers l'avant, présentent une asymétrie gauche-droite plus grande et sont plus déphasés par rapport au cheval sur l'ensemble de la foulée.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Deuxième test hors-cheval exploitable, réalisable avec un ballon et un téléphone.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-OFFHORSE-003",
+      "categorie": "EVALUATION_HORS_CHEVAL",
+      "claim": "Les cavaliers présentent une asymétrie de perception de leur propre appui.",
+      "detail": "Invités à répartir également leur poids assis sur une surface plane, les cavaliers testés ont montré une préférence globale pour un appui accru à gauche. Debout sur une plateforme de force, 70 % chargeaient davantage le pied droit. Une étude sur 127 cavaliers n'a en revanche PAS trouvé de différence de longueur de jambe, contrairement à une étude plus petite sur 17 cavaliers.",
+      "sourceIds": [
+        "S1",
+        "S3"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Le cavalier ne perçoit pas fiablement sa propre asymétrie — ce qui justifie précisément un retour objectif. Argument produit central pour NewRide.",
+      "nuance": "Les auteurs signalent explicitement que des recherches supplémentaires sont nécessaires sur la question de la longueur de jambe.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-WELFARE-001",
+      "categorie": "BIEN_ETRE",
+      "claim": "Le rapport de masse cavalier/cheval devient une préoccupation au-delà de 20 à 25 %.",
+      "detail": "Consensus général issu de la combinaison d'études biomécaniques et physiologiques : les chevaux montés à allure modérée ne montrent pas de modification de leurs allures ni de leur dépense énergétique tant que ce rapport reste sous 20-25 %. Certains chevaux peuvent porter davantage selon leur taille, leur conformation et leur condition physique.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Contrainte de bien-être calculable si le poids du cavalier et du cheval sont connus. Candidat pour domain_welfare_constraint dans le Coaching State.",
+      "prudence": "À présenter comme un repère, jamais comme un verdict individuel.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-WELFARE-002",
+      "categorie": "BIEN_ETRE",
+      "claim": "La position en équilibre (deux points) charge le dos du cheval plus uniformément que le trot assis et évite les pics de force élevés.",
+      "detail": "Le trot assis exerce deux pics de force par foulée atteignant environ le double du poids du cavalier ; au galop assis, la force de réaction nécessaire atteint jusqu'à trois fois le poids du cavalier. En position debout, le profil force-temps est plus plat et la force mieux répartie sur la foulée. Les auteurs concluent que le trot en équilibre mérite d'être considéré pour la rééducation, le débourrage des jeunes chevaux et l'échauffement.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Règle pédagogique actionnable et directement traduisible en consigne d'échauffement.",
+      "impact_plugin": "Ajouter un exercice d'échauffement en équilibre, justifié par le bien-être.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-WELFARE-003",
+      "categorie": "BIEN_ETRE",
+      "claim": "En trot enlevé, il est recommandé de changer de diagonal fréquemment.",
+      "detail": "Le trot enlevé induit des forces asymétriques sur le dos du cheval : pic plus faible en phase assise, plus fort en phase debout. La hauteur maximale de la croupe est plus basse pendant la phase enlevée, ce qui mime une boiterie de propulsion du postérieur du diagonal assis.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Consigne simple, vérifiable par auto-report, à intégrer aux critères de réussite du trot enlevé.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-DIAG-001",
+      "categorie": "ATTRIBUTION_CAUSALE",
+      "claim": "La cause première du glissement de selle est la boiterie ou l'asymétrie de mouvement du CHEVAL, pas l'asymétrie du cavalier.",
+      "detail": "Seuls 21 % des chevaux montés par des cavaliers asymétriques présentaient un glissement de selle. Quand la selle glisse à droite, le cavalier glisse à droite et développe une concavité du côté gauche du corps.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "GARDE-FOU CRITIQUE : ALI ne doit jamais attribuer au cavalier une asymétrie observée sans envisager une cause chez le cheval. Une asymétrie persistante doit déclencher une recommandation vétérinaire, pas une correction posturale.",
+      "impact_core": "Justifie une règle d'abstention : au-delà de N séances d'asymétrie persistante, INTERVENTION_WITHHELD + orientation professionnelle.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-POS-001",
+      "categorie": "REFERENCE_POSTURALE",
+      "claim": "Le centre de masse du cavalier assis doit se situer presque à la verticale du centre de masse du cheval.",
+      "detail": "Le centre de masse du cheval se situe approximativement au niveau de T14. Les antérieurs portent environ 58 % du poids, les postérieurs 42 %. La présence d'un cavalier augmente la charge sur les antérieurs.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Référence posturale de base pour l'analyse vidéo ou l'estimation par capteur.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-POS-002",
+      "categorie": "REFERENCE_POSTURALE",
+      "claim": "En dressage, la verticalité et la symétrie du cavalier influencent la note d'impression générale.",
+      "detail": "Le cavalier doit s'asseoir verticalement au milieu de la selle sur le plat.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Relie un critère mesurable à une conséquence compétitive — utile pour la motivation du cavalier.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-POS-003",
+      "categorie": "REFERENCE_POSTURALE",
+      "claim": "La morphologie du bassin diffère entre hommes et femmes, avec des conséquences posturales.",
+      "detail": "Le bassin féminin est plus court et plus large, offrant une base d'appui plus large sur la selle, avec davantage de roulis du bassin et du tronc. L'inclinaison plus marquée des os iliaques féminins est associée à une bascule postérieure du bassin plus importante et à une posture plus cyphotique en selle.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Les seuils de référence posturale ne peuvent pas être identiques pour tous. Paramètre de personnalisation à prévoir.",
+      "prudence": "À manier avec précaution dans le discours produit : décrire une variation morphologique, jamais une infériorité.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-ASYM-001",
+      "categorie": "ASYMETRIE",
+      "claim": "L'asymétrie du cavalier se traduit directement en asymétrie de force sur le dos du cheval.",
+      "detail": "Au trot assis, si le cavalier s'affaisse d'un côté du bassin, la force augmente du côté opposé sur le dos du cheval. S'il incline le corps d'un côté, la force augmente du côté vers lequel les épaules penchent. Une asymétrie induite mécaniquement en raccourcissant un étrier de 5 cm modifie la locomotion du cheval.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Fait le lien entre correction du cavalier et bien-être du cheval — argument pédagogique puissant et honnête.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-ASYM-002",
+      "categorie": "ASYMETRIE",
+      "claim": "Une asymétrie pelvienne plus marquée a été rapportée chez les cavaliers pratiquant depuis plus longtemps.",
+      "detail": "Certaines asymétries relèvent de la latéralité inhérente, d'autres sont acquises par la pratique de l'équitation.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Contredit l'hypothèse implicite « plus d'expérience = meilleure symétrie ». ALI ne doit pas déduire la symétrie du niveau déclaré.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-LIMIT-001",
+      "categorie": "LIMITE_CONNAISSANCE",
+      "claim": "Aucune batterie de tests hors-cheval validée n'existe à ce jour.",
+      "detail": "Les auteurs concluent qu'il pourrait y avoir un intérêt à évaluer les cavaliers hors cheval, mais qu'un ensemble de tests approprié n'a pas encore été défini. Ils soulignent également la difficulté à séparer les contributions respectives du cheval et du cavalier à une performance asymétrique.",
+      "sourceIds": [
+        "S1"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Double lecture. Prudence : NewRide ne peut pas prétendre à un bilan validé. Opportunité : c'est un espace ouvert, et une batterie de tests validée constituerait une contribution réelle — donc un actif défendable, et un angle de recherche crédible pour un dossier BPI.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Une affirmation d’absence est datée et doit être réévaluée ; ne pas l’utiliser comme vérité intemporelle."
+    },
+    {
+      "id": "KB-SKILL-005",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "La co-contraction musculaire est un facteur limitant de l'expertise équestre.",
+      "detail": "Chez les professionnels, trois modes musculaires réciproques ont été identifiés, sans aucun mode de co-contraction ni mode mixte. Chez les amateurs : un seul mode réciproque, trois modes de co-contraction et un mode mixte. La co-contraction prédomine dans les tâches posturales réalisées en conditions difficiles ou face à des perturbations imprévisibles — ce qui expliquerait sa fréquence chez les cavaliers peu expérimentés, moins capables d'anticiper le mouvement du cheval.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Reformule l'expertise comme une capacité à NE PAS contracter. Cohérent avec la logique de silence du Core : le progrès se mesure autant à ce qui disparaît qu'à ce qui apparaît.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-006",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Le cavalier novice contracte en continu ; le professionnel alterne fléchisseurs et extenseurs du tronc.",
+      "detail": "Au pas, le groupe confirmé montre une alternance nette entre obliques externes et extenseurs du dos. Le groupe amateur montre un schéma d'activation constant, décrit par les auteurs comme persistant donc inefficace. Le même schéma se répète au trot.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Marqueur mesurable de niveau : c'est la VARIABILITÉ temporelle de l'activation, pas son amplitude, qui distingue. Transposable à un signal accélérométrique.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-007",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Le cavalier novice ne sait pas activer ses muscles de façon indépendante à gauche et à droite : il fonctionne en tout ou rien.",
+      "detail": "Les modes musculaires des professionnels incluent les versions droite et gauche des mêmes muscles ; les amateurs semblent incapables de scinder la commande motrice de façon controlatérale et n'utilisent qu'un côté à la fois, ce qui compromet le tonus général du corps.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Fonde scientifiquement des exercices de dissociation bilatérale — réalisables hors cheval.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-008",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "L'engagement du gainage au PAS est un marqueur d'expertise sous-estimé.",
+      "detail": "Les auteurs relèvent une activation du gainage plus élevée et plus précoce chez les professionnels dès le pas, et notent que le travail au pas est un atout sous-évalué chez les amateurs ; un engagement complet du gainage en permanence caractérise le cavalier confirmé.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Contredit l'idée que le pas est une allure de repos. Justifie de placer de vraies cibles pédagogiques au pas — allure la plus sûre, donc idéale pour un débutant.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-009",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Le cavalier confirmé active ses muscles PLUS TARD dans la foulée que le novice.",
+      "detail": "Au trot, l'activation maximale des muscles du haut du corps survient plus tard chez les confirmés ; au galop, celle des muscles du dos et des jambes également. Les auteurs y voient une meilleure capacité d'anticipation de l'impact au niveau neuromusculaire, cohérente avec un basculement postérieur du bassin atteint plus tardivement chez les confirmés.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Converge avec KB-SKILL-002 : c'est le TIMING relatif au cheval, pas l'amplitude, qui signe le niveau. Confirme la synchronisation de phase comme métrique cible prioritaire du capteur.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-WELFARE-004",
+      "categorie": "BIEN_ETRE",
+      "claim": "La contraction permanente du cavalier novice restreint le mouvement du cheval.",
+      "detail": "Les auteurs estiment que le schéma d'activation constant du groupe amateur permet au cavalier de stabiliser son centre de gravité mais contraint le mouvement du cheval. Ils soulignent que tout apprentissage du cheval passe nécessairement par le pas, et qu'un cavalier moins restrictif allège la charge mentale et physique de cet apprentissage.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Argument pédagogique honnête et puissant : se relâcher n'est pas du confort personnel, c'est une question de bien-être du cheval.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-OFFHORSE-004",
+      "categorie": "EVALUATION_HORS_CHEVAL",
+      "claim": "Trois familles d'exercices hors cheval sont recommandées par les auteurs.",
+      "detail": "Un programme spécifique à l'équitation devrait comprendre : un renforcement musculaire global avec attention particulière à la stabilité du gainage ; des exercices de dissociation bilatérale des membres supérieurs et inférieurs ; des exercices de conscience du centre de gravité. Les auteurs soulignent que ces qualités peuvent être améliorées hors cheval et pourraient accroître la performance du couple sans augmenter la charge d'entraînement de l'animal, prévenant ainsi le surentraînement et la blessure.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "CŒUR DU MODULE HORS-CHEVAL : trois catégories d'exercices explicitement recommandées dans la littérature, sans cheval, sans risque, et justifiées par le bien-être animal.",
+      "impact_produit": "Structure directement le catalogue d'exercices hors-cheval du plugin NewRide.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-OFFHORSE-005",
+      "categorie": "EVALUATION_HORS_CHEVAL",
+      "claim": "Un dosage efficace de renforcement du gainage est documenté : trois séances hebdomadaires de vingt minutes pendant huit semaines.",
+      "detail": "Ce protocole a suffi à produire des adaptations substantielles chez le cavalier, avec un effet mesuré sur le dos du cheval au trot assis.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "FAIBLE",
+      "usage_ali": "Fournit un dosage concret et une durée d'effet attendue pour un programme hors-cheval — donc des critères de réussite datables.",
+      "prudence": "Repose sur une étude unique citée en référence, non vérifiée directement. À présenter comme un ordre de grandeur.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-OFFHORSE-006",
+      "categorie": "EVALUATION_HORS_CHEVAL",
+      "claim": "Les schémas de co-contraction sont entraînables et peuvent diminuer en quelques jours de pratique.",
+      "detail": "Après cinq jours de pratique de tâches sur plateau instable, les sujets maintenaient mieux leur équilibre et réduisaient leurs modes de co-contraction. La pratique influence à la fois le schéma et la composition des modes musculaires.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Résultat central pour la faisabilité : un effet mesurable en cinq jours rend un pilote court réaliste. Un pilote de deux semaines sur plateau instable peut produire un signal exploitable avant fin septembre.",
+      "impact_produit": "Rend possible un pilote hors-cheval avec résultats AVANT le dossier BPI.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-POS-004",
+      "categorie": "REFERENCE_POSTURALE",
+      "claim": "Au trot enlevé, le cavalier confirmé garde un tronc plus droit et vertical ; le novice se penche en avant de la verticale.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Repère directement observable en vidéo de profil, et le plus simple à expliquer à un débutant.",
+      "mesurable_par": [
+        "VIDEO",
+        "IMU_CASQUE"
+      ],
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-LIMIT-002",
+      "categorie": "LIMITE_CONNAISSANCE",
+      "claim": "Ce que l'on sait d'un bon cavalier repose largement sur l'expérience transmise, et varie fortement selon les pays et les centres équestres.",
+      "detail": "Les auteurs présentent leur étude comme la première à examiner les différences neuromusculaires entre cavaliers expérimentés et amateurs.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Justifie la démarche NewRide : il existe un vrai déficit d'objectivation. Mais impose la modestie — la base de preuves est mince et récente.",
+      "prudence": "Ne jamais présenter un repère de ce corpus comme une norme établie.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-010",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "La capacité à RELÂCHER vite l'activité musculaire globale caractérise le cavalier confirmé.",
+      "detail": "Les auteurs concluent que l'équitation avancée se caractérise par la capacité d'activer les muscles de façon controlatérale mais non réciproque, d'activer chaque muscle indépendamment à des niveaux différents, et de diminuer rapidement l'activité musculaire globale.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Troisième formulation convergente du même principe : l'expertise est une économie, pas un supplément d'effort. C'est le fil conducteur de tout le corpus et il devrait structurer le discours produit de NewRide.",
+      "mesurable_par": [
+        "IMU_CASQUE"
+      ],
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-011",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Le novice ne sait pas déplacer volontairement son centre de gravité pour entrer et sortir de l'alignement avec celui du cheval.",
+      "detail": "Les auteurs attribuent cette incapacité, très probablement, à un manque de conscience corporelle propre.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Fonde la troisième famille d'exercices hors-cheval (conscience du centre de gravité) et explique POURQUOI un retour objectif a de la valeur : le cavalier ne perçoit pas ce qu'il fait.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SKILL-012",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "Au galop, une activité accrue des fléchisseurs du genou chez le novice traduit un manque d'assiette indépendante et un serrage excessif des jambes.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "FAIBLE",
+      "usage_ali": "Interprétation proposée par les auteurs, non testée directement. À ne pas transformer en critère de coaching sans validation.",
+      "prudence": "Inférence des auteurs, pas un résultat mesuré.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-OFFHORSE-007",
+      "categorie": "EVALUATION_HORS_CHEVAL",
+      "claim": "Quatre qualités physiques du cavalier sont explicitement présentées comme améliorables hors cheval.",
+      "detail": "Tonus musculaire global, engagement du gainage, activation controlatérale indépendante à des magnitudes différentes, et mobilité volontaire du centre de gravité. Les auteurs soulignent que travailler ces qualités hors cheval pourrait accroître la performance du couple sans augmenter la charge d'entraînement de l'animal, prévenant surentraînement et blessure.",
+      "sourceIds": [
+        "S6"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Donne les quatre AXES D'ÉVALUATION du bilan hors-cheval, avec une justification bien-être animal explicite — argument produit et argument BPI.",
+      "impact_produit": "Structure les quatre dimensions du score hors-cheval NewRide.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PED-001",
+      "categorie": "PEDAGOGIE",
+      "claim": "Préparer davantage l'élève avant l'exercice réduit la dureté des aides de rêne — d'environ 4 kg dans la bouche du cheval.",
+      "detail": "Deux enseignants consacraient un tiers ou plus de la leçon à préparer les cavaliers (départ sur le cercle, transitions pas-arrêt) avant d'aborder les transitions pas-trot sur la piste. Les deux autres commençaient les transitions sur ligne droite d'emblée. Chez les premiers, la tension de rêne maximale avant et pendant les transitions descendantes était significativement plus basse. L'écart mesuré en préparation atteignait 20 N par rêne en moyenne, ce que les auteurs traduisent par environ 4 kg de charge supplémentaire dans la bouche du cheval.",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Le résultat le plus important du corpus. La PRÉPARATION est une variable pédagogique mesurable, avec une conséquence directe et chiffrée sur le bien-être animal.",
+      "impact_core": "Justifie une phase de préparation obligatoire avant tout exercice technique dans le Coaching State — actuellement absente du cycle ASSESS→SELECT→INTERVENE.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Reformuler une association exploratoire ; pas de réduction causale universelle en kg."
+    },
+    {
+      "id": "KB-PED-002",
+      "categorie": "PEDAGOGIE",
+      "claim": "L'ENCHAÎNEMENT des exercices compte autant ou plus que la formulation des consignes données pendant l'exercice.",
+      "detail": "Les auteurs concluent qu'un enchaînement réfléchi des exercices au fil de la leçon peut être aussi important, voire davantage, que les instructions données pendant l'exercice lui-même pour obtenir des aides de rêne plus légères. Tous les enseignants encourageaient pareillement l'usage prioritaire de l'assiette et des jambes.",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "VALIDATION EMPIRIQUE D'ADR-003. La décision (quoi faire, dans quel ordre) pèse plus que la verbalisation (comment le dire). C'est exactement la répartition Core/LLM que nous avons codée : le raisonnement structuré décide, le LLM ne fait que formuler.",
+      "impact_core": "Confirme que l'intelligence doit résider dans la sélection et l'ordonnancement, pas dans la génération de langage.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PED-003",
+      "categorie": "PEDAGOGIE",
+      "claim": "Densité d'intervention observée chez des enseignants experts : environ 1,25 consigne par transition.",
+      "detail": "417 consignes au total pour 333 transitions, réparties ainsi : 120 consignes sur 93 transitions pour le premier enseignant, 112 sur 91, 111 sur 83, et 74 sur 66 pour le quatrième. Ne sont pas comptés les directives simples ni les évaluations courtes de type « bien ».",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "PREMIÈRE VALEUR EMPIRIQUE POUR CALIBRER ALI_POLICY. Un expert humain intervient environ une fois par répétition d'exercice — pas en continu. Le plafond de 4 corrections par séance que nous avions posé par raisonnement se trouve dans le bon ordre de grandeur.",
+      "impact_core": "Permet de remplacer une constante arbitraire par une valeur observée chez des experts.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Une densité observée n’est pas une fréquence optimale prouvée pour une IA vocale."
+    },
+    {
+      "id": "KB-PED-004",
+      "categorie": "PEDAGOGIE",
+      "claim": "Ce sur quoi l'enseignant choisit de porter l'attention détermine ce qui s'améliore.",
+      "detail": "Les deux enseignants ayant davantage travaillé le pas ont obtenu une meilleure qualité de pas. Chez celle qui faisait compter chaque foulée de pas, le décalage de phase entre garrot et croupe atteignait 16-17 %, plus proche de l'idéal de 25 % que chez les autres (8-14 %). Chez celle qui allongeait les séquences de pas et commentait le rythme, la régularité de protraction du postérieur était la meilleure (différence entre foulées de 1,2-1,3° contre 1,5-1,7°).",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Le choix de la priorité n'est pas neutre : il produit un effet mesurable et spécifique. Fonde la notion même de priorité active.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PED-005",
+      "categorie": "PEDAGOGIE",
+      "claim": "L'enseignante au champ d'attention le plus large obtenait les tensions de rêne les plus élevées.",
+      "detail": "Décrite comme abordant de nombreux aspects différents pendant ses leçons, avec un champ plus large que les autres, elle traitait sur cinq transitions consécutives l'énergie du cheval, le regard du cavalier, ses mains, son assiette et la rectitude. Sa tension de rêne maximale était significativement plus élevée que celle de l'enseignante qui préparait davantage.",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "VALIDATION EMPIRIQUE DE DEC-0012 (une seule priorité dominante). Disperser l'attention dégrade un résultat mesurable lié au bien-être.",
+      "prudence": "Corrélation observée dans une étude exploratoire, pas une relation causale démontrée.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PED-006",
+      "categorie": "PEDAGOGIE",
+      "claim": "La leçon d'équitation s'organise en « espaces instructionnels » suivant une séquence Initiation-Réponse-Évaluation.",
+      "detail": "Un espace instructionnel est un moment limité dans le temps et l'espace, co-créé par l'enseignant et l'élève, dans lequel peut prendre place une séquence consigne → action instruite → évaluation de l'action. Ces espaces se forment naturellement quand le cavalier est instruit sur des tâches précises et sensibles au timing, en particulier à proximité de l'enseignant. L'activité étant mobile, la distance entre participants conditionne leur apparition.",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "STRUCTURE DE BOUCLE VALIDÉE. Correspond au cycle INTERVENE → OBSERVE → ADAPT du Coaching State. Confirme que la boucle d'ALI reproduit la structure réelle d'une leçon.",
+      "impact_core": "L'évaluation de l'action doit être une phase explicite, pas un effet de bord.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PED-007",
+      "categorie": "PEDAGOGIE",
+      "claim": "Quatre enseignants experts, une même consigne de leçon, quatre plans de leçon différents.",
+      "detail": "Bien qu'ayant tous reçu la même demande — 20 minutes centrées sur le timing des aides pendant les transitions — les quatre enseignants ont planifié et conduit leur leçon de quatre façons distinctes. Les auteurs y voient la marque d'un déficit de connaissance sur la façon optimale de donner une leçon, et concluent que les enseignants ne partagent pas nécessairement une base commune : une part substantielle de leur savoir professionnel repose sur l'expérience individuelle.",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Justification directe de l'existence d'ALI. Il n'existe pas de méthode consensuelle formalisée ; le savoir est tacite et individuel. Une politique pédagogique explicite, versionnée et auditable comble un vide réel.",
+      "impact_produit": "Argument central pour le dossier BPI : ALI n'automatise pas un savoir établi, il formalise un savoir qui ne l'a jamais été.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PED-008",
+      "categorie": "PEDAGOGIE",
+      "claim": "Les enseignants experts produisent des effets bénéfiques mesurables sans en avoir conscience.",
+      "detail": "Les auteurs notent qu'il n'est pas clair dans quelle mesure ces effets mesurables étaient consciemment recherchés : d'après les entretiens, deux enseignants n'avaient pas choisi leur stratégie de préparation dans le but d'obtenir une tension de rêne plus faible. Ils suggèrent que des mesures quantitatives pourraient mettre en lumière des aspects dont l'enseignant n'a pas conscience, et devenir un outil pour la formation des enseignants comme pour les leçons ordinaires.",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "PROPOSITION DE VALEUR DE NEWRIDE, ÉNONCÉE PAR DES CHERCHEURS INDÉPENDANTS. La mesure objective apporte quelque chose que même l'expert n'a pas. Citation directement mobilisable en dossier BPI et devant investisseurs.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PED-009",
+      "categorie": "PEDAGOGIE",
+      "claim": "Répartition observée des thèmes de consigne chez des enseignants experts.",
+      "detail": "Sur 417 consignes : rectitude du cheval 78, assiette du cavalier 74, davantage d'énergie 73, mains du cavalier 67, compter les foulées de pas 35, ralentir le tempo 24, précision de la transition 22, rythme du cheval 18, cuisses du cavalier 15, regard du cavalier 11.",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Donne une distribution empirique des priorités réellement traitées en leçon. Utile pour pondérer les candidats de priorité du plugin NewRide plutôt que de les ordonner à l'intuition.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-LIMIT-003",
+      "categorie": "LIMITE_CONNAISSANCE",
+      "claim": "Les résultats sur la pédagogie proviennent d'une étude exploratoire à effectifs faibles, sans suivi d'apprentissage.",
+      "detail": "Les cavaliers étaient tous issus de formations d'enseignants et les chevaux étaient des chevaux d'école, ce qui limite la généralisation. Aucune correction pour tests multiples n'a été appliquée. La période d'étude était brève et sans suivi : les auteurs indiquent qu'il n'est pas possible de déterminer ce que les cavaliers ont retenu des leçons.",
+      "sourceIds": [
+        "S2"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Les effets mesurés portent sur la PERFORMANCE PENDANT la leçon, pas sur la rétention. Or l'hypothèse de guidage établit que ces deux choses peuvent diverger. Ne pas confondre les deux dans le discours produit.",
+      "prudence": "Point d'honnêteté important : aucune de nos sources ne mesure la rétention à distance.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SENSOR-001",
+      "categorie": "CAPTEURS",
+      "claim": "Un smartphone moderne peut servir de dispositif d'analyse de locomotion équine et détecter la symétrie de mouvement avec précision.",
+      "detail": "Les auteurs relèvent que les smartphones récents, qui intègrent accéléromètres et gyroscopes, peuvent être utilisés comme dispositif d'analyse de la locomotion du cheval pour détecter précisément la symétrie de mouvement.",
+      "sourceIds": [
+        "S4"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "LÈVE LE BLOCAGE MATÉRIEL DU PILOTE. Le téléphone n'est pas seulement un pis-aller en attendant le casque : c'est un instrument documenté dans la littérature. Change le discours BPI — le pilote au téléphone devient un choix méthodologique assumé, pas un aveu de retard.",
+      "impact_produit": "Le pilote de septembre peut se faire au téléphone sans réserve scientifique.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Préciser position du smartphone, protocole et population ; aucune précision NewRide validée."
+    },
+    {
+      "id": "KB-SENSOR-002",
+      "categorie": "CAPTEURS",
+      "claim": "La classification automatique des allures à partir de données IMU atteint plus de 97 % de précision.",
+      "detail": "Des méthodes de classification développées à partir de données IMU et d'apprentissage automatique dépassent 97 % de précision. Un modèle validé sur deux races et cinq allures (pas, trot, tölt, galop, amble) estime la vitesse indépendamment de l'emplacement du capteur.",
+      "sourceIds": [
+        "S4"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "La détection automatique d'allure est un problème résolu, pas un axe de R&D. NewRide doit l'intégrer, pas le réinventer.",
+      "impact_produit": "Permet de savoir automatiquement dans quelle allure se trouve le cavalier — donc de contextualiser le coaching sans le lui demander.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Une précision publiée ne se transfère pas au casque ni à un nouveau jeu de données."
+    },
+    {
+      "id": "KB-SENSOR-003",
+      "categorie": "CAPTEURS",
+      "claim": "L'emplacement du capteur détermine la précision de la mesure, davantage que la qualité du capteur lui-même.",
+      "detail": "Plusieurs études montrent que la position des capteurs portables affecte la précision de l'analyse. Les capteurs sur l'axe vertical de l'antérieur droit donnaient les meilleurs résultats (ICC 1,0, erreur 6,8 %), suivis du postérieur droit puis du garrot. Les IMU placés au paturon se sont révélés les plus précis pour détecter les événements de foulée, avec des erreurs moyennes de 1 à 6 ms sur asphalte. Les auteurs recommandent fortement de respecter strictement le placement préconisé par le fabricant.",
+      "sourceIds": [
+        "S4"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "CONTRAINTE DE CONCEPTION MAJEURE POUR LE CASQUE. La tête est l'un des emplacements les moins documentés. La qualité du signal ne dépendra pas du module choisi mais de sa position et de sa fixation.",
+      "impact_produit": "Question à poser au bureau d'études avant miniaturisation : quelle validation du placement dans le casque ?",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SENSOR-004",
+      "categorie": "ANTERIORITE",
+      "claim": "Des systèmes d'auto-coaching par IMU, avec classification d'allure et reconnaissance de posture du cavalier, existent déjà en recherche.",
+      "detail": "Les auteurs citent des travaux conçus pour permettre un auto-coaching sans intervention humaine, par classification des allures du cheval et reconnaissance de la posture du cavalier pour le calibrage ; le cavalier peut ensuite s'auto-corriger vers le mouvement adapté à l'allure classifiée et à sa posture.",
+      "sourceIds": [
+        "S4"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "ANTÉRIORITÉ SUR LE CONCEPT CŒUR DE NEWRIDE. À intégrer à la matrice d'antériorité ALI-IP-001. Le concept d'auto-coaching par capteur n'est pas nouveau ; la différenciation devra porter sur la POLITIQUE pédagogique, pas sur le principe.",
+      "prudence": "Ne jamais présenter l'auto-coaching par IMU comme une innovation NewRide.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SENSOR-005",
+      "categorie": "CONCURRENCE",
+      "claim": "Quatre systèmes IMU équins sont commercialisés, dont un traite explicitement l'interaction cheval-cavalier.",
+      "detail": "Lameness Locator (3 capteurs : bassin, tête, antérieur droit), Equigait (3 à 8 capteurs : nuque, garrot, ligne médiane — mesure asymétrie, mouvement du dos ET interaction cheval-cavalier), Equimoves (8 capteurs : nuque, garrot, sacrum, sternum, membres), Xsens (6 capteurs).",
+      "sourceIds": [
+        "S4"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Ces systèmes visent le vétérinaire et le chercheur, pas le cavalier amateur, et coûtent cher. Le positionnement grand public reste ouvert — mais Equigait couvre déjà l'interaction cheval-cavalier.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SENSOR-006",
+      "categorie": "CAPTEURS",
+      "claim": "Les IMU renforcent l'évaluation subjective mais ne la remplacent pas.",
+      "detail": "Les auteurs concluent de l'ensemble des études comparatives que les systèmes IMU peuvent renforcer, sans la remplacer, l'évaluation subjective de la boiterie. Leur sensibilité étant supérieure à celle de l'œil humain, ils constituent un outil particulièrement utile aux vétérinaires juniors face à des boiteries légères.",
+      "sourceIds": [
+        "S4"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "POSITIONNEMENT HONNÊTE DE NEWRIDE : outil qui augmente le jugement humain, pas qui s'y substitue. Cohérent avec le rôle de l'enseignant diplômé dans la boucle.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-SENSOR-007",
+      "categorie": "CAPTEURS",
+      "claim": "Limites reconnues des IMU : coût élevé, criticité du placement, dépendance à une connexion stable.",
+      "detail": "Les auteurs citent parmi les inconvénients le coût généralement élevé, la nécessité d'un placement rigoureux pour obtenir des données fiables et reproductibles, et le besoin d'une connexion internet stable pour éviter les erreurs de données.",
+      "sourceIds": [
+        "S4"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "La dépendance réseau est un risque produit direct : une carrière en zone blanche casse la chaîne. Le mode hors-ligne doit être une exigence, pas une option.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-DIAG-002",
+      "categorie": "ATTRIBUTION_CAUSALE",
+      "claim": "Toutes les asymétries ne sont pas des boiteries, et tous les individus n'ont pas la même symétrie de mouvement.",
+      "detail": "Les auteurs rappellent que l'asymétrie n'est pas systématiquement pathologique et que la symétrie de mouvement varie entre individus. Certaines boiteries discrètes n'apparaissent d'ailleurs que monté, lors d'un exercice donné ou dans une direction particulière.",
+      "sourceIds": [
+        "S4"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "Renforce KB-DIAG-001. ALI ne doit jamais qualifier une asymétrie de problème : il constate un écart, et oriente si l'écart persiste.",
+      "impact_core": "Interdit toute formulation diagnostique dans les sorties du moteur.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PROTO-001",
+      "categorie": "PROTOCOLE",
+      "claim": "Protocole validé de mesure du couplage cheval-cavalier par deux accéléromètres, en conditions réelles et sur longue durée.",
+      "detail": "Accéléromètre du cavalier fixé sur une ceinture lombaire en néoprène ; accéléromètre du cheval dans un sanglon modifié, sous la partie caudale du sternum. Échantillonnage 100 Hz par axe, filtre anti-repliement à 50 Hz. Les déplacements sont obtenus par double intégration, avec filtre passe-bande de Butterworth 1-12 Hz à phase nulle pour supprimer la dérive. L'analyse porte sur l'axe vertical uniquement : dorsoventral pour le cheval, craniocaudal pour le cavalier, ce choix reposant sur la reproductibilité supérieure de l'accélération verticale par rapport à l'axe antéropostérieur. Synchronisation des deux capteurs en les entrechoquant sur l'axe vertical avant et après chaque boucle.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "PROTOCOLE DIRECTEMENT TRANSPOSABLE AU TÉLÉPHONE. La position ceinture lombaire correspond exactement au placement recommandé par l'app suédoise Rider Analysis. Fréquence, filtrage et axe d'analyse sont spécifiés et reproductibles.",
+      "impact_produit": "Spécification technique de la mesure NewRide au téléphone, appuyée sur une publication.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PROTO-002",
+      "categorie": "PROTOCOLE",
+      "claim": "L'allure se déduit de la fréquence d'oscillation verticale, jamais de la fréquence de foulée.",
+      "detail": "Le déplacement dorsoventral présente deux oscillations par foulée au trot et une seule au galop. Fréquences observées : 3,19 ± 0,25 Hz au trot contre 1,85 ± 0,17 Hz au galop. En revanche les fréquences de FOULÉE se chevauchent (trot 1,3-2,0 Hz ; galop 1,4-2,7 Hz) et ne permettent pas de discriminer.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "ALGORITHME IMPLÉMENTABLE IMMÉDIATEMENT. Compter les oscillations verticales par cycle, pas les foulées. Piège explicitement documenté à éviter.",
+      "impact_produit": "Permet la détection d'allure au téléphone sans capteur sur le cheval.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Formulation absolue à revoir : distinguer foulée, fréquence des oscillations et emplacement du capteur."
+    },
+    {
+      "id": "KB-PROTO-003",
+      "categorie": "PROTOCOLE",
+      "claim": "La technique de monte se classe à partir de la seule amplitude de déplacement vertical du cavalier — valeurs de référence disponibles.",
+      "detail": "Amplitudes mesurées chez un couple représentatif : trot en équilibre 63,7 ± 13,0 mm ; trot enlevé 131,4 ± 14,2 mm ; galop en équilibre 134,7 ± 17,3 mm ; galop assis 194,6 ± 11,2 mm. La distribution est bimodale dans chaque allure, séparable par seuillage à erreur minimale. Attention : trot enlevé et galop en équilibre présentent des amplitudes proches — l'allure doit impérativement être identifiée d'abord.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Deuxième algorithme implémentable, avec ordres de grandeur chiffrés. Permet de savoir CE QUE FAIT le cavalier sans le lui demander — donc de contextualiser le coaching automatiquement.",
+      "prudence": "Valeurs issues d'un couple détaillé puis étendues à cinq autres ; à recalibrer sur la population cible.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Les valeurs de référence d’un montage ne valident pas une classification NewRide."
+    },
+    {
+      "id": "KB-SKILL-013",
+      "categorie": "MARQUEUR_NIVEAU",
+      "claim": "C'est la VARIABILITÉ de la phase relative, et non sa valeur moyenne, qui signe l'expertise.",
+      "detail": "Les auteurs rappellent que plusieurs études montrent que l'expertise conduit à une variabilité plus faible, chez le cheval, chez le cavalier ou dans le couplage. Lagarde et collaborateurs avaient établi que la stabilité de la synchronisation entre les mouvements du cavalier et du cheval est accrue chez les experts par rapport aux novices. Les couples experts de cette étude présentaient une variabilité de phase relative très basse, inférieure à celle observée en laboratoire sur des tâches de coordination inter-membres ou même inter-personnelles.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "RÉSOUT PARTIELLEMENT LA CONTRADICTION SIGNALÉE EN v0.5. L'étude Xsens ne trouvait pas de différence de niveau sur le DÉCALAGE MOYEN ; ici la littérature converge sur la VARIABILITÉ. Ce ne sont pas la même mesure. La métrique candidate du casque devient l'écart-type de la phase relative, pas sa moyenne.",
+      "impact_produit": "Corrige la métrique cible à tester lors du pilote.",
+      "reviewStatus": "SUSPENDUE_AVANT_REFORMULATION",
+      "runtimeEnabled": false,
+      "suspensionReason": "Six couples experts ne permettent pas seuls de discriminer novices et experts."
+    },
+    {
+      "id": "KB-COORD-001",
+      "categorie": "COORDINATION",
+      "claim": "La technique du cavalier contraint davantage le motif de coordination que l'allure du cheval.",
+      "detail": "Les phases relatives obtenues dépendent principalement de la technique de monte. Les valeurs en trot enlevé et galop assis étaient significativement plus basses qu'en technique en équilibre au trot comme au galop, ces dernières étant proches l'une de l'autre. Les auteurs y voient l'existence d'une coordination propre au couple, indépendante de l'allure.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Contre-intuitif et important : ALI doit contextualiser par la TECHNIQUE avant l'allure. Ce que fait le cavalier prime sur ce que fait le cheval.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-COORD-002",
+      "categorie": "COORDINATION",
+      "claim": "Le contact avec la selle stabilise la coordination cheval-cavalier — un mécanisme, pas une préférence esthétique.",
+      "detail": "La stabilité observée en galop assis et trot enlevé provient vraisemblablement de l'ancrage fourni par l'information haptique du contact avec la selle. Les valeurs plus élevées et plus variables en technique en équilibre sont attribuées à l'absence de ce contact informationnel. Les auteurs concluent que la synchronisation de phase, considérée comme spontanée dans la plupart des systèmes d'oscillateurs faiblement couplés, se révèle ici stabilisable par échange d'information haptique.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Explique POURQUOI l'assiette compte, en termes mécanistiques et non traditionnels. Argument pédagogique utilisable tel quel auprès d'un cavalier.",
+      "tension_a_signaler": "À concilier avec KB-WELFARE-002 : la position en équilibre est meilleure pour le dos du cheval mais moins stable pour la coordination. Arbitrage réel à expliciter, pas à masquer.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-COORD-003",
+      "categorie": "COORDINATION",
+      "claim": "Au trot enlevé, le cavalier « gèle » son oscillation pendant une demi-foulée pour passer d'un rapport 2:1 à 1:1.",
+      "detail": "Le motif du trot enlevé présente une forme caractéristique en 7 : sur une demi-foulée le cavalier reste au contact de la selle, sur la suivante il est en équilibre sur ses étriers. Ce gel de l'oscillateur cavalier permet d'adopter une coordination 1:1 alors que l'oscillateur cheval oscille à une fréquence double. Le phénomène s'observe aussi, moins marqué, en trot en équilibre.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Description mécanistique de ce qu'est réellement le trot enlevé. Détectable dans un signal accélérométrique — signature de forme, exploitable pour vérifier l'exécution d'une consigne.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-COORD-004",
+      "categorie": "COORDINATION",
+      "claim": "Valeurs de référence de phase relative et d'angle alpha par technique, chez des couples experts.",
+      "detail": "Phase relative au point bas : galop assis −2,3 ± 9,4° ; trot enlevé 7,9 ± 7,3° ; galop en équilibre 15,6 ± 7,8° ; trot en équilibre 19,8 ± 5,8°. Variabilité de la phase relative significativement plus faible en trot enlevé (6,1 ± 1,2°) qu'en trot en équilibre (11,1 ± 3,4°). Angles alpha : trot enlevé 66,9 ± 1,8° ; galop assis 55,6 ± 6,9° ; galop en équilibre 47,6 ± 2,3° ; trot en équilibre 44,8 ± 1,5°.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "PREMIÈRES VALEURS DE RÉFÉRENCE EXPERTES CHIFFRÉES DU CORPUS. Permettent de construire un écart à la référence — c'est-à-dire exactement ce qui manquait au coaching pour cesser d'être un gadget.",
+      "prudence": "Six couples experts en endurance uniquement. Non transposable tel quel au dressage ou à l'obstacle.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-LIMIT-004",
+      "categorie": "LIMITE_CONNAISSANCE",
+      "claim": "L'étude de référence sur le couplage ne comporte que six couples, tous experts.",
+      "detail": "Les auteurs reconnaissent que le faible nombre de couples constitue une limite et recommandent explicitement d'inclure des couples de niveaux d'expertise variés pour examiner comment les motifs de coordination se stabilisent et évoluent au cours de l'apprentissage à long terme — lequel n'implique pas seulement des changements individuels chez le cheval et le cavalier, mais aussi l'amélioration de leur coopération.",
+      "sourceIds": [
+        "S5"
+      ],
+      "evidenceStrength": "FORTE",
+      "usage_ali": "OPPORTUNITÉ DE RECHERCHE IDENTIFIÉE PAR LES AUTEURS EUX-MÊMES. Comparer des couples de niveaux différents avec ce protocole est un manque explicite de la littérature — et exactement ce qu'un pilote NewRide produirait. Angle de crédibilité scientifique pour le dossier BPI.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-PED-010",
+      "categorie": "PEDAGOGIE",
+      "claim": "Un exercice de préparation court et ciblé avant la leçon réduit les signes de stress du cheval et améliore l'apprentissage, à l'inverse des méthodes qui fatiguent sans engager mentalement (rond de longe prolongé, marche au pas longue).",
+      "detail": "Dans une tâche d'apprentissage standardisée, un groupe de chevaux ayant reçu un court exercice de préparation avant la leçon montre moins de secousses de tête, une tension de rêne moindre et un temps de réalisation de la tâche réduit, par rapport à un groupe non préparé. Les auteurs proposent le concept de 'zone d'engagement' : un état d'éveil optimal pour apprendre, ni endormi ni excité, que la préparation doit viser plutôt que la simple fatigue.",
+      "sourceIds": [
+        "S7"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Deuxième source indépendante (après KB-PED-001, Byström) qui justifie l'ajout d'une phase PRÉPARATION explicite dans le Coaching State ALI, avant toute phase technique. Introduit la notion de 'zone d'engagement' comme variable cible de cette phase, distincte de la simple mise en mouvement.",
+      "impact_plugin": "Structurer la phase d'échauffement des séances guidées NewRide autour de la zone d'engagement plutôt que d'une durée fixe générique.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-OFFHORSE-008",
+      "categorie": "EVALUATION_HORS_CHEVAL",
+      "claim": "La stabilité posturale en appui instable (yeux fermés, surface en mousse) distingue objectivement cavaliers expérimentés et non-pratiquants, en particulier sur l'axe latéral et la dépendance à l'information visuelle.",
+      "detail": "Sur plateforme de force, les cavalières expertes montrent une meilleure stabilité posturale que des non-sportives en appui instable sur l'axe médio-latéral, et restent plus stables les yeux fermés sur surface en mousse — signe d'une moindre dépendance visuelle pour l'équilibre, probablement liée à l'entraînement proprioceptif de l'équitation.",
+      "sourceIds": [
+        "S8"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Fonde scientifiquement le module bilan hors-cheval prévu en août : un test d'équilibre sur surface instable (coussin, plateau, yeux fermés) est un marqueur d'expertise mesurable sans cheval et sans capteur sophistiqué — juste un smartphone ou une observation chronométrée.",
+      "impact_plugin": "Ajouter un protocole de test simple (ex. tenir en équilibre yeux fermés sur coussin, chronométré) au module bilan hors-cheval, en complément des exercices de gainage/dissociation déjà identifiés (KB-OFFHORSE-004).",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-POS-005",
+      "categorie": "REFERENCE_POSTURALE",
+      "claim": "Repère postural verbalisable : oreille, épaule, hanche et talon alignés verticalement vus de profil ; tête, tronc et bassin centrés sur l'axe médian du cheval vus de face.",
+      "detail": "C'est la référence posturale classique de littérature en équitation, rappelée dans une étude comparant deux types de selle. Contrairement aux valeurs d'angle de phase relative (KB-PROTO-002), ce repère peut être donné tel quel à l'oral par un coach vocal, sans instrumentation.",
+      "sourceIds": [
+        "S9"
+      ],
+      "evidenceStrength": "MOYENNE",
+      "usage_ali": "Fournit au coach vocal un repère concret et prononçable pour les leçons et le chat libre, complémentaire aux données chiffrées du protocole Viry qui ne sont pas verbalisables telles quelles.",
+      "impact_plugin": "Utilisable en leçon théorique ('Comment bien monter à cheval', 'Travailler sa symétrie et son assiette') et comme grille de lecture pour un bilan hors-cheval filmé.",
+      "reviewStatus": "HERITEE_NON_REVALIDEE",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-LEARN-101",
+      "sourceIds": [
+        "S10"
+      ],
+      "categorie": "APPRENTISSAGE",
+      "claim": "Décomposer une tâche en étapes accessibles et garder des signaux cohérents.",
+      "usage_ali": "Proposer une seule intention technique et une étape suivante explicite.",
+      "limites": "Choix produit inspiré des principes ; durée et difficulté à faire relire.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-LEARN-102",
+      "sourceIds": [
+        "S10"
+      ],
+      "categorie": "BIEN_ETRE",
+      "claim": "Adapter les exigences à la réaction du cheval et éviter les méthodes provoquant détresse ou douleur.",
+      "usage_ali": "Prévoir pause et retour à une étape plus simple ; pas d’escalade automatique des aides.",
+      "limites": "Ne pas attribuer une mauvaise réponse à la désobéissance sans observation.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-FEEDBACK-101",
+      "sourceIds": [
+        "S11"
+      ],
+      "categorie": "FEEDBACK",
+      "claim": "Le pilote étudie le feedback instrumenté associé à une intervention de coaching.",
+      "usage_ali": "Séparer description du mouvement et résultat de la tâche dans le bilan.",
+      "limites": "Une amélioration immédiate ne démontre pas l’apprentissage durable.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-FEEDBACK-102",
+      "sourceIds": [
+        "S11"
+      ],
+      "categorie": "EVALUATION",
+      "claim": "Les résultats reposent sur un montage instrumenté spécifique.",
+      "usage_ali": "Évaluer séparément les bénéfices du coaching vocal NewRide en recette terrain.",
+      "limites": "Ne pas annoncer une efficacité équivalente à celle du dispositif étudié.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-IMU-101",
+      "sourceIds": [
+        "S12"
+      ],
+      "categorie": "MESURE",
+      "claim": "L’interprétation des signaux dépend des emplacements et des conditions de mesure.",
+      "usage_ali": "Associer emplacement, unités, version de calcul et qualité à chaque métrique.",
+      "limites": "Les seuils publiés ne sont pas des seuils validés pour NewRide.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-IMU-102",
+      "sourceIds": [
+        "S12"
+      ],
+      "categorie": "LIMITES",
+      "claim": "La symétrie varie entre chevaux et avec le contexte de locomotion.",
+      "usage_ali": "Comparer des séances comparables du même cheval, sans diagnostic automatique.",
+      "limites": "Une IMU sur le casque ne remplace pas les capteurs posés sur le cheval.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-WELFARE-101",
+      "sourceIds": [
+        "S13"
+      ],
+      "categorie": "ORIENTATION",
+      "claim": "Des comportements montés peuvent aider une évaluation spécialisée de douleur.",
+      "usage_ali": "Permettre de consigner une gêne et de suspendre le travail pour demander conseil.",
+      "limites": "Cette règle prudente est une décision produit, pas un diagnostic tiré du casque.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-WELFARE-102",
+      "sourceIds": [
+        "S13"
+      ],
+      "categorie": "INTERDICTION",
+      "claim": "L’éthogramme repose sur des comportements définis et un contexte d’évaluation.",
+      "usage_ali": "Exclure tout diagnostic, prescription ou feu vert médical automatique.",
+      "limites": "Pas de score RHpE généré depuis des observations incomplètes.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-RIDER-101",
+      "sourceIds": [
+        "S14"
+      ],
+      "categorie": "PREPARATION",
+      "claim": "La revue rapproche biomécanique du cavalier, condition physique et bien-être du cheval.",
+      "usage_ali": "Inclure un bilan de fatigue et orienter vers une préparation hors cheval adaptée.",
+      "limites": "Ne pas prescrire un protocole universel ni prétendre une amélioration causale établie.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-RIDER-102",
+      "sourceIds": [
+        "S14"
+      ],
+      "categorie": "NIVEAU_PREUVE",
+      "claim": "Les études disponibles ont des limites méthodologiques et de généralisation.",
+      "usage_ali": "Afficher le niveau de preuve et réexaminer les études primaires avant règle automatique.",
+      "limites": "Le nombre de références ne mesure pas la robustesse du conseil.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    }
+  ],
+  "synthese_pour_ali": {
+    "impacts_core": [
+      "KB-DIAG-001 justifie une règle d'abstention et d'orientation professionnelle en cas d'asymétrie persistante.",
+      "KB-PROG-001 contredit l'ordre de progression intuitif et doit corriger l'ordonnancement des exercices."
+    ],
+    "impacts_plugin": [
+      "Réordonner STABILITE_ASSIETTE selon pas → galop → trot assis.",
+      "Ajouter un exercice d'échauffement en équilibre (KB-WELFARE-002).",
+      "Ajouter le changement de diagonal aux critères du trot enlevé (KB-WELFARE-003)."
+    ],
+    "opportunite_produit_majeure": "Le module HORS-CHEVAL est désormais fondé sur deux sources indépendantes. KB-OFFHORSE-001 établit qu'une asymétrie mesurée hors cheval prédit l'asymétrie en selle (facteur ~2,4). KB-OFFHORSE-004 fournit les trois familles d'exercices recommandées par la littérature (gainage, dissociation bilatérale, conscience du centre de gravité). KB-OFFHORSE-006 montre qu'un effet est mesurable en cinq jours de pratique. Conséquence : un pilote hors-cheval, sans cheval ni carrière, avec un simple téléphone, peut produire des résultats exploitables AVANT le dossier BPI de fin septembre.",
+    "prochaines_extractions": [
+      "S2 (pédagogie de la leçon — ScienceDirect bloqué, route alternative à trouver)",
+      "S4 (capteurs inertiels)",
+      "S5 (coordination par accéléromètres)"
+    ],
+    "bilan_hors_cheval": {
+      "fondement": "Quatre axes d'évaluation issus de S6, plus la relation de prédiction hors-cheval → en selle issue de S1.",
+      "axes": [
+        "Tonus et stabilité du gainage",
+        "Dissociation bilatérale (capacité à activer indépendamment gauche et droite)",
+        "Mobilité volontaire du centre de gravité",
+        "Symétrie posturale (avec facteur d'amplification ~2,4 vers la situation montée)"
+      ],
+      "dosage_documente": "3 séances hebdomadaires de 20 minutes sur 8 semaines (preuve FAIBLE)",
+      "effet_precoce": "Réduction mesurable de la co-contraction après 5 jours de pratique sur plateau instable",
+      "justification_bien_etre": "Améliore la performance du couple sans augmenter la charge de travail du cheval"
+    },
+    "validation_empirique_architecture": {
+      "note": "Trois décisions d'architecture prises par raisonnement trouvent un appui empirique dans S2.",
+      "correspondances": [
+        {
+          "decision": "ADR-003 — le raisonnement décide, le LLM verbalise",
+          "appui": "KB-PED-002 : l'enchaînement des exercices pèse autant ou plus que la formulation des consignes."
+        },
+        {
+          "decision": "DEC-0012 — une seule priorité dominante",
+          "appui": "KB-PED-005 : l'enseignante au champ d'attention le plus large obtenait les tensions de rêne les plus élevées."
+        },
+        {
+          "decision": "Densité de correction plafonnée",
+          "appui": "KB-PED-003 : ~1,25 consigne par transition chez des experts, soit une intervention par répétition et non un flux continu."
+        },
+        {
+          "decision": "Cycle INTERVENE → OBSERVE → ADAPT",
+          "appui": "KB-PED-006 : structure Initiation-Réponse-Évaluation observée dans les espaces instructionnels réels."
+        }
+      ],
+      "manque_identifie": "Aucune phase de PRÉPARATION explicite dans le Coaching State actuel, alors que KB-PED-001 en fait la variable la plus déterminante pour le bien-être du cheval."
+    },
+    "contradictions_detectees": [
+      {
+        "sujet": "Synchronisation de phase comme marqueur de niveau",
+        "pour": "S6 (EMG) — les cavaliers confirmés activent plus tard dans la foulée, meilleure anticipation",
+        "contre": "S4 (IMU/Xsens) — aucune différence significative entre professionnels et débutants sur le décalage temporel cheval-cavalier (p ≥ 0,078)",
+        "lecture": "L'expertise semble se voir en activation musculaire mais pas nécessairement en cinématique mesurée par IMU. C'est précisément ce que le casque devra trancher.",
+        "action": "Traiter comme hypothèse de recherche du pilote, pas comme fonctionnalité annoncée.",
+        "resolution": "PARTIELLEMENT RÉSOLUE par S5 (KB-SKILL-013). L'étude Xsens mesurait le DÉCALAGE TEMPOREL MOYEN et n'y trouvait pas de différence de niveau. La littérature de coordination dynamique converge en revanche sur la VARIABILITÉ (écart-type) de la phase relative comme marqueur d'expertise. Ce sont deux mesures distinctes. La métrique à tester au pilote est donc l'écart-type de la phase relative, pas sa moyenne."
+      }
+    ],
+    "chemin_sans_casque": {
+      "constat": "Les sources S4 et S5 rendent un pilote entièrement téléphone scientifiquement défendable.",
+      "briques_disponibles": [
+        "Protocole de mesure spécifié : ceinture lombaire, 100 Hz, double intégration, filtre 1-12 Hz, axe vertical (KB-PROTO-001)",
+        "Détection d'allure par fréquence d'oscillation verticale (KB-PROTO-002)",
+        "Classification de technique par amplitude de déplacement du cavalier, avec valeurs chiffrées (KB-PROTO-003)",
+        "Valeurs de référence expertes de phase relative et d'angle alpha (KB-COORD-004)",
+        "Métrique d'expertise candidate : variabilité de la phase relative (KB-SKILL-013)",
+        "Quatre axes d'évaluation hors-cheval (KB-OFFHORSE-004, 007)"
+      ],
+      "limite_honnete": "La phase relative exige DEUX capteurs (cheval ET cavalier). Avec le seul téléphone du cavalier, on mesure sa propre régularité, pas le couplage. Le couplage complet reste conditionné à une mesure côté cheval — ou au casque."
+    }
+  },
+  "acces_sources": {
+    "note": "Trois sources identifiées comme pertinentes n'ont pas pu être extraites automatiquement.",
+    "bloquees": [
+      {
+        "sourceId": "S2",
+        "titre": "Impact of teaching approach on horse and rider biomechanics during riding lessons",
+        "obstacle": "ScienceDirect et PMC refusent l'accès automatisé",
+        "valeur": "TRÈS HAUTE — seule source identifiée portant directement sur la PÉDAGOGIE de la leçon d'équitation",
+        "action": "Téléchargement manuel du PDF (Heliyon, CC BY 4.0) puis extraction"
+      },
+      {
+        "sourceId": "S4",
+        "titre": "Inertial Sensor Technologies in Equine Gait Analysis",
+        "obstacle": "URL MDPI non identifiée",
+        "valeur": "HAUTE — directement liée au module capteur du casque",
+        "action": "Retrouver la référence exacte puis extraire depuis MDPI"
+      },
+      {
+        "sourceId": "S5",
+        "titre": "Patterns of Horse-Rider Coordination during Endurance Race",
+        "obstacle": "Redirection PLOS vers un autre article",
+        "valeur": "MOYENNE — protocole accéléromètres cheval + cavalier en conditions réelles",
+        "action": "Retrouver le DOI exact"
+      }
+    ]
+  },
+  "changelog": [
+    {
+      "version": "1.1.0",
+      "date": "2026-07-29",
+      "changement": "Ajout de 3 sources (S7, S8, S9) et 3 entrées (KB-PED-010, KB-OFFHORSE-008, KB-POS-005) trouvées via recherche ciblée sur PLOS ONE, en complément du corpus initial. Extraction partielle (résumés) pour ces 3 sources, pas de PDF complet consulté — à valider avant usage produit si un chiffre précis en dépend."
+    }
+  ],
+  "extensionGovernance": {
+    "runtimeIntegration": "Aucune intégration au moteur ou à Supabase exécutée. Validation architecture et revue métier requises.",
+    "proof": "Ne jamais convertir une référence scientifique en validation du produit.",
+    "rights": "Synthèses originales ; pas de figures, articles entiers ni jeu de données téléchargé. Vérifier les droits avant diffusion de contenus tiers."
+  },
+  "base_sha256": "5942356ba1dea03aca9c2b6dfc0d110b53306a36f7f6c073a1d9adcb5fb3c871",
+  "changelog_v1_2": {
+    "addedSources": 5,
+    "addedEntries": 10,
+    "quarantinedInheritedEntries": 11,
+    "originalPreserved": true
+  }
+}

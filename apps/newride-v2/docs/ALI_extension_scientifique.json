@@ -1,0 +1,208 @@
+{
+  "document": "ALI-KB-001-EXT",
+  "version": "1.2-candidate",
+  "generatedAt": "2026-11-17",
+  "status": "SUPPLEMENT_DOCUMENTAIRE_NON_DEPLOYE",
+  "base_sha256": "5942356ba1dea03aca9c2b6dfc0d110b53306a36f7f6c073a1d9adcb5fb3c871",
+  "sources": [
+    {
+      "sourceId": "S10",
+      "citation": "International Society for Equitation Science — ISES Training Principles",
+      "url": "https://www.equitationscience.com/ises-training-principles",
+      "type": "Recommandations de société savante, pas un essai contrôlé",
+      "access": "Page institutionnelle consultée",
+      "licence": "Ne pas reproduire le texte ; synthèse originale et attribution ; droits des illustrations non acquis",
+      "limites": "Principes généraux ; pas de preuve d’efficacité d’ALI ni de dosage universel."
+    },
+    {
+      "sourceId": "S11",
+      "citation": "The Effects of a Real-Time Visual Kinetic Feedback Intervention on Shock Attenuation of the Equestrian Rider’s Trunk: A Pilot Study (2022)",
+      "doi": "10.3389/fspor.2022.899379",
+      "url": "https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2022.899379/full",
+      "type": "Étude pilote, 16 cavaliers",
+      "access": "Résumé et extraits indexés consultés ; lecture méthodologique complète à finaliser",
+      "licence": "CC BY annoncé ; attribution et contrôle des crédits requis",
+      "limites": "Feedback visuel et dispositif multi-capteurs ; ne valide ni voix seule, ni casque seul, ni rétention durable."
+    },
+    {
+      "sourceId": "S12",
+      "citation": "Applying Multi-Purpose Commercial Inertial Sensors for Monitoring Equine Locomotion in Equestrian Training (2024)",
+      "doi": "10.3390/s24248170",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11680087/",
+      "type": "Étude pilote instrumentée",
+      "access": "Article consulté, passages méthodes et limites",
+      "licence": "CC BY 4.0 indiqué par PMC",
+      "limites": "Cinq emplacements sur le cheval ; variations individuelles et contexte de surface/allure. Pas de validation d’un casque cavalier."
+    },
+    {
+      "sourceId": "S13",
+      "citation": "Dyson S.; Pollard D. Application of the Ridden Horse Pain Ethogram to 150 Horses with Musculoskeletal Pain before and after Diagnostic Anaesthesia (2023)",
+      "doi": "10.3390/ani13121940",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37370450/",
+      "type": "Étude clinique, 150 chevaux",
+      "access": "Notice, résumé et résultats indexés ; protocole complet à revoir avant toute implémentation de score",
+      "licence": "Synthèse originale ; vérifier licence éditeur avant redistribution de grilles",
+      "limites": "Évaluation clinique spécialisée ; ne valide ni autodiagnostic, ni détection par ALI, ni score sur une vidéo non standardisée."
+    },
+    {
+      "sourceId": "S14",
+      "citation": "Balog O.; Havanecz K.; Csányi T.; Ökrös C.; Tóth L.; Berki T. A narrative review of factors influencing rider performance and horse welfare in equestrian activities (2026)",
+      "doi": "10.3389/fspor.2025.1744918",
+      "url": "https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2025.1744918/full",
+      "type": "Revue narrative de 17 études",
+      "access": "Article et résumé consultés ; références primaires non toutes réévaluées",
+      "licence": "Vérifier les crédits et la licence de chaque élément avant redistribution ; pas de reproduction de figures",
+      "limites": "Majorité de petites études observationnelles ; ne pas recompter ses références comme essais indépendants."
+    }
+  ],
+  "entries": [
+    {
+      "id": "KB-LEARN-101",
+      "sourceIds": [
+        "S10"
+      ],
+      "categorie": "APPRENTISSAGE",
+      "claim": "Décomposer une tâche en étapes accessibles et garder des signaux cohérents.",
+      "usage_ali": "Proposer une seule intention technique et une étape suivante explicite.",
+      "limites": "Choix produit inspiré des principes ; durée et difficulté à faire relire.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-LEARN-102",
+      "sourceIds": [
+        "S10"
+      ],
+      "categorie": "BIEN_ETRE",
+      "claim": "Adapter les exigences à la réaction du cheval et éviter les méthodes provoquant détresse ou douleur.",
+      "usage_ali": "Prévoir pause et retour à une étape plus simple ; pas d’escalade automatique des aides.",
+      "limites": "Ne pas attribuer une mauvaise réponse à la désobéissance sans observation.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-FEEDBACK-101",
+      "sourceIds": [
+        "S11"
+      ],
+      "categorie": "FEEDBACK",
+      "claim": "Le pilote étudie le feedback instrumenté associé à une intervention de coaching.",
+      "usage_ali": "Séparer description du mouvement et résultat de la tâche dans le bilan.",
+      "limites": "Une amélioration immédiate ne démontre pas l’apprentissage durable.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-FEEDBACK-102",
+      "sourceIds": [
+        "S11"
+      ],
+      "categorie": "EVALUATION",
+      "claim": "Les résultats reposent sur un montage instrumenté spécifique.",
+      "usage_ali": "Évaluer séparément les bénéfices du coaching vocal NewRide en recette terrain.",
+      "limites": "Ne pas annoncer une efficacité équivalente à celle du dispositif étudié.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-IMU-101",
+      "sourceIds": [
+        "S12"
+      ],
+      "categorie": "MESURE",
+      "claim": "L’interprétation des signaux dépend des emplacements et des conditions de mesure.",
+      "usage_ali": "Associer emplacement, unités, version de calcul et qualité à chaque métrique.",
+      "limites": "Les seuils publiés ne sont pas des seuils validés pour NewRide.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-IMU-102",
+      "sourceIds": [
+        "S12"
+      ],
+      "categorie": "LIMITES",
+      "claim": "La symétrie varie entre chevaux et avec le contexte de locomotion.",
+      "usage_ali": "Comparer des séances comparables du même cheval, sans diagnostic automatique.",
+      "limites": "Une IMU sur le casque ne remplace pas les capteurs posés sur le cheval.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-WELFARE-101",
+      "sourceIds": [
+        "S13"
+      ],
+      "categorie": "ORIENTATION",
+      "claim": "Des comportements montés peuvent aider une évaluation spécialisée de douleur.",
+      "usage_ali": "Permettre de consigner une gêne et de suspendre le travail pour demander conseil.",
+      "limites": "Cette règle prudente est une décision produit, pas un diagnostic tiré du casque.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-WELFARE-102",
+      "sourceIds": [
+        "S13"
+      ],
+      "categorie": "INTERDICTION",
+      "claim": "L’éthogramme repose sur des comportements définis et un contexte d’évaluation.",
+      "usage_ali": "Exclure tout diagnostic, prescription ou feu vert médical automatique.",
+      "limites": "Pas de score RHpE généré depuis des observations incomplètes.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-RIDER-101",
+      "sourceIds": [
+        "S14"
+      ],
+      "categorie": "PREPARATION",
+      "claim": "La revue rapproche biomécanique du cavalier, condition physique et bien-être du cheval.",
+      "usage_ali": "Inclure un bilan de fatigue et orienter vers une préparation hors cheval adaptée.",
+      "limites": "Ne pas prescrire un protocole universel ni prétendre une amélioration causale établie.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    },
+    {
+      "id": "KB-RIDER-102",
+      "sourceIds": [
+        "S14"
+      ],
+      "categorie": "NIVEAU_PREUVE",
+      "claim": "Les études disponibles ont des limites méthodologiques et de généralisation.",
+      "usage_ali": "Afficher le niveau de preuve et réexaminer les études primaires avant règle automatique.",
+      "limites": "Le nombre de références ne mesure pas la robustesse du conseil.",
+      "evidenceStrength": "PRUDENTE",
+      "reviewStatus": "A_RELIRE_PAR_ENSEIGNANT",
+      "runtimeEnabled": false
+    }
+  ],
+  "quarantineOverrides": {
+    "KB-PROG-001": "Ne pas transformer une difficulté biomécanique en progression universelle pas → galop → trot ; niveau du couple et enseignant prioritaires.",
+    "KB-SKILL-002": "Le bassin et son déphasage ne sont pas directement mesurés par une IMU de casque.",
+    "KB-SKILL-004": "Le roulis du bassin n’est pas directement mesuré au casque.",
+    "KB-PED-001": "Reformuler une association exploratoire ; pas de réduction causale universelle en kg.",
+    "KB-PED-003": "Une densité observée n’est pas une fréquence optimale prouvée pour une IA vocale.",
+    "KB-SENSOR-001": "Préciser position du smartphone, protocole et population ; aucune précision NewRide validée.",
+    "KB-SENSOR-002": "Une précision publiée ne se transfère pas au casque ni à un nouveau jeu de données.",
+    "KB-PROTO-002": "Formulation absolue à revoir : distinguer foulée, fréquence des oscillations et emplacement du capteur.",
+    "KB-PROTO-003": "Les valeurs de référence d’un montage ne valident pas une classification NewRide.",
+    "KB-SKILL-013": "Six couples experts ne permettent pas seuls de discriminer novices et experts.",
+    "KB-LIMIT-001": "Une affirmation d’absence est datée et doit être réévaluée ; ne pas l’utiliser comme vérité intemporelle."
+  },
+  "governance": {
+    "runtimeIntegration": "Aucune intégration au moteur ou à Supabase exécutée. Validation architecture et revue métier requises.",
+    "proof": "Ne jamais convertir une référence scientifique en validation du produit.",
+    "rights": "Synthèses originales ; pas de figures, articles entiers ni jeu de données téléchargé. Vérifier les droits avant diffusion de contenus tiers."
+  }
+}

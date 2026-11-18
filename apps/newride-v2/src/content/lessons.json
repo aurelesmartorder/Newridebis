@@ -1,0 +1,100 @@
+[
+  {
+    "name": "Fondamentaux",
+    "discipline": "general",
+    "topics": [
+      "Comment bien monter à cheval",
+      "La position de base en selle",
+      "Les aides du cavalier (mains, jambes, poids)",
+      "Installer la confiance avec son cheval"
+    ]
+  },
+  {
+    "name": "Sellerie & bien-être — ce que dit la science",
+    "discipline": "general",
+    "topics": [
+      "Le vrai rôle du tapis de selle : ce que prouve la science",
+      "Pourquoi une selle trop large n'est pas la solution",
+      "Le geste que 9 selles sur 10 ratent",
+      "Monter à cru : ce que la science dit vraiment",
+      "Le timing du relâchement : le vrai secret des aides",
+      "Pieds du cheval : ce qu'un cavalier peut repérer seul"
+    ]
+  },
+  {
+    "name": "CSO — biomécanique du saut",
+    "discipline": "cso",
+    "topics": [
+      "Le saut en 5 phases : ce que révèle la biomécanique",
+      "Pourquoi tout se joue avant l'obstacle, pas pendant",
+      "Le repère qui distingue un cavalier confirmé au saut",
+      "Pourquoi un jeune cheval saute moins régulièrement, et ce n'est pas ta faute",
+      "Refus et dérobades : les vraies causes, dans l'ordre de fréquence",
+      "Pourquoi un cheval franc se met parfois à refuser",
+      "Les obstacles qui regardent (eau, bleu, bois sombre) : ce qui se travaille à la maison",
+      "La reconnaissance de parcours : ce qu'un cavalier expérimenté fait différemment",
+      "Sauter petit et propre plutôt que haut et paniqué : pourquoi ça marche mieux",
+      "Où regarder à l'approche d'un obstacle : ce qu'une vraie étude du regard des cavaliers révèle",
+      "Ton cheval de CSO est-il plus à risque de boiterie ? Ce qu'une étude sur 73 chevaux révèle",
+      "L'échauffement avant un parcours : la vraie phase de préparation, pas juste se mettre en mouvement"
+    ]
+  },
+  {
+    "name": "Dressage — précision et jugement",
+    "discipline": "dressage",
+    "topics": [
+      "Passage et piaffer : pourquoi le naturel n'est pas toujours bon signe",
+      "Ce qui prédit vraiment une bonne performance en dressage",
+      "Ce que les juges regardent vraiment, et ce qu'ils ratent",
+      "L'assiette stable : la régularité compte plus que la force",
+      "Cheval sur les épaules ou cheval lourd sur la main : la vraie différence, la vraie cause",
+      "Le contact et la mise en main expliqués sans jargon",
+      "Comprendre la tension du dos sans la confondre avec la tension nerveuse"
+    ]
+  },
+  {
+    "name": "Balade & extérieur",
+    "discipline": "balade",
+    "topics": [
+      "Le terrain en pente : la vigilance que peu de cavaliers connaissent",
+      "Le vrai bénéfice scientifique de la balade",
+      "Se sentir bloqué·e en extérieur mais à l'aise à l'obstacle : un cas fréquent, expliqué",
+      "La charge mentale du propriétaire de cheval — la reconnaître et l'alléger"
+    ]
+  },
+  {
+    "name": "CCE — sécurité et risques réels",
+    "discipline": "cce",
+    "topics": [
+      "Le vrai risque en cross : ce n'est pas que la chute",
+      "Le point d'eau : le facteur de risque numéro un",
+      "Ce qui doit t'alerter avant même de partir sur le parcours"
+    ]
+  },
+  {
+    "name": "Psychologie du cavalier",
+    "discipline": "general",
+    "topics": [
+      "Le trac en compétition : le vrai rôle qu'il joue",
+      "Pourquoi se comparer aux autres ralentit ta progression",
+      "Ce qui rend un objectif vraiment efficace, et ce qui ne marche pas",
+      "Pourquoi la peur après une chute n'est pas un échec personnel",
+      "Comment la peur du cavalier se transmet réellement au cheval",
+      "Reprendre confiance étape par étape : ce qui marche vraiment",
+      "Pourquoi vouloir \"ne plus avoir peur\" est le mauvais objectif",
+      "Solidité mentale : ce qui la construit vraiment",
+      "Le perfectionnisme, ni bon ni mauvais : ce que la science en dit vraiment",
+      "Pourquoi comprendre le \"pourquoi\" d'un exercice te fait progresser plus vite",
+      "L'épuisement n'a pas une seule cause"
+    ]
+  },
+  {
+    "name": "Hors-cheval — ce que révèle le corpus",
+    "discipline": "general",
+    "topics": [
+      "Un bilan de 5 minutes sans monter, qui en dit long sur ta progression",
+      "Pourquoi ton corps hors du cheval influence ta position en selle",
+      "Ce que révèlent vraiment les capteurs — et leurs vraies limites"
+    ]
+  }
+]

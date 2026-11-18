@@ -1,0 +1,8 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: bluetooth=(self), geolocation=(self), microphone=(self), camera=(self)
+  Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+  X-Robots-Tag: noindex, nofollow
+/newridebis/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://api.mapbox.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.mapbox.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://zoiakxcxbqnrkkwghzua.supabase.co wss://zoiakxcxbqnrkkwghzua.supabase.co https://api.openai.com https://api.mapbox.com https://events.mapbox.com https://overpass-api.de; media-src 'self' blob: data:; worker-src 'self' blob:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'
