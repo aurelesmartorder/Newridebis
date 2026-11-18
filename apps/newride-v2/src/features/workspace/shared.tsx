@@ -44,7 +44,8 @@ export type Snapshot = {
   connecting?: boolean;
   posts?: Post[];
   program?: { day: string; activity: string; detail: string }[];
-  chat?: { role: string; content: string; created_at?: string }[];
+  chat?: { id?: number; conversation_id?: string | null; role: string; content: string; created_at?: string }[];
+  chatHistory?: { id?: number; conversation_id?: string | null; role: string; content: string; created_at?: string }[];
 };
 export function command(command: string, text?: string, id?: string) {
   const frame = document.getElementById(
