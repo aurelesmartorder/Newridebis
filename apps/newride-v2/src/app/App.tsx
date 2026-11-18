@@ -83,6 +83,10 @@ function Shell() {
   const [help, setHelp] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [online, setOnline] = useState(navigator.onLine);
+  const chatSection = new URLSearchParams(location.search).get("section") || "voice";
+  const aliChatFullscreen =
+    (location.pathname === "/ali" || location.pathname === "/ali/conversation") &&
+    (chatSection === "voice" || chatSection === "library");
   const horse = data.horses.find((h) => h.id === data.selectedHorseId);
   const active = data.sessions.find((s) => s.status !== "finished");
   useEffect(() => {
@@ -106,7 +110,7 @@ function Shell() {
     month: "long",
   }).format(new Date());
   return (
-    <div className={`app-shell ${location.pathname !== "/" ? "feature-shell" : ""} ${railCollapsed ? "compact-rail" : ""}`}>
+    <div className={`app-shell ${location.pathname !== "/" ? "feature-shell" : ""} ${railCollapsed ? "compact-rail" : ""} ${aliChatFullscreen ? "ali-chat-fullscreen" : ""}`}>
       <a className="skip-link" href="#main">
         Aller au contenu
       </a>
@@ -275,7 +279,7 @@ function Shell() {
           </footer>
         </main>
       </div>
-      <nav className="bottom-navigation" aria-label="Navigation mobile">
+      <nav className={`bottom-navigation${aliChatFullscreen ? " is-chat-hidden" : ""}`} aria-label="Navigation mobile">
         {mobileNavigation.map(({ id, path, label, icon: Icon }) => (
           <NavLink
             key={path}
