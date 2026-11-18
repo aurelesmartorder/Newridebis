@@ -28,7 +28,7 @@ export function useWorkspaceModel() {
       return [];
     }
   });
-  const section = params.get("section") || "voice";
+  const section = params.get("section") || (pathname === "/ali/conversation" ? "voice" : "live");
   const community = params.get("rubrique") || "social";
   const lesson = params.get("lecon");
   const localSessions = data.sessions.filter((s) => s.status === "finished");

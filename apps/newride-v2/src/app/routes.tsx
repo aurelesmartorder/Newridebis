@@ -8,7 +8,7 @@ import {
   type Location,
 } from "react-router-dom";
 import { Dashboard } from "../features/Dashboard";
-import { AliHub, Lessons, AboutAli } from "../features/AliHub";
+import { Lessons, AboutAli } from "../features/AliHub";
 import { HelmetPage } from "../features/helmet/HelmetPage";
 import { TestAccess } from "../features/TestAccess";
 import { Workspace } from "../features/Workspace";
@@ -40,7 +40,7 @@ function RouteStack({ location }: { location: Location }) {
     <Suspense fallback={<Skeleton rows={3} />}>
       <Routes location={location}>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/coaching" element={<AliHub />} />
+        <Route path="/coaching" element={<Navigate to="/ali" replace />} />
         <Route path="/lecons" element={<Lessons />} />
         <Route path="/exercices" element={<Library />} />
         <Route path="/coaching/:id" element={<Exercise />} />

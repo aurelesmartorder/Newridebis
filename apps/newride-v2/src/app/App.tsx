@@ -42,7 +42,7 @@ import { Newridebis } from "../features/Newridebis";
 import { Dialog, Button } from "../components/ui";
 const navigation = [
  {id:"today" as TabId,path:"/",label:"Accueil",icon:Home,description:"Votre quotidien équestre"},
- {id:"ali" as TabId,path:"/coaching",label:"ALI",icon:AudioLines,description:"Parler, écouter, s’entraîner"},
+ {id:"ali" as TabId,path:"/ali",label:"ALI",icon:AudioLines,description:"Parler, écouter, s’entraîner"},
  {id:"helmet" as TabId,path:"/casque",label:"Mon casque",icon:Radio,description:"Connexion & sécurité"},
  {id:"community" as TabId,path:"/discover",label:"Communauté",icon:Compass,description:"Amis, moments & balades"},
  {id:"stable" as TabId,path:"/ecurie",label:"Mon écurie",icon:Footprints,description:"Chevaux, carnet & entourage"},
@@ -83,7 +83,7 @@ function Shell() {
   const [help, setHelp] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [online, setOnline] = useState(navigator.onLine);
-  const chatSection = new URLSearchParams(location.search).get("section") || "voice";
+  const chatSection = new URLSearchParams(location.search).get("section") || (location.pathname === "/ali/conversation" ? "voice" : "live");
   const aliChatFullscreen =
     (location.pathname === "/ali" || location.pathname === "/ali/conversation") &&
     (chatSection === "voice" || chatSection === "library");

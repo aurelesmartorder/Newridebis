@@ -184,6 +184,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
           </aside>
           <div className="ali-chat-main">
             <div className="ali-chat-mainbar">
+              <button type="button" className="ali-chat-back mobile-only" aria-label="Retour au coaching ALI" onClick={()=>setParams({section:"live"})}><ArrowRight size={20}/></button>
               <button type="button" className="ali-sidebar-icon desktop-hide" aria-label="Ouvrir les discussions" onClick={()=>setLibraryMenuOpen(true)}><Menu size={20}/></button>
               <div><span>ALI · COACH ÉQUESTRE</span><strong>{selectedConversation?.title||"Votre espace de progression"}</strong></div>
               <button type="button" className="ali-voice-quick" aria-label={state.voiceActive?"Arrêter la conversation vocale":"Parler avec ALI"} onClick={()=>{if(state.voiceActive)command("voice-stop");else if(state.authenticated)command("voice-start");else setNotice("Connectez-vous pour démarrer une conversation vocale.")}}><Mic size={18}/><span>{state.voiceActive?"Arrêter":"Voix"}</span></button>

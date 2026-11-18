@@ -2412,6 +2412,11 @@ main {
     flex: 0 0 auto; min-height: calc(62px + env(safe-area-inset-top));
     padding: calc(8px + env(safe-area-inset-top)) 14px 8px;
   }
+  .app-shell.ali-chat-fullscreen .ali-chat-back {
+    display: grid; flex: 0 0 42px; place-items: center; width: 42px; height: 42px;
+    border: 1px solid #dce3d7; border-radius: 12px; background: #fff; color: #20372b;
+    transform: rotate(180deg); cursor: pointer;
+  }
   .app-shell.ali-chat-fullscreen .ali-chat-mainbar strong { max-width: 64vw; font-size: 13px; }
   .app-shell.ali-chat-fullscreen .ali-chat-mainbar span { font-size: 9px; }
   .app-shell.ali-chat-fullscreen .ali-chat-scroll { flex: 1 1 auto; min-height: 0; }

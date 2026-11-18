@@ -4,7 +4,7 @@ export const tabRoots: Record<TabId, string> = {
   today: "/",
   community: "/discover",
   helmet: "/casque",
-  ali: "/coaching",
+  ali: "/ali",
   stable: "/ecurie",
 };
 export function tabForPath(path: string): TabId {
@@ -24,24 +24,24 @@ export function safeReturnTo(input: string | null): string {
     input.startsWith("//") ||
     input.includes("\\")
   )
-    return "/coaching";
+    return "/ali";
   try {
     const url = new URL(input, "https://newride.invalid");
     if (
       url.origin !== "https://newride.invalid" ||
       !knownPath.test(url.pathname)
     )
-      return "/coaching";
+      return "/ali";
     return url.pathname + url.search;
   } catch {
-    return "/coaching";
+    return "/ali";
   }
 }
 export function parentForPath(path: string): string {
   if (path.startsWith("/coaching/")) return "/exercices";
   if (path.startsWith("/seances/")) return "/performances";
-  if (path === "/lecons" || path.startsWith("/ali")) return "/coaching";
-  if (path === "/exercices" || path === "/sources") return "/coaching";
+  if (path === "/lecons" || path.startsWith("/ali")) return "/ali";
+  if (path === "/exercices" || path === "/sources") return "/ali";
   if (
     path === "/casque" ||
     path === "/performances" ||
