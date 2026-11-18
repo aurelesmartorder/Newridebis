@@ -102,6 +102,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
       <nav className="studio-segments" aria-label="Espaces du coaching">
         {[
           ["voice", "Discussion"],
+          ["live", "Conversation live avec votre coach ALI"],
           ["program", "Programme"],
           ["memory", "Journal"],
           ["video", "Vidéo"],
@@ -118,6 +119,37 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
           Leçons <ArrowUpRight size={15} />
         </Link>
       </nav>
+      {section === "live" && (
+        <>
+          <section className="conversation-stage ali-live-stage" aria-label="Conversation live avec ALI">
+            <img src="/photos/portrait.webp" alt="Portrait d’un cheval gris" />
+            <div className="conversation-content">
+              <span className="ride-kicker">ALI / À VOTRE ÉCOUTE</span>
+              <h2>{lesson ? "UNE LEÇON.\nVOTRE REGARD." : "LA BONNE QUESTION\nCHANGE TOUT."}</h2>
+              <p>{lesson || "Position, confiance, contact… Commencez par ce qui vous préoccupe aujourd’hui."}</p>
+              <div className={`voice-orbit${state.voiceActive ? " is-active" : ""}`} aria-hidden="true">
+                {[18, 32, 46, 26, 54, 38, 20].map((height, i) => <span key={i} style={{ height }} />)}
+              </div>
+              <button className="studio-primary" type="button" disabled={state.connecting} onClick={() => {
+                setNotice("");
+                if (state.voiceActive) command("voice-stop");
+                else if (state.authenticated) command("voice-start", lesson || undefined);
+                else setNotice("Connectez-vous pour démarrer une conversation live avec ALI. Les leçons et exercices restent consultables sans compte.");
+              }}>
+                <Mic size={19} />
+                {state.connecting ? "Connexion en cours…" : state.voiceActive ? (lesson ? "Arrêter la leçon" : "Terminer la conversation") : (lesson ? "Écouter la leçon" : "Parler avec ALI")}
+              </button>
+              <small>{state.voiceActive ? "Conversation en direct · appuyez sur le bouton pour terminer." : "Le microphone reste éteint tant que vous ne démarrez pas une conversation."}</small>
+              {notice && <p className="ali-live-notice" role="status">{notice} {!state.authenticated && <Link to="/acces-test">Se connecter</Link>}</p>}
+            </div>
+          </section>
+          <section className="studio-panel ali-live-followup" aria-label="Transcription de la conversation live">
+            <div><span className="ride-kicker">VOTRE ÉCHANGE</span><h2>{state.voiceActive ? "ALI vous écoute." : "Une conversation, à votre rythme."}</h2></div>
+            {state.chat?.length ? <div className="ali-chat-history" role="log" aria-live="polite" aria-label="Messages de la conversation live">{state.chat.map((message, index) => <article className={message.role === "user" ? "ali-message from-rider" : "ali-message from-ali"} key={`${message.id || index}` }><strong>{message.role === "user" ? "Vous" : "ALI"}</strong><p>{message.content}</p></article>)}</div> : <p>Posez votre question à voix haute. ALI vous répond dans l’échange live ; retrouvez vos conversations écrites dans l’onglet Discussion.</p>}
+            <p className="ali-chat-disclaimer">Une réponse vocale peut dépendre de votre connexion, de l’autorisation du microphone et de votre session NewRide.</p>
+          </section>
+        </>
+      )}
       {(section === "voice" || section === "library") && (
         <section className="ali-chat-workspace" aria-label="Discussion écrite avec ALI">
           <button className="ali-chat-mobile-backdrop" type="button" aria-label="Fermer la liste des discussions" onClick={()=>setLibraryMenuOpen(false)} hidden={!libraryMenuOpen}/>

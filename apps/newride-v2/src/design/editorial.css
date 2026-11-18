@@ -1378,6 +1378,52 @@ main {
   background: #11251d;
   min-height: 490px;
 }
+.ali-live-stage {
+  min-height: 560px;
+  margin: 0 0 22px;
+}
+.ali-live-stage .conversation-content {
+  max-width: 720px;
+}
+.ali-live-stage .studio-primary:disabled {
+  opacity: .72;
+  cursor: progress;
+}
+.ali-live-stage .voice-orbit.is-active span {
+  animation: ali-live-wave .9s ease-in-out infinite alternate;
+}
+.ali-live-stage .voice-orbit.is-active span:nth-child(even) {
+  animation-delay: .2s;
+}
+.ali-live-notice {
+  display: block;
+  max-width: 470px;
+  padding: 12px 14px;
+  border: 1px solid #d9ded3;
+  border-radius: 8px;
+  background: rgba(255,255,255,.94);
+  color: #263e2e !important;
+  font-size: 13px !important;
+}
+.ali-live-notice a {
+  color: #172e23;
+  font-weight: 700;
+  margin-left: 5px;
+}
+.ali-live-followup {
+  margin: 0 0 24px;
+}
+.ali-live-followup > div:first-child {
+  margin-bottom: 18px;
+}
+.ali-live-followup .ali-chat-history {
+  max-height: 380px;
+  overflow: auto;
+}
+@keyframes ali-live-wave {
+  from { transform: scaleY(.55); opacity: .7; }
+  to { transform: scaleY(1.1); opacity: 1; }
+}
 .conversation-stage > img {
   position: absolute;
   width: 60%;
@@ -2011,6 +2057,9 @@ main {
   }
   .conversation-stage {
     min-height: 470px;
+  }
+  .ali-live-stage {
+    min-height: 510px;
   }
   .conversation-stage > img {
     width: 100%;
