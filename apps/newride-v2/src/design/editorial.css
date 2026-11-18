@@ -1806,7 +1806,7 @@ main {
 .studio-journal > .studio-dark {
   margin-top: 20px;
 }
-.ali-library { min-height: 520px; }
+.ali-library { min-height:520px; padding:clamp(20px,3vw,36px); }
 .ali-library-heading { display:flex; justify-content:space-between; align-items:center; gap:24px; border-bottom:1px solid #e1e6d8; padding-bottom:22px; }
 .ali-library-heading h2 { margin:10px 0 6px; }
 .ali-library-heading p { margin:0; color:#68766e; }
@@ -1814,22 +1814,53 @@ main {
 .ali-library-locked { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:330px; padding:28px; color:#365846; }
 .ali-library-locked h3 { margin:16px 0 7px; color:#183329; }
 .ali-library-locked p { max-width:420px; line-height:1.65; color:#68766e; }
-.ali-library-search { display:flex; align-items:center; gap:10px; max-width:520px; min-height:48px; border:1px solid #d8dfd4; border-radius:8px; padding:0 14px; margin:22px 0; }
-.ali-library-search input { border:0; outline:0; background:transparent; min-width:0; width:100%; }
-.ali-library-layout { display:grid; grid-template-columns:minmax(230px, .8fr) minmax(0, 1.5fr); min-height:340px; border:1px solid #e1e6d8; border-radius:12px; overflow:hidden; }
-.ali-thread-list { border-right:1px solid #e1e6d8; max-height:520px; overflow:auto; }
-.ali-thread-list button { display:flex; flex-direction:column; gap:7px; width:100%; min-height:88px; padding:15px; text-align:left; border:0; border-bottom:1px solid #e9ece5; background:#fff; cursor:pointer; }
-.ali-thread-list button.selected { background:#f0f3e7; box-shadow:inset 3px 0 #315a42; }
-.ali-thread-list button span,.ali-thread-list button small { color:#758177; font-size:11px; }
-.ali-thread-list button strong { color:#203a2d; line-height:1.4; }
-.ali-thread-view { display:flex; flex-direction:column; gap:14px; max-height:520px; overflow:auto; padding:18px; background:#fcfcfa; }
+.ali-library-layout { display:grid; grid-template-columns:minmax(250px,300px) minmax(0,1fr); min-height:460px; margin-top:22px; border:1px solid #e1e6d8; border-radius:14px; overflow:hidden; background:#fff; }
+.ali-library-sidebar { min-width:0; border-right:1px solid #e1e6d8; padding:16px 12px; background:#fbfcf8; }
+.ali-library-sidebar-heading { display:none; }
+.ali-library-search { display:flex; align-items:center; gap:10px; min-height:46px; border:1px solid #d8dfd4; border-radius:10px; padding:0 12px; margin:0 0 12px; color:#52675a; background:#fff; }
+.ali-library-search input { border:0; outline:0; background:transparent; min-width:0; width:100%; font:inherit; }
+.ali-library-search input:focus-visible { outline:0; }
+.ali-topic-all,.ali-topic-groups summary { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; min-height:44px; padding:10px 12px; color:#243a2e; font:inherit; font-size:14px; text-align:left; border:0; border-radius:8px; background:transparent; cursor:pointer; }
+.ali-topic-all:hover,.ali-topic-groups summary:hover,.ali-topic-threads button:hover { background:#f0f3e7; }
+.ali-topic-all.selected { background:#e9eee2; font-weight:650; }
+.ali-topic-all small,.ali-topic-groups summary small { color:#758177; font-size:12px; }
+.ali-topic-label { margin:18px 12px 6px; color:#78847c; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+.ali-topic-groups { max-height:390px; overflow-y:auto; }
+.ali-topic-groups details { margin:2px 0; }
+.ali-topic-groups summary { min-height:42px; list-style:none; cursor:pointer; }
+.ali-topic-groups summary::-webkit-details-marker { display:none; }
+.ali-topic-groups summary::after { content:""; width:7px; height:7px; margin-left:auto; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg); transition:transform .16s ease; }
+.ali-topic-groups details[open] summary::after { transform:rotate(225deg); }
+.ali-topic-threads { padding:2px 0 8px 9px; }
+.ali-topic-threads button { display:flex; flex-direction:column; gap:5px; width:100%; min-height:58px; padding:9px 11px; text-align:left; border:0; border-radius:8px; background:transparent; cursor:pointer; }
+.ali-topic-threads button.selected { background:#e9eee2; box-shadow:inset 3px 0 #315a42; }
+.ali-topic-threads button strong { overflow:hidden; color:#203a2d; font-size:12px; font-weight:600; line-height:1.35; text-overflow:ellipsis; }
+.ali-topic-threads button small { color:#758177; font-size:10px; }
+.ali-library-no-results { padding:10px 12px; color:#68766e; font-size:13px; }
+.ali-library-conversation { display:flex; flex-direction:column; min-width:0; background:#fff; }
+.ali-thread-heading { padding:22px 24px 15px; border-bottom:1px solid #e9ece5; }
+.ali-thread-heading span,.ali-thread-heading small { color:#758177; font-size:12px; }
+.ali-thread-heading h3 { margin:8px 0; color:#203a2d; font-size:19px; line-height:1.35; }
+.ali-thread-view { display:flex; flex:1; flex-direction:column; gap:14px; min-height:300px; max-height:600px; overflow:auto; padding:22px; background:#fcfcfa; }
 .ali-thread-view .ali-message { margin:0; }
 .ali-library > .media-hint { margin-top:14px; }
-@media (max-width: 680px) {
-  .ali-library-heading { align-items:flex-start; flex-direction:column; }
-  .ali-library-layout { grid-template-columns:1fr; }
-  .ali-thread-list { border-right:0; border-bottom:1px solid #e1e6d8; max-height:240px; }
-  .ali-thread-view { max-height:420px; }
+.ali-library-menu-trigger,.ali-library-backdrop { display:none; }
+@media (max-width:720px) {
+  .ali-library { padding:20px 16px; }
+  .ali-library-heading { align-items:flex-start; flex-direction:column; gap:16px; }
+  .ali-library-heading .studio-primary { width:100%; justify-content:center; }
+  .ali-library-menu-trigger { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:46px; margin-top:16px; padding:0 15px; border:1px solid #d8dfd4; border-radius:10px; background:#fff; color:#203a2d; font:inherit; font-weight:600; }
+  .ali-library-layout { display:block; min-height:380px; margin-top:12px; overflow:visible; border:0; background:transparent; }
+  .ali-library-backdrop { display:block; position:fixed; z-index:80; inset:0; width:100%; height:100%; border:0; background:rgba(15,30,23,.38); }
+  .ali-library-sidebar { position:fixed; z-index:81; top:0; bottom:0; left:0; width:min(88vw,360px); overflow:auto; padding:calc(14px + env(safe-area-inset-top)) 14px calc(20px + env(safe-area-inset-bottom)); border:0; box-shadow:16px 0 42px rgba(20,38,29,.16); transform:translateX(-105%); transition:transform .22s ease; }
+  .ali-library-sidebar.is-open { transform:translateX(0); }
+  .ali-library-sidebar-heading { display:flex; align-items:center; justify-content:space-between; min-height:44px; margin-bottom:12px; padding:0 5px; color:#203a2d; }
+  .ali-library-sidebar-heading button { display:grid; place-items:center; width:42px; height:42px; border:0; border-radius:50%; background:transparent; color:#203a2d; }
+  .ali-topic-groups { max-height:none; }
+  .ali-library-conversation { min-height:360px; overflow:hidden; border:1px solid #e1e6d8; border-radius:12px; }
+  .ali-thread-heading { padding:18px 16px 13px; }
+  .ali-thread-heading h3 { font-size:17px; }
+  .ali-thread-view { min-height:280px; max-height:none; padding:15px; }
 }
 @media (max-width: 1050px) {
   .studio-map-layout {

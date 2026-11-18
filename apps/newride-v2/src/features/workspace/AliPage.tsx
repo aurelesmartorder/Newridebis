@@ -12,9 +12,11 @@ import {
   History,
   Mic,
   MessageSquareText,
+  Menu,
   Plus,
   Search,
   Send,
+  X,
 } from "lucide-react";
 
 import { command, Header, Empty } from "./shared";
@@ -29,6 +31,8 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
   const [historyRequested,setHistoryRequested]=useState(false);
   const [historyQuery,setHistoryQuery]=useState("");
   const [selectedThreadId,setSelectedThreadId]=useState("");
+  const [selectedTopic,setSelectedTopic]=useState("all");
+  const [libraryMenuOpen,setLibraryMenuOpen]=useState(false);
   const {
     setParams,
     state,
@@ -62,7 +66,24 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
   }
   conversations.reverse();
   const visibleConversations=conversations.filter(item=>item.title.toLocaleLowerCase("fr").includes(historyQuery.trim().toLocaleLowerCase("fr"))||item.messages.some(message=>message.content.toLocaleLowerCase("fr").includes(historyQuery.trim().toLocaleLowerCase("fr"))));
-  const selectedConversation=visibleConversations.find(item=>item.id===selectedThreadId)||visibleConversations[0];
+  const topics=[
+    {id:"seances",label:"Séances & exercices",pattern:/\b(s[eé]ance|exercice|galop|trot|pas|incurv|transition|dressage|obstacle|saut|carri[eè]re|entra[iî]nement|travail)\b/i},
+    {id:"cheval",label:"Comportement du cheval",pattern:/\b(comportement|peur|stress|agress|mord|embarque|refus|confiance|relation|comprendre mon cheval)\b/i},
+    {id:"sante",label:"Santé & sécurité",pattern:/\b(v[eé]t[eé]rinaire|sant[eé]|bless|boiter|chute|urgence|douleur|soin|casque|s[eé]curit[eé])\b/i},
+    {id:"balades",label:"Balades & itinéraires",pattern:/\b(balade|randonn[eé]e|itin[eé]raire|chemin|sortie|promenade|gps)\b/i},
+    {id:"materiel",label:"Matériel & équipement",pattern:/\b(selle|filet|mors|[eé]quipement|mat[eé]riel|tapis|protections|casque connect[eé])\b/i},
+    {id:"progression",label:"Progression & objectifs",pattern:/\b(progress|objectif|niveau|galop [1-7]|comp[eé]tence|bilan|progr[eè]s|routine)\b/i},
+  ];
+  const topicFor=(conversation:typeof conversations[number])=>{
+    const text=[conversation.title,...conversation.messages.map(message=>message.content)].join(" ");
+    return topics.find(topic=>topic.pattern.test(text))?.id||"general";
+  };
+  const topicGroups=[...topics,{id:"general",label:"Questions générales",pattern:/.^/}].map(topic=>({
+    ...topic,
+    conversations:visibleConversations.filter(conversation=>topicFor(conversation)===topic.id),
+  })).filter(topic=>topic.conversations.length>0);
+  const filteredConversations=selectedTopic==="all"?visibleConversations:visibleConversations.filter(conversation=>topicFor(conversation)===selectedTopic);
+  const selectedConversation=filteredConversations.find(item=>item.id===selectedThreadId)||filteredConversations[0];
   return (
     <>
       <Header
@@ -276,7 +297,39 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
               {state.chatHistoryLoading&&<p role="status" className="ali-chat-pending">Chargement de votre bibliothèque…</p>}
               {state.chatError&&<p role="alert" className="media-error">{state.chatError}</p>}
               {!state.chatHistoryLoading&&conversations.length===0&&<div className="ali-library-locked"><MessageSquareText size={28}/><h3>Aucune discussion enregistrée pour le moment.</h3><p>Vos prochaines questions envoyées à ALI apparaîtront ici.</p><button className="studio-dark" type="button" onClick={()=>{setHistoryRequested(false);command("chat-history")}}>Actualiser</button></div>}
-              {conversations.length>0&&<div className="ali-library-layout"><nav className="ali-thread-list" aria-label="Discussions enregistrées">{visibleConversations.map(item=><button type="button" className={selectedConversation?.id===item.id?"selected":""} key={item.id} onClick={()=>setSelectedThreadId(item.id)}><span>{item.date}</span><strong>{item.title.slice(0,72)}{item.title.length>72?"…":""}</strong><small>{item.messages.length} message{item.messages.length>1?"s":""}</small></button>)}{visibleConversations.length===0&&<p>Aucun résultat pour cette recherche.</p>}</nav><div className="ali-thread-view" role="log" aria-label="Contenu de la discussion">{selectedConversation?selectedConversation.messages.map((message,index)=><article className={message.role==="user"?"ali-message from-rider":"ali-message from-ali"} key={`${selectedConversation.id}-${index}`}><strong>{message.role==="user"?"Vous":"ALI"}</strong><p>{message.content}</p></article>):<p>Sélectionnez une discussion.</p>}</div></div>}
+              {conversations.length>0&&<>
+                <button className="ali-library-menu-trigger" type="button" aria-expanded={libraryMenuOpen} aria-controls="ali-library-sidebar" onClick={()=>setLibraryMenuOpen(open=>!open)}>
+                  {libraryMenuOpen?<X size={19}/>:<Menu size={19}/>}<span>{libraryMenuOpen?"Fermer les sujets":"Sujets & discussions"}</span>
+                </button>
+                {libraryMenuOpen&&<button className="ali-library-backdrop" type="button" aria-label="Fermer le menu des discussions" onClick={()=>setLibraryMenuOpen(false)}/>}
+                <div className="ali-library-layout">
+                  <aside id="ali-library-sidebar" className={`ali-library-sidebar${libraryMenuOpen?" is-open":""}`} aria-label="Bibliothèque ALI">
+                    <div className="ali-library-sidebar-heading"><strong>Vos sujets</strong><button type="button" aria-label="Fermer le menu des sujets" onClick={()=>setLibraryMenuOpen(false)}><X size={20}/></button></div>
+                    <label className="ali-library-search"><Search size={18}/><input aria-label="Rechercher dans les discussions" value={historyQuery} onChange={event=>setHistoryQuery(event.target.value)} placeholder="Rechercher une discussion"/></label>
+                    <button className={`ali-topic-all${selectedTopic==="all"?" selected":""}`} type="button" aria-pressed={selectedTopic==="all"} onClick={()=>{setSelectedTopic("all");setLibraryMenuOpen(false)}}>
+                      <span>Toutes les discussions</span><small>{visibleConversations.length}</small>
+                    </button>
+                    <p className="ali-topic-label">Classées par sujet</p>
+                    <nav className="ali-topic-groups" aria-label="Sujets des discussions">
+                      {topicGroups.map(group=><details key={group.id} open={selectedTopic===group.id||undefined}>
+                        <summary><span>{group.label}</span><small>{group.conversations.length}</small></summary>
+                        <div className="ali-topic-threads">
+                          {group.conversations.map(item=><button type="button" className={selectedConversation?.id===item.id?"selected":""} key={item.id} onClick={()=>{setSelectedTopic(group.id);setSelectedThreadId(item.id);setLibraryMenuOpen(false)}}>
+                            <strong>{item.title.slice(0,68)}{item.title.length>68?"…":""}</strong><small>{item.date}</small>
+                          </button>)}
+                        </div>
+                      </details>)}
+                      {topicGroups.length===0&&<p className="ali-library-no-results">Aucune discussion ne correspond à cette recherche.</p>}
+                    </nav>
+                  </aside>
+                  <section className="ali-library-conversation" aria-label="Discussion sélectionnée">
+                    {selectedConversation? <>
+                      <header className="ali-thread-heading"><span>{topics.find(topic=>topic.id===topicFor(selectedConversation))?.label||"Questions générales"} · {selectedConversation.date}</span><h3>{selectedConversation.title}</h3><small>{selectedConversation.messages.length} message{selectedConversation.messages.length>1?"s":""}</small></header>
+                      <div className="ali-thread-view" role="log" aria-label="Contenu de la discussion">{selectedConversation.messages.map((message,index)=><article className={message.role==="user"?"ali-message from-rider":"ali-message from-ali"} key={`${selectedConversation.id}-${index}`}><strong>{message.role==="user"?"Vous":"ALI"}</strong><p>{message.content}</p></article>)}</div>
+                    </>:<div className="ali-library-locked"><MessageSquareText size={28}/><h3>Aucune discussion trouvée.</h3><p>Modifiez votre recherche ou choisissez un autre sujet.</p></div>}
+                  </section>
+                </div>
+              </>}
               <p className="media-hint">Les discussions sont regroupées par proximité de leurs horodatages ; ce regroupement ne remplace pas un identifiant de conversation dédié.</p>
             </>
           )}
