@@ -60,6 +60,7 @@ export function TestAccess() {
               <p>
                 Pseudo : <strong>{state.accountLabel || "Votre compte"}</strong>
               </p>
+              <Link className="studio-dark" to="/ali?section=memory">Mon parcours avec ALI <ArrowRight size={18}/></Link>
               <Link className="studio-dark" to="/discover">
                 Ouvrir la communauté <ArrowRight size={18} />
               </Link>

@@ -22,6 +22,7 @@ import { durationLabel, elapsed, type Session } from "../lib/model";
 import { Badge, Button, Dialog } from "../components/ui";
 import { useVoiceActive } from "../app/LegacySession";
 import { useAliSpeech } from "../hooks/useAliSpeech";
+import { recordLearning } from "./workspace/shared";
 import { HorseForm } from "./HorseForm";
 export function Live() {
   const { data, dispatch } = useStore();
@@ -58,7 +59,7 @@ export function Live() {
   const step = exercise.steps[stepIndex];
   const planned = exercise.duration * 60000;
   const plannedDone = time >= planned;
-  function speak() { void voice.speak(step.instruction); }
+  function speak() { void voice.speak(step.instruction, () => recordLearning({kind:'instruction',title:exercise.title+' · '+step.title,content:step.instruction,horse_id:session?.horseId,horse_name:session?.horseName,details:{exercise_id:exercise.id,step:stepIndex+1,playback:'started'}})); }
   useEffect(() => { voice.stop(); }, [stepIndex, session?.status]);
   function start() {
     const horse = data.horses.find((h) => h.id === data.selectedHorseId);
@@ -85,6 +86,9 @@ export function Live() {
     const f = new FormData(e.currentTarget);
     const outcome = String(f.get("outcome")) as NonNullable<Session["outcome"]>;
     const id = session?.id;
+    if(session)recordLearning({id:session.id,kind:'exercise',title:session.title,horse_id:session.horseId,horse_name:session.horseName,
+      content:String(f.get('notes')||''),duration_seconds:elapsed(session,Date.now())/1000,
+      details:{exercise_id:session.exerciseId,outcome,evidence:'rider_report',criteria:exercise.criteria||[],started_at:new Date(session.startedAt).toISOString()}});
     dispatch({
       type: "session/finish",
       now: Date.now(),
@@ -248,7 +252,7 @@ export function Live() {
                 </p>
               )}
               <p className="live-footnote">
-                Chronomètre et bilan enregistrés sur cet appareil.
+                Chronomètre sur cet appareil. Le bilan est synchronisé avec votre compte connecté.
                 <br />
                 Aucune mesure de casque ou d’allure n’est simulée.
               </p>

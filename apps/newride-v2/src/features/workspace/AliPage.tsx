@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 
+import { CoachingJournal } from "./CoachingJournal";
 import { command, Header } from "./shared";
 import type { WorkspaceModel } from "./model";
 export function AliPage({ model }: { model: WorkspaceModel }) {
@@ -40,14 +41,10 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
     state,
     setNotice,
     notice,
-    draft,
-    setDraft,
-    drafts,
     question,
     setQuestion,
     section,
     lesson,
-    saveDraft,
   } = model;
   useEffect(()=>{if(state.chatBusy)sending.current=false;if(state.chatError){sending.current=false;setQuestion(previous=>previous||sentQuestion)}},[state.chatBusy,state.chatError]);
   useEffect(()=>{
@@ -190,7 +187,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
               <button type="button" className="ali-voice-quick" aria-label={state.voiceActive?"Arrêter la conversation vocale":"Parler avec ALI"} onClick={()=>{if(state.voiceActive)command("voice-stop");else if(state.authenticated)command("voice-start");else setNotice("Connectez-vous pour démarrer une conversation vocale.")}}><Mic size={18}/><span>{state.voiceActive?"Arrêter":"Voix"}</span></button>
             </div>
             <div className={`ali-chat-scroll${activeChat.length?" has-messages":""}`} role="log" aria-live="polite" aria-label="Messages de la discussion">
-              {!activeChat.length?<div className="ali-chat-welcome"><span className="ali-chat-mark">ALI</span><h2>{lesson?`On travaille : ${lesson}`:"Par quoi voulez-vous progresser ?"}</h2><p>Une question précise suffit. ALI s’appuie sur vos échanges et, si vous le choisissez, sur le suivi de votre duo.</p><div className="ali-chat-suggestions"><button type="button" onClick={()=>setQuestion("Aide-moi à préparer ma prochaine séance.")}>Préparer ma prochaine séance</button><button type="button" onClick={()=>setQuestion("Comment améliorer la régularité de mon cheval ?")}>Travailler un point technique</button><button type="button" onClick={()=>setQuestion("Que dois-je observer pendant ma prochaine séance ?")}>Savoir quoi observer</button></div></div>:<div className="ali-chat-messages">{activeChat.map((message,index)=><article className={`ali-chat-message ${message.role==="user"?"from-rider":"from-ali"}`} key={`${message.conversation_id||selectedThreadId}-${message.id||index}`}><span>{message.role==="user"?"VOUS":"ALI"}</span><p>{message.content}</p></article>)}{state.chatBusy&&<article className="ali-chat-message from-ali" role="status"><span>ALI</span><p className="ali-chat-pending">Je prépare une réponse utile…</p></article>}</div>}
+              {!activeChat.length?<div className="ali-chat-welcome"><span className="ali-chat-mark">ALI</span><h2>{lesson?`On travaille : ${lesson}`:"Par quoi voulez-vous progresser ?"}</h2><p>ALI retrouve vos échanges et vos activités enregistrés dans votre compte pour vous aider à préparer la suite.</p><div className="ali-chat-suggestions"><button type="button" onClick={()=>setQuestion("Aide-moi à préparer ma prochaine séance.")}>Préparer ma prochaine séance</button><button type="button" onClick={()=>setQuestion("Comment améliorer la régularité de mon cheval ?")}>Travailler un point technique</button><button type="button" onClick={()=>setQuestion("Que dois-je observer pendant ma prochaine séance ?")}>Savoir quoi observer</button></div></div>:<div className="ali-chat-messages">{activeChat.map((message,index)=><article className={`ali-chat-message ${message.role==="user"?"from-rider":"from-ali"}`} key={`${message.conversation_id||selectedThreadId}-${message.id||index}`}><span>{message.role==="user"?"VOUS":"ALI"}</span><p>{message.content}</p></article>)}{state.chatBusy&&<article className="ali-chat-message from-ali" role="status"><span>ALI</span><p className="ali-chat-pending">Je prépare une réponse utile…</p></article>}</div>}
             </div>
             {notice&&<p role="status" className="ali-chat-notice">{notice} {!state.authenticated&&<Link to="/acces-test">Se connecter</Link>}</p>}
             {state.chatError&&<p role="alert" className="media-error">{state.chatError}</p>}
@@ -208,7 +205,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
               setQuestion("");setNotice("");
             }}>
               <textarea aria-label="Message pour ALI" value={question} onChange={event=>setQuestion(event.target.value)} onKeyDown={event=>{if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();event.currentTarget.form?.requestSubmit();}}} maxLength={4000} placeholder={state.authenticated?"Écrivez votre message à ALI…":"Connectez-vous pour écrire à ALI…"}/>
-              <div className="ali-composer-bottom"><label><input type="checkbox" checked={shareContext} onChange={event=>setShareContext(event.target.checked)}/> Ajouter mon cheval et mes bilans</label><button type="submit" aria-label="Envoyer le message" disabled={!question.trim()||state.chatBusy||!state.authenticated}>{state.chatBusy?<span className="ali-send-loading"/>:<Send size={18}/>}</button></div>
+              <div className="ali-composer-bottom"><label><input type="checkbox" checked={shareContext} onChange={event=>setShareContext(event.target.checked)}/> Ajouter le carnet de cet appareil</label><button type="submit" aria-label="Envoyer le message" disabled={!question.trim()||state.chatBusy||!state.authenticated}>{state.chatBusy?<span className="ali-send-loading"/>:<Send size={18}/>}</button></div>
             </form>
             <p className="ali-chat-disclaimer">ALI accompagne votre réflexion ; il ne remplace pas un enseignant ni un vétérinaire.</p>
           </div>
@@ -251,38 +248,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
           />
         </div>
       )}
-      {section === "memory" && (
-        <section className="studio-panel studio-journal">
-          <span className="ride-kicker">VOTRE JOURNAL LOCAL</span>
-          <h2>Ce que vous avez remarqué.</h2>
-          <p>
-            Conservez une observation ou une question pour votre prochaine
-            séance. Ces notes restent sur cet appareil et ne sont pas envoyées à
-            ALI.
-          </p>
-          <label htmlFor="coach-journal">Votre observation</label>
-          <textarea
-            id="coach-journal"
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            maxLength={4000}
-            placeholder="Aujourd’hui, j’ai remarqué…"
-          />
-          <button
-            className="studio-dark"
-            disabled={!draft.trim()}
-            onClick={saveDraft}
-          >
-            Conserver la note <Check size={18} />
-          </button>
-          {drafts.map((d) => (
-            <article className="journal-entry" key={d.id}>
-              <time>{new Date(d.at).toLocaleDateString("fr-FR")}</time>
-              <p>{d.text}</p>
-            </article>
-          ))}
-        </section>
-      )}
+      {section === "memory" && <CoachingJournal model={model}/>}
       {section === "video" && (
         <section className="studio-panel"><span className="ride-kicker">ALI / OBSERVER APRÈS LA SÉANCE</span><h2>Un autre angle de vue.</h2><MediaPicker kind="video" file={video} onChange={setVideo}/><p className="compat-note">L’analyse porte sur des images extraites de la vidéo, après enregistrement. Elle ne mesure pas des angles ou une boiterie et ne remplace pas un professionnel.</p><button className="studio-primary" disabled={!video || !state.authenticated || state.videoLoading} onClick={()=>{const frame=document.getElementById('newride-engine') as HTMLIFrameElement|null;frame?.contentWindow?.postMessage({type:'newride-v2-command',command:'video-analyze',file:video},location.origin)}}>{state.videoLoading ? 'Analyse en cours…' : 'Envoyer les images à ALI pour analyse'}</button>{!state.authenticated && <p>Connectez votre compte dans <Link to="/acces-test">Accès test</Link> pour demander une analyse.</p>}<p role="status">{state.videoProgress}</p>{state.videoReport?.summary && <article><h3>Retour d’ALI</h3><p>{state.videoReport.summary}</p><small>{state.videoReport.frameCount} images examinées · interprétation à vérifier avec votre enseignant</small></article>}</section>
       )}

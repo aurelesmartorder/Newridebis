@@ -2454,3 +2454,6 @@ main {
   }
   .bottom-navigation.is-chat-hidden { display: none !important; }
 }
+
+/* Account coaching record */
+.coaching-journal{max-width:1100px}.learning-toolbar,.learning-filters,.learning-metrics{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:24px 0}.learning-toolbar p{flex:1;min-width:180px}.learning-toolbar button{font:inherit}.learning-metrics>span{flex:1;padding:20px;background:#f0f2e9;border-radius:12px;min-width:150px}.learning-metrics strong{display:block;font-size:28px;color:#183127}.learning-recent{padding:22px;background:#f8f8f3;border-left:3px solid #456450;margin:24px 0}.learning-filters input{flex:1;min-width:180px}.learning-filters input,.learning-filters select{font:inherit;padding:14px;border:1px solid #d9dfd1;background:white;border-radius:10px;max-width:100%}.learning-entry{padding:22px 0;border-bottom:1px solid #e1e6da}.learning-entry p{white-space:pre-wrap;overflow-wrap:anywhere}.learning-entry h3{margin:10px 0}.learning-local{margin-top:28px}.coaching-journal textarea{display:block;width:100%;min-height:120px;margin:12px 0;padding:16px;font:inherit;border:1px solid #d9dfd1;border-radius:12px}@media(max-width:600px){.learning-toolbar button,.learning-filters select{width:100%}.learning-metrics>span{min-width:110px}.coaching-journal{padding:20px}}

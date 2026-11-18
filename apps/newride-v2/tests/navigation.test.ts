@@ -13,7 +13,7 @@ test("la redirection de connexion refuse les destinations externes et les boucle
     "/connexion?retour=/connexion",
     "/inconnu",
   ])
-    assert.equal(safeReturnTo(target), "/coaching");
+    assert.equal(safeReturnTo(target), "/ali");
   assert.equal(
     safeReturnTo("/ali/conversation?section=voice"),
     "/ali/conversation?section=voice",
@@ -30,5 +30,5 @@ test("les sous-parcours reviennent au bon espace et conservent un parent déterm
   assert.equal(tabForPath("/discover"), "community");
   assert.equal(parentForPath("/coaching/rythme-au-pas"), "/exercices");
   assert.equal(parentForPath("/seances/abc"), "/performances");
-  assert.equal(parentForPath("/ali/conversation"), "/coaching");
+  assert.equal(parentForPath("/ali/conversation"), "/ali");
 });

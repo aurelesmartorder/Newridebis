@@ -1,0 +1,15 @@
+# ALI account memory — V2
+
+The private account journal is available at `/ali?section=memory`. It combines the new `ali_learning_events` records with existing account-owned notes, video reports, GPS sessions, and written conversation history. No existing record is rewritten during rollout.
+
+New events include finished exercise reports (horse, duration, outcome and observation), journal entries, successful starts of spoken instructions, voice-session checkpoints, and incremental live/lesson transcripts. A voice session is counted only when the audio element emits `playing`; elapsed time describes the audio connection, not attention or mastery. Transcripts represent the words reported by the realtime service, not raw audio recordings. Activity writes use stable IDs and an account-scoped retry queue. A page-hide checkpoint is best effort; only confirmed sync is durable across devices.
+
+Before written or live coaching, ALI retrieves account-scoped records. The full stored history remains consultable; each model request includes a bounded selection ranked by the question, plus recent practice outcomes and observations. This is contextual retrieval, not model training and not an assertion of perfect recall. Raw history is treated as data, not instructions. The prompt requires one useful priority, an adapted exercise and an observable criterion, distinguishes reported outcomes from measurements, and checks old or ambiguous information instead of inventing progress.
+
+Guest practice remains on the device. Previous device-only notes and finished sessions require explicit import into the current account. Old events that were never recorded cannot be reconstructed. Imported sessions are idempotent by session ID.
+
+Security: new table has owner-only SELECT/INSERT/UPDATE/DELETE RLS and no anonymous access. Account transitions reset cached memory and active transcript; late asynchronous responses cannot populate another account. No API keys or session tokens are exposed to the React frame bridge. No production function/configuration changes are needed; V2 continues to use existing authenticated endpoints.
+
+Verification: unit coverage includes offline retry without duplicates, retrieval beyond 1,000 records, immediate transcript persistence and reconstruction, no false lesson completion from a silent connection, late-account isolation, and the corrected written-response path. Database checks use a rolled-back owner insert and a second identity that cannot read or update it. Existing unrelated Supabase advisories remain outside this additive change.
+
+Limitations: metadata of a completed exercise is recorded from the rider's report; sensor measurements do not follow from a timer. Actual microphone/audio routing and contextual response quality still need a rider test on iPhone and the real helmet. The history is paged from the database but currently cached in the frame for retrieval; a server-side retrieval index will be appropriate at larger account volumes. The voice transcript is saved turn by turn, so an interrupted utterance without a final transcript event cannot be recovered.

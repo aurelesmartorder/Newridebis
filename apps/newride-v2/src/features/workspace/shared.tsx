@@ -24,7 +24,9 @@ export type Post = {
   like?: { count: number; likedByMe?: boolean };
   comments?: { id: string; content: string; authorName?: string }[];
 };
+export type LearningEvent = {id:string;kind:string;title:string;content:string;horse_id:string;horse_name:string;duration_seconds:number;created_at:string;details:Record<string,unknown>};
 export type Snapshot = {
+  learning?: {owner:string;loaded:boolean;busy:boolean;error:string;pending:number;events:LearningEvent[]};
   ready?: boolean;
   chatBusy?: boolean;
   chatError?: string;
@@ -44,9 +46,13 @@ export type Snapshot = {
   connecting?: boolean;
   posts?: Post[];
   program?: { day: string; activity: string; detail: string }[];
-  chat?: { id?: number; conversation_id?: string | null; role: string; content: string; created_at?: string }[];
-  chatHistory?: { id?: number; conversation_id?: string | null; role: string; content: string; created_at?: string }[];
+  chat?: { id?: number|string; conversation_id?: string | null; role: string; content: string; created_at?: string }[];
+  chatHistory?: { id?: number|string; conversation_id?: string | null; role: string; content: string; created_at?: string }[];
 };
+export function recordLearning(activity: Partial<LearningEvent> & {kind:string;title:string}) {
+  const frame=document.getElementById('newride-engine') as HTMLIFrameElement|null;
+  frame?.contentWindow?.postMessage({type:'newride-v2-command',command:'learning-record',activity},location.origin);
+}
 export function command(command: string, text?: string, id?: string) {
   const frame = document.getElementById(
     "newride-engine",
