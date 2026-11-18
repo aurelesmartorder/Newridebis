@@ -11,6 +11,9 @@ import {
   Check,
   History,
   Mic,
+  MessageSquareText,
+  Plus,
+  Search,
   Send,
 } from "lucide-react";
 
@@ -23,6 +26,9 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
   const sending=useRef(false);
   const [sentQuestion,setSentQuestion]=useState("");
   const [video, setVideo] = useState<File|null>(null);
+  const [historyRequested,setHistoryRequested]=useState(false);
+  const [historyQuery,setHistoryQuery]=useState("");
+  const [selectedThreadId,setSelectedThreadId]=useState("");
   const {
     setParams,
     state,
@@ -39,6 +45,24 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
     saveDraft,
   } = model;
   useEffect(()=>{if(state.chatBusy)sending.current=false;if(state.chatError){sending.current=false;setQuestion(previous=>previous||sentQuestion)}},[state.chatBusy,state.chatError]);
+  useEffect(()=>{
+    if(!state.authenticated){setHistoryRequested(false);return;}
+    if(section==="library"&&!historyRequested){setHistoryRequested(true);command("chat-history");}
+  },[section,state.authenticated,historyRequested]);
+  const historyMessages=state.chat||[];
+  const conversations:{id:string;title:string;date:string;messages:typeof historyMessages}[]=[];
+  for(const message of historyMessages){
+    const stamp=message.created_at?new Date(message.created_at).getTime():NaN;
+    const last=conversations[conversations.length-1];
+    const lastStamp=last?.messages.at(-1)?.created_at?new Date(last.messages.at(-1)!.created_at!).getTime():NaN;
+    if(!last||!Number.isFinite(stamp)||!Number.isFinite(lastStamp)||stamp-lastStamp>60*60*1000){
+      const id=Number.isFinite(stamp)?new Date(stamp).toISOString():`live-${conversations.length}`;
+      conversations.push({id,title:message.role==="user"?message.content:"Discussion ALI",date:Number.isFinite(stamp)?new Date(stamp).toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"}):"Récemment",messages:[message]});
+    }else last.messages.push(message);
+  }
+  conversations.reverse();
+  const visibleConversations=conversations.filter(item=>item.title.toLocaleLowerCase("fr").includes(historyQuery.trim().toLocaleLowerCase("fr"))||item.messages.some(message=>message.content.toLocaleLowerCase("fr").includes(historyQuery.trim().toLocaleLowerCase("fr"))));
+  const selectedConversation=visibleConversations.find(item=>item.id===selectedThreadId)||visibleConversations[0];
   return (
     <>
       <Header
@@ -55,6 +79,7 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
           ["voice", "Conversation"],
           ["program", "Programme"],
           ["memory", "Journal"],
+          ["library", "Bibliothèque"],
           ["video", "Vidéo"],
         ].map(([id, label]) => (
           <button
@@ -121,10 +146,6 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
               <span className="ride-kicker">UNE QUESTION PRÉCISE</span>
               <h2>Votre conversation avec ALI.</h2>
               {notice && <p role="status" className="ali-chat-notice">{notice} {!state.authenticated&&<Link to="/acces-test">Me connecter</Link>}</p>}
-              <button className="studio-text-link" type="button" disabled={!state.authenticated || state.chatHistoryLoading} onClick={()=>command("chat-history")}>
-                <History size={17} />
-                {state.chatHistoryLoading ? "Chargement de l’historique…" : "Retrouver mes anciennes discussions"}
-              </button>
               <div className="ali-chat-history" role="log" aria-live="polite" aria-label="Historique de la conversation">{state.chat?.map((message,i)=><article className={message.role==='user'?'ali-message from-rider':'ali-message from-ali'} key={i}><strong>{message.role==='user'?'Vous':'ALI'}</strong><p>{message.content}</p></article>)}{state.chatBusy&&<p className="ali-chat-pending" role="status">ALI prépare sa réponse…</p>}</div>
               {state.chatError&&<p role="alert" className="media-error">{state.chatError}</p>}
               <form
@@ -239,6 +260,26 @@ export function AliPage({ model }: { model: WorkspaceModel }) {
               <p>{d.text}</p>
             </article>
           ))}
+        </section>
+      )}
+      {section === "library" && (
+        <section className="studio-panel ali-library">
+          <div className="ali-library-heading">
+            <div><span className="ride-kicker">VOTRE HISTORIQUE ALI</span><h2>Vos conversations.</h2><p>Retrouvez vos questions et les réponses d’ALI.</p></div>
+            <button className="studio-primary" type="button" onClick={()=>setParams({section:"voice"})}><Plus size={18}/> Nouvelle discussion</button>
+          </div>
+          {!state.authenticated ? (
+            <div className="ali-library-locked"><MessageSquareText size={28}/><h3>Votre bibliothèque vous attend.</h3><p>Connectez-vous pour retrouver les discussions enregistrées sur votre compte.</p><Link className="studio-dark" to="/acces-test">Se connecter</Link></div>
+          ) : (
+            <>
+              <label className="ali-library-search"><Search size={18}/><input aria-label="Rechercher dans les discussions" value={historyQuery} onChange={event=>setHistoryQuery(event.target.value)} placeholder="Rechercher une question ou un sujet"/></label>
+              {state.chatHistoryLoading&&<p role="status" className="ali-chat-pending">Chargement de votre bibliothèque…</p>}
+              {state.chatError&&<p role="alert" className="media-error">{state.chatError}</p>}
+              {!state.chatHistoryLoading&&conversations.length===0&&<div className="ali-library-locked"><MessageSquareText size={28}/><h3>Aucune discussion enregistrée pour le moment.</h3><p>Vos prochaines questions envoyées à ALI apparaîtront ici.</p><button className="studio-dark" type="button" onClick={()=>{setHistoryRequested(false);command("chat-history")}}>Actualiser</button></div>}
+              {conversations.length>0&&<div className="ali-library-layout"><nav className="ali-thread-list" aria-label="Discussions enregistrées">{visibleConversations.map(item=><button type="button" className={selectedConversation?.id===item.id?"selected":""} key={item.id} onClick={()=>setSelectedThreadId(item.id)}><span>{item.date}</span><strong>{item.title.slice(0,72)}{item.title.length>72?"…":""}</strong><small>{item.messages.length} message{item.messages.length>1?"s":""}</small></button>)}{visibleConversations.length===0&&<p>Aucun résultat pour cette recherche.</p>}</nav><div className="ali-thread-view" role="log" aria-label="Contenu de la discussion">{selectedConversation?selectedConversation.messages.map((message,index)=><article className={message.role==="user"?"ali-message from-rider":"ali-message from-ali"} key={`${selectedConversation.id}-${index}`}><strong>{message.role==="user"?"Vous":"ALI"}</strong><p>{message.content}</p></article>):<p>Sélectionnez une discussion.</p>}</div></div>}
+              <p className="media-hint">Les discussions sont regroupées par proximité de leurs horodatages ; ce regroupement ne remplace pas un identifiant de conversation dédié.</p>
+            </>
+          )}
         </section>
       )}
       {section === "video" && (

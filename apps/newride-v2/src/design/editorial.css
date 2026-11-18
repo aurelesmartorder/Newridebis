@@ -1806,6 +1806,31 @@ main {
 .studio-journal > .studio-dark {
   margin-top: 20px;
 }
+.ali-library { min-height: 520px; }
+.ali-library-heading { display:flex; justify-content:space-between; align-items:center; gap:24px; border-bottom:1px solid #e1e6d8; padding-bottom:22px; }
+.ali-library-heading h2 { margin:10px 0 6px; }
+.ali-library-heading p { margin:0; color:#68766e; }
+.ali-library-heading .studio-primary { display:inline-flex; align-items:center; gap:9px; min-height:48px; }
+.ali-library-locked { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:330px; padding:28px; color:#365846; }
+.ali-library-locked h3 { margin:16px 0 7px; color:#183329; }
+.ali-library-locked p { max-width:420px; line-height:1.65; color:#68766e; }
+.ali-library-search { display:flex; align-items:center; gap:10px; max-width:520px; min-height:48px; border:1px solid #d8dfd4; border-radius:8px; padding:0 14px; margin:22px 0; }
+.ali-library-search input { border:0; outline:0; background:transparent; min-width:0; width:100%; }
+.ali-library-layout { display:grid; grid-template-columns:minmax(230px, .8fr) minmax(0, 1.5fr); min-height:340px; border:1px solid #e1e6d8; border-radius:12px; overflow:hidden; }
+.ali-thread-list { border-right:1px solid #e1e6d8; max-height:520px; overflow:auto; }
+.ali-thread-list button { display:flex; flex-direction:column; gap:7px; width:100%; min-height:88px; padding:15px; text-align:left; border:0; border-bottom:1px solid #e9ece5; background:#fff; cursor:pointer; }
+.ali-thread-list button.selected { background:#f0f3e7; box-shadow:inset 3px 0 #315a42; }
+.ali-thread-list button span,.ali-thread-list button small { color:#758177; font-size:11px; }
+.ali-thread-list button strong { color:#203a2d; line-height:1.4; }
+.ali-thread-view { display:flex; flex-direction:column; gap:14px; max-height:520px; overflow:auto; padding:18px; background:#fcfcfa; }
+.ali-thread-view .ali-message { margin:0; }
+.ali-library > .media-hint { margin-top:14px; }
+@media (max-width: 680px) {
+  .ali-library-heading { align-items:flex-start; flex-direction:column; }
+  .ali-library-layout { grid-template-columns:1fr; }
+  .ali-thread-list { border-right:0; border-bottom:1px solid #e1e6d8; max-height:240px; }
+  .ali-thread-view { max-height:420px; }
+}
 @media (max-width: 1050px) {
   .studio-map-layout {
     grid-template-columns: 240px 1fr;
