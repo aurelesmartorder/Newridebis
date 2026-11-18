@@ -105,7 +105,7 @@
     const row={id:crypto.randomUUID(),user_id:active.owner,kind:'transcript',title:active.title,content:content.slice(0,12000),horse_id:'',horse_name:'',duration_seconds:0,
       details:{conversation_id:active.id,role,mode:active.kind},created_at:new Date().toISOString()};
     const message={id:row.id,conversation_id:active.id,role,content:row.content,created_at:row.created_at};
-    history.push(message);S.chatHistory.push(message);S.activeChatMessages=(S.activeChatMessages||[]).concat(message);emit();
+    history.push(message);S.chatHistory.push(message);if(S.activeConversationId===active.id)S.activeChatMessages=(S.activeChatMessages||[]).concat(message);emit();
     await persist(row);
   }
 
@@ -123,6 +123,7 @@
       S.activeConversationId=live.id;S.activeChatMessages=[];return memory;},
     turn:saveTurn,
     heard(){if(live&&!live.heard){live.heard++;void checkpointVoice('in_progress');}},
+    async flushThread(id){if(live?.id===id)live=null;await Promise.allSettled([...writes.values()]);},
     forgetThread(id){const account=ensureAccount();if(!account)return;localStorage.setItem(key(account),JSON.stringify(pending(account).filter(x=>x.details?.conversation_id!==id)));},
     async endVoice(){const task=checkpointVoice('ended');live=null;await task;}
   };

@@ -321,6 +321,8 @@
       return;
     }
     if (command === "chat-delete") {
+      if(S.nativeChatBusy){notice("Attendez la réponse d’ALI avant de supprimer cette discussion.");return;}
+      await window.newrideMemory?.flushThread(id);
       if (!CURRENT_USER || !uuid(id)) return;
       const accountId = CURRENT_USER.id;
       try {
